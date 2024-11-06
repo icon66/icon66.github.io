@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="BIGWORLD_Server Programming Guide_011. Overview这部分文档包含了为BigWorld服务器创建实体和用户数据对象的技术信息。它是描述整个BigWorld系统的更大文档集的一部分。 2. Directory Structure for Entity Scripting实体是组成游戏世界的对象。使用实体，你可以在游戏中创建玩家、npc、战利品、聊天室和许多其">
+    <meta name="description" content="BIGWORLD_Server Programming Guide_011. Overview这部分文档包含了为BigWorld服务器创建实体和用户数据对象的技术信息。它是描述整个BigWorld系统的更大文档集的一部分。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BIGWORLD 服务端编程指南01">
 <meta property="og:url" content="http://example.com/2024/11/06/bigworld_06_01/index.html">
-<meta property="og:site_name" content="Keep Running">
-<meta property="og:description" content="BIGWORLD_Server Programming Guide_011. Overview这部分文档包含了为BigWorld服务器创建实体和用户数据对象的技术信息。它是描述整个BigWorld系统的更大文档集的一部分。 2. Directory Structure for Entity Scripting实体是组成游戏世界的对象。使用实体，你可以在游戏中创建玩家、npc、战利品、聊天室和许多其">
+<meta property="og:site_name" content="H&#39;s Blogs">
+<meta property="og:description" content="BIGWORLD_Server Programming Guide_011. Overview这部分文档包含了为BigWorld服务器创建实体和用户数据对象的技术信息。它是描述整个BigWorld系统的更大文档集的一部分。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/image%5Cbigworld%5C06_01.png">
 <meta property="og:image" content="http://example.com/image%5Cbigworld%5C06_02.png">
@@ -46,7 +46,7 @@
 <meta property="og:image" content="e:\markDown\image\bigworld\06_18.png">
 <meta property="og:image" content="e:\markDown\image\bigworld\06_19.png">
 <meta property="article:published_time" content="2024-11-06T03:20:31.174Z">
-<meta property="article:modified_time" content="2022-11-07T01:22:54.874Z">
+<meta property="article:modified_time" content="2024-11-06T07:19:18.223Z">
 <meta property="article:author" content="华">
 <meta property="article:tag" content="BigWorld">
 <meta name="twitter:card" content="summary">
@@ -60,7 +60,7 @@
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/11/06/bigworld_06_01/","path":"2024/11/06/bigworld_06_01/","title":"BIGWORLD 服务端编程指南01"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>BIGWORLD 服务端编程指南01 | Keep Running</title>
+<title>BIGWORLD 服务端编程指南01 | H's Blogs</title>
   
 
 
@@ -91,7 +91,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">Keep Running</p>
+      <p class="site-title">H's Blogs</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -145,7 +145,7 @@
     <img class="site-author-image" itemprop="image" alt="华"
       src="/images/Avatar.png">
   <p class="site-author-name" itemprop="name">华</p>
-  <div class="site-description" itemprop="description"></div>
+  <div class="site-description" itemprop="description">个人博客记录</div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
@@ -217,12 +217,12 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Keep Running">
-      <meta itemprop="description" content="">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="BIGWORLD 服务端编程指南01 | Keep Running">
+      <meta itemprop="name" content="BIGWORLD 服务端编程指南01 | H's Blogs">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
@@ -237,15 +237,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2024-11-06 11:20:31" itemprop="dateCreated datePublished" datetime="2024-11-06T11:20:31+08:00">2024-11-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-11-07 09:22:54" itemprop="dateModified" datetime="2022-11-07T09:22:54+08:00">2022-11-07</time>
+      <time title="创建时间：2024-11-06 11:20:31 / 修改时间：15:19:18" itemprop="dateCreated datePublished" datetime="2024-11-06T11:20:31+08:00">2024-11-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -268,6 +262,8 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="BIGWORLD-Server-Programming-Guide-01"><a href="#BIGWORLD-Server-Programming-Guide-01" class="headerlink" title="BIGWORLD_Server Programming Guide_01"></a><strong>BIGWORLD_Server Programming Guide_01</strong></h1><h2 id="1-Overview"><a href="#1-Overview" class="headerlink" title="1. Overview"></a><strong>1. Overview</strong></h2><p>这部分文档包含了为BigWorld服务器创建实体和用户数据对象的技术信息。它是描述整个BigWorld系统的更大文档集的一部分。</p>
+<span id="more"></span>
+
 <h2 id="2-Directory-Structure-for-Entity-Scripting"><a href="#2-Directory-Structure-for-Entity-Scripting" class="headerlink" title="2. Directory Structure for Entity Scripting"></a><strong>2. Directory Structure for Entity Scripting</strong></h2><p>实体是组成游戏世界的对象。使用实体，你可以在游戏中创建玩家、npc、战利品、聊天室和许多其他互动元素。</p>
 <h3 id="2-1-The-entities-xml-File"><a href="#2-1-The-entities-xml-File" class="headerlink" title="2.1. The entities.xml File"></a><strong>2.1. The entities.xml File</strong></h3><p>BigWorld引擎使用&lt;res&gt;&#x2F;scripts&#x2F;entities.xml文件来确定可用的实体类型。</p>
 <p>这个文件中的每个标签代表一个实体类型，并且在&lt;res&gt;&#x2F;scripts&#x2F;entity_defs目录中必须有一个对应的定义文件，以及&lt;res&gt;&#x2F;scripts&#x2F;base或&lt;res&gt;&#x2F;scripts&#x2F;cell目录下的至少一个Python脚本文件。它也可能在&lt;res&gt;&#x2F;scripts&#x2F;client中有也有一个脚本文件。</p>

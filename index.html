@@ -529,15 +529,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2024-11-06 11:20:31" itemprop="dateCreated datePublished" datetime="2024-11-06T11:20:31+08:00">2024-11-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-11-07 08:58:06" itemprop="dateModified" datetime="2022-11-07T08:58:06+08:00">2022-11-07</time>
+      <time title="创建时间：2024-11-06 11:20:31 / 修改时间：15:01:56" itemprop="dateCreated datePublished" datetime="2024-11-06T11:20:31+08:00">2024-11-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -559,59 +553,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="BIG-WORLD-术语表"><a href="#BIG-WORLD-术语表" class="headerlink" title="BIG WORLD 术语表"></a>BIG WORLD 术语表</h1><p>下面的列表描述了在BigWorld文档中使用的一些术语</p>
-<h2 id="AOI（-Area-Of-Interest）"><a href="#AOI（-Area-Of-Interest）" class="headerlink" title="AOI（ Area Of Interest）"></a>AOI（ Area Of Interest）</h2><p>兴趣区域:一个实体感兴趣的物理区域。<br>通常，这是一个垂直方向的圆柱体，半径为500米。<br>半径的长度也被称为ghost距离，因为它匹配实体和附近的单位之间的距离，在那里实体需要被鬼影(be ghosted)。有关详细信息，请参见文档Server<br>概述部分服务器组件→“CellApp”→“Real and Ghost Entities”</p>
-<p>距离应该比角色所能看到的距离稍大一些。</p>
-<h2 id="Area-of-Interest"><a href="#Area-of-Interest" class="headerlink" title="Area of Interest"></a>Area of Interest</h2><p>参照 AOI</p>
-<h2 id="Avatar"><a href="#Avatar" class="headerlink" title="Avatar"></a>Avatar</h2><p>与角色相关联的实体。这可能是玩家角色(PC)或非玩家角色<br>(NPC)。</p>
-<h2 id="Base"><a href="#Base" class="headerlink" title="Base"></a>Base</h2><p>用于表示实体中不移动的部分的对象。</p>
-<p>与单位上的实体部分(可以在不同的机器之间移动)不同，基座不移动，从而给了一个与实体对话的固定位置。</p>
-<h2 id="Bundle"><a href="#Bundle" class="headerlink" title="Bundle"></a>Bundle</h2><p>bundle是消息的集合。它映射一个或多个UDP报文。</p>
-<h2 id="Call"><a href="#Call" class="headerlink" title="Call"></a>Call</h2><p>一种事件类型:远程方法调用。与其他类型的事件不同的是，直接对已知对象进行调用。</p>
-<h2 id="Camera"><a href="#Camera" class="headerlink" title="Camera"></a>Camera</h2><p>照相机是观察世界的视角。摄像头有一个位置和观察方向，存储在矩阵中。</p>
-<p>有许多相机以不同的方式移动，但每一帧必须有一个是活跃的。</p>
-<p>在绘制框架之前，主动摄像机矩阵与3D引擎(Moo)进行通信。</p>
-<h2 id="Chunk"><a href="#Chunk" class="headerlink" title="Chunk"></a>Chunk</h2><p>地形、场景和碰撞场景被分割成块，在必要时加载。</p>
-<p>在每一帧，客户端确定是否有任何卸载的块可能很快就会可见，并指示加载线程加载它们。当不再需要时，块也会被销毁，以便回收它们使用的内存。</p>
-<h2 id="Chunking"><a href="#Chunking" class="headerlink" title="Chunking"></a>Chunking</h2><p>用来描述将世界分割成相互连接的部分的概念的术语。</p>
-<p>通常在谈论渲染场景或加载世界数据时使用，例如:“地形的分块让它加载更快。”</p>
-<h2 id="Collision-scene"><a href="#Collision-scene" class="headerlink" title="Collision scene"></a>Collision scene</h2><p>碰撞场景包含用于物理计算的空间表示，特别是用于计算移动物体和场景之间的碰撞，以及查询碰撞点的属性</p>
-<h2 id="Console"><a href="#Console" class="headerlink" title="Console"></a>Console</h2><p>控制台是绘制在场景和GUI上的一层文本。控制台主要用于调试，但也可以由脚本使用。</p>
-<h2 id="Detail-object"><a href="#Detail-object" class="headerlink" title="Detail object"></a>Detail object</h2><p>一个细节对象是一个在相机位置周围的地形上大量绘制的小网格。为了提高效率，它们与普通模型分开了。这些物体的选择和放置很大程度上是自动的，基于底层地形的纹理。</p>
-<h2 id="Entity"><a href="#Entity" class="headerlink" title="Entity"></a>Entity</h2><p>实体是BigWorld系统中基本的可寻址对象。在BigWorld服务器和客户端之间发送的消息都在某个实体的上下文中。</p>
-<p>实体有一个类型和一个位置，以及由该类型决定的许多其他属性。每个实体类型都有一个与之相关联的Python脚本类，世界上的每个实体实例都有一个其Python类的实例来控制它。</p>
-<p>实体在世界中没有内在表征;相反，它们的控制脚本显式地将对象添加到实体权限下的场景中。</p>
-<p>通过将强大的类和对象公开为Python类型和模块，BigWorld客户端为实体的实现提供了丰富的脚本环境。有关详细信息，请参见文档Server<br>概述部分服务器组件→“CellApp”→“脚本和实体”。</p>
-<h2 id="Event"><a href="#Event" class="headerlink" title="Event"></a>Event</h2><p>远程方法调用(请参见调用)或属性更新</p>
-<h2 id="Ghost"><a href="#Ghost" class="headerlink" title="Ghost"></a>Ghost</h2><p>对真实物体的非权威表示（副本）。</p>
-<h2 id="GUI-element"><a href="#GUI-element" class="headerlink" title="GUI element"></a>GUI element</h2><p>世界上也可能存在一系列图形用户界面(GUI)元素，它们没有被添加到场景中，但在绘制场景后被叠加。</p>
-<p>脚本可以访问这些元素</p>
-<h2 id="Light"><a href="#Light" class="headerlink" title="Light"></a>Light</h2><p>灯光是照亮模型的场景对象。像模特一样，灯光必须在场景中产生效果。<br>脚本也可以访问灯光</p>
-<h2 id="Message"><a href="#Message" class="headerlink" title="Message"></a>Message</h2><p>消息表示单个事件或调用</p>
-<h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>模型是一个网格，可能连接到一个可以在世界上绘制的骨架上。</p>
-<p>模型通常有动画(特别是那些有骨架的)，这会影响网格的配置。为了正确地更新和绘制模型，必须把它放到场景中。</p>
-<p>实体脚本使用模型(通常只有一个)在世界中表示自己。</p>
-<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><p>游戏中事物的最普遍概念。例如，代表一个团队的按钮或对象就是对象的例子。它映射到c++的对象概念</p>
-<h2 id="Particle-system"><a href="#Particle-system" class="headerlink" title="Particle system"></a>Particle system</h2><p>粒子系统显示一组移动和变化的粒子。它们本身并不存在于场景中，而是被附加到模型中。</p>
-<p>脚本还可以访问粒子系统，并且可以通过指定系统规则来构造各种各样的图形效果。</p>
-<h2 id="Personality-script"><a href="#Personality-script" class="headerlink" title="Personality script"></a>Personality script</h2><p>个性脚本是一个全局脚本，它决定客户端、基础和单元应用程序的特定于游戏的顶级行为。它在应用程序的整个运行过程中都是存在的，例如在客户端，不管活跃玩家发生了什么变化，个性脚本都是不变的。</p>
-<p>个性脚本的主要工作是处理全局事件，例如初始化、处理输入事件、响应服务器进程完全启动或几何图形完全映射。适合个性的额外任务</p>
-<h2 id="Player"><a href="#Player" class="headerlink" title="Player"></a>Player</h2><p>玩家是给予由用户控制的实体的特殊名称。这个实体通常是一个化身。</p>
-<p>这是BigWorld服务器允许客户端控制的唯一实体——试图控制其他人将被服务器拒绝。</p>
-<p>此外，分配给每个实体的客户端带宽(来自服务器的数据)与该实体与客户端播放器实体的接近程度成正比。关于带宽管理和负载均衡的详细介绍，请参见《服务器概述》。</p>
-<h2 id="Player-script"><a href="#Player-script" class="headerlink" title="Player script"></a>Player script</h2><p>每种可能成为播放器的实体类型还在Python中提供了一个玩家脚本，作为一个类继承自普通的Python实体类。</p>
-<p>玩家脚本具有处理用户输入和特定于该玩家类型的图像反馈的重要作用。这涉及到从实体移动(在输入端)到当前项目的显示(在图形反馈端)的所有内容。许多c++类作为Python类型提供，以帮助播放器脚本履行这些职责。</p>
-<h2 id="Portal"><a href="#Portal" class="headerlink" title="Portal"></a>Portal</h2><p>区块通过portals（传送门）相互连接。</p>
-<h2 id="Real"><a href="#Real" class="headerlink" title="Real"></a>Real</h2><p>对象的可靠描述(至少在单元格范围内)。</p>
-<h2 id="Scene"><a href="#Scene" class="headerlink" title="Scene"></a>Scene</h2><p>场景是一个包含世界上大多数具有三维物理表现形式的物体的概念。</p>
-<p>场景的静态基础可以使用像世界编辑器这样的工具来构建。其他场景对象是根据服务器的信息动态添加的。</p>
-<p>场景有时被称为场景图。</p>
-<h2 id="Terrain"><a href="#Terrain" class="headerlink" title="Terrain"></a>Terrain</h2><p>地形是赋予世界表面整体形态的主要几何对象。世界上的大多数其他物体都被放置在地形的顶部。</p>
-<p>它被实现为一个大型的连续高度映射网格，为高效处理划分成块。</p>
-<p>纹理被应用到地形，并使用alpha混合。</p>
-<h2 id="World"><a href="#World" class="headerlink" title="World"></a>World</h2><p>世界指的是整个场景，由许多不同的组件组成，如块、地形、摄像机和实体。</p>
-<p>这些组件大部分在每一帧更新和绘制。更重要的是，世界定义了一个固定的地理参考系，而相机或物体则有自己的可移动参考系。</p>
-
+          <p>这是首页的概述，正文内容会被隐藏</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/11/06/bigworld_01/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

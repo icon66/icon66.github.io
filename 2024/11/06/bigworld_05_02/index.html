@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="BIGWORLD_05_Client Programming Guide_0211. Animation SystemBigWorld引擎中的动画系统结合了许多复杂的技术，可以通过一个易于使用的界面访问。该系统允许游戏开发者快速创建逼真的角色和环境。这一系统所解决的问题是将美工创造的原始内容整合到可信的动态游戏世界中。 使用3dsMax或Maya等设计工具的工作者可以创建模型和动画，然后使用Big">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BIGWORLD 客户端编程指南02">
+<meta property="og:url" content="http://example.com/2024/11/06/bigworld_05_02/index.html">
+<meta property="og:site_name" content="Keep Running">
+<meta property="og:description" content="BIGWORLD_05_Client Programming Guide_0211. Animation SystemBigWorld引擎中的动画系统结合了许多复杂的技术，可以通过一个易于使用的界面访问。该系统允许游戏开发者快速创建逼真的角色和环境。这一系统所解决的问题是将美工创造的原始内容整合到可信的动态游戏世界中。 使用3dsMax或Maya等设计工具的工作者可以创建模型和动画，然后使用Big">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_06.png">
+<meta property="og:image" content="d:\%E7%AC%94%E8%AE%B0\image\bigworld\05_07.png">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_08.png">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_09.png">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_10.png">
+<meta property="article:published_time" content="2024-11-06T03:20:31.173Z">
+<meta property="article:modified_time" content="2022-11-07T01:22:41.574Z">
+<meta property="article:author" content="华">
+<meta property="article:tag" content="BigWorld">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image%5Cbigworld%5C05_06.png">
+
+
+<link rel="canonical" href="http://example.com/2024/11/06/bigworld_05_02/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/11/06/bigworld_05_02/","path":"2024/11/06/bigworld_05_02/","title":"BIGWORLD 客户端编程指南02"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BIGWORLD 客户端编程指南02 | Keep Running</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Keep Running</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BIGWORLD-05-Client-Programming-Guide-02"><span class="nav-number">1.</span> <span class="nav-text">BIGWORLD_05_Client Programming Guide_02</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Animation-System"><span class="nav-number">1.1.</span> <span class="nav-text">11. Animation System</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-1-Basic-keyframed-animations"><span class="nav-number">1.1.1.</span> <span class="nav-text">11.1. Basic keyframed animations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2-Animation-layering-and-blending"><span class="nav-number">1.1.2.</span> <span class="nav-text">11.2. Animation layering and blending</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-3-Animation-data-files"><span class="nav-number">1.1.3.</span> <span class="nav-text">11.3. Animation data files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-4-Animation-data-streaming"><span class="nav-number">1.1.4.</span> <span class="nav-text">11.4. Animation data streaming</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-5-Actions"><span class="nav-number">1.1.5.</span> <span class="nav-text">11.5. Actions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Integrating-With-BigWorld-Server"><span class="nav-number">1.2.</span> <span class="nav-text">12. Integrating With BigWorld Server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#12-1-Overview"><span class="nav-number">1.2.1.</span> <span class="nav-text">12.1. Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-2-Generating-Code-With-the-ProcessDefs-tool"><span class="nav-number">1.2.2.</span> <span class="nav-text">12.2. Generating Code With the ProcessDefs tool</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#12-2-1-ProcessDefs-x2F-GenerateCPlusPlus-Operation"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">12.2.1. ProcessDefs&#x2F;GenerateCPlusPlus Operation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-2-2-Generating-C-Code"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">12.2.2. Generating C++ Code</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-3-Customising-ProcessDefs-Output"><span class="nav-number">1.2.3.</span> <span class="nav-text">12.3. Customising ProcessDefs Output</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#12-3-1-Modifying-the-Generated-Code-Templates"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">12.3.1. Modifying the Generated Code Templates</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-3-2-Implementing-a-New-Processing-Module"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">12.3.2. Implementing a New Processing Module</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-4-The-connection-model-Library"><span class="nav-number">1.2.4.</span> <span class="nav-text">12.4. The connection_model  Library</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#12-4-1-Dependencies"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">12.4.1. Dependencies</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-4-2-BWConnection"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">12.4.2. BWConnection</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#12-4-2-1-LoginApp-Public-Key"><span class="nav-number">1.2.4.2.1.</span> <span class="nav-text">12.4.2.1. LoginApp Public Key</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#12-4-2-2-Entity-Definitions-Digest"><span class="nav-number">1.2.4.2.2.</span> <span class="nav-text">12.4.2.2. Entity Definitions Digest</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#12-4-2-3-Ticking-the-Connection-Instance"><span class="nav-number">1.2.4.2.3.</span> <span class="nav-text">12.4.2.3. Ticking the Connection Instance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#12-4-2-4-Logging-Into-a-Server"><span class="nav-number">1.2.4.2.4.</span> <span class="nav-text">12.4.2.4. Logging Into a Server</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-4-3-BWEntity"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">12.4.3. BWEntity</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#12-4-3-1-Avatar-Filtering"><span class="nav-number">1.2.4.3.1.</span> <span class="nav-text">12.4.3.1. Avatar Filtering</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-4-4-BWEntityFactory"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">12.4.4. BWEntityFactory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-4-5-BWEntitiesListener"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">12.4.5. BWEntitiesListener</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-4-6-Server-Discovery"><span class="nav-number">1.2.4.6.</span> <span class="nav-text">12.4.6. Server Discovery</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#12-4-6-1-Probing-a-Running-Server"><span class="nav-number">1.2.4.6.1.</span> <span class="nav-text">12.4.6.1. Probing a Running Server</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-5-Example-Clients"><span class="nav-number">1.2.5.</span> <span class="nav-text">12.5. Example Clients</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-5-1-python-x2F-simple"><span class="nav-number">1.2.6.</span> <span class="nav-text">12.5.1. python&#x2F;simple</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#12-5-2-c-plus-plus-x2F-sdl"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">12.5.2. c_plus_plus&#x2F;sdl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-5-3-c-plus-plus-x2F-ios"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">12.5.3. c_plus_plus&#x2F;ios</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-Server-Communications"><span class="nav-number">1.3.</span> <span class="nav-text">13. Server Communications</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#13-1-Login"><span class="nav-number">1.3.1.</span> <span class="nav-text">13.1. Login</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-2-Online"><span class="nav-number">1.3.2.</span> <span class="nav-text">13.2. Online</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-3-Firewalls"><span class="nav-number">1.3.3.</span> <span class="nav-text">13.3. Firewalls</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-Particles"><span class="nav-number">1.4.</span> <span class="nav-text">14. Particles</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#14-1-Particle-Systems"><span class="nav-number">1.4.1.</span> <span class="nav-text">14.1. Particle Systems</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-2-Particle-Actions"><span class="nav-number">1.4.2.</span> <span class="nav-text">14.2. Particle Actions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#14-2-1-Source-actions"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">14.2.1. Source actions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-2-2-Movement-actions"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">14.2.2. Movement actions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-2-3-Sink-actions"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">14.2.3. Sink actions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-2-4-Alteration-actions"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">14.2.4. Alteration actions</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-3-Particle-types"><span class="nav-number">1.4.3.</span> <span class="nav-text">14.3. Particle types</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-4-Attaching-particle-systems-to-bones"><span class="nav-number">1.4.4.</span> <span class="nav-text">14.4. Attaching particle systems to bones</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-Detail-Objects"><span class="nav-number">1.5.</span> <span class="nav-text">15. Detail Objects</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#15-1-Flora"><span class="nav-number">1.5.1.</span> <span class="nav-text">15.1. Flora</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#15-1-1-Placement"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">15.1.1. Placement</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#15-1-1-1-Visual-consistency"><span class="nav-number">1.5.1.1.1.</span> <span class="nav-text">15.1.1.1. Visual consistency</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-1-2-Implementation"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">15.1.2. Implementation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-1-3-Frame-coherency"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">15.1.3. Frame coherency</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-1-4-Animation"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">15.1.4. Animation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-1-5-Lighting"><span class="nav-number">1.5.1.5.</span> <span class="nav-text">15.1.5. Lighting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-1-6-File-format"><span class="nav-number">1.5.1.6.</span> <span class="nav-text">15.1.6. File format</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-Water"><span class="nav-number">1.6.</span> <span class="nav-text">16. Water</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#16-1-Code-overview"><span class="nav-number">1.6.1.</span> <span class="nav-text">16.1. Code overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-2-Scene-generation"><span class="nav-number">1.6.2.</span> <span class="nav-text">16.2. Scene generation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-3-Render-settings"><span class="nav-number">1.6.3.</span> <span class="nav-text">16.3. Render settings</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#16-3-1-Setting-the-quality"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">16.3.1. Setting the quality</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-4-Simulation"><span class="nav-number">1.6.4.</span> <span class="nav-text">16.4. Simulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-5-Rain"><span class="nav-number">1.6.5.</span> <span class="nav-text">16.5. Rain</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-6-Water-depth"><span class="nav-number">1.6.6.</span> <span class="nav-text">16.6. Water depth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-7-Watchers"><span class="nav-number">1.6.7.</span> <span class="nav-text">16.7. Watchers</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-Graphical-User-Interface-GUI"><span class="nav-number">1.7.</span> <span class="nav-text">17. Graphical User Interface (GUI)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#17-1-C-GUI-support"><span class="nav-number">1.7.1.</span> <span class="nav-text">17.1. C++ GUI support</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#17-1-1-SimpleGUIComponent"><span class="nav-number">1.7.1.1.</span> <span class="nav-text">17.1.1. SimpleGUIComponent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-1-2-GUIShader"><span class="nav-number">1.7.1.2.</span> <span class="nav-text">17.1.2. GUIShader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-1-3-SimpleGUI"><span class="nav-number">1.7.1.3.</span> <span class="nav-text">17.1.3. SimpleGUI</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-2-Python-GUI-support"><span class="nav-number">1.7.2.</span> <span class="nav-text">17.2. Python GUI support</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-3-XML"><span class="nav-number">1.7.3.</span> <span class="nav-text">17.3. XML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-4-XML-and-Python"><span class="nav-number">1.7.4.</span> <span class="nav-text">17.4. XML and Python</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#17-4-1-onLoad-self-section"><span class="nav-number">1.7.4.1.</span> <span class="nav-text">17.4.1. onLoad(self,section)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-4-2-onBound-self"><span class="nav-number">1.7.4.2.</span> <span class="nav-text">17.4.2. onBound(self)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-4-3-onSave-self-section"><span class="nav-number">1.7.4.3.</span> <span class="nav-text">17.4.3. onSave(self,section)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-5-Input-events"><span class="nav-number">1.7.5.</span> <span class="nav-text">17.5. Input events</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#17-5-1-Keyboard-Events"><span class="nav-number">1.7.5.1.</span> <span class="nav-text">17.5.1. Keyboard Events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-5-2-Axis-Events"><span class="nav-number">1.7.5.2.</span> <span class="nav-text">17.5.2. Axis Events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-5-3-Mouse-Events"><span class="nav-number">1.7.5.3.</span> <span class="nav-text">17.5.3. Mouse Events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-5-3-1-Button-events"><span class="nav-number">1.7.5.4.</span> <span class="nav-text">17.5.3.1. Button events</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#17-5-3-1-1-handleMouseButtonEvent"><span class="nav-number">1.7.5.4.1.</span> <span class="nav-text">17.5.3.1.1. handleMouseButtonEvent</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#17-5-3-1-2-handleMouseClickEvent"><span class="nav-number">1.7.5.4.2.</span> <span class="nav-text">17.5.3.1.2. handleMouseClickEvent</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-5-3-2-Cross-events"><span class="nav-number">1.7.5.5.</span> <span class="nav-text">17.5.3.2. Cross events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-5-3-3-Move-events"><span class="nav-number">1.7.5.6.</span> <span class="nav-text">17.5.3.3. Move events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-5-4-Drag-and-drop-events"><span class="nav-number">1.7.5.7.</span> <span class="nav-text">17.5.4. Drag-and-drop events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-5-4-1-Drag-events"><span class="nav-number">1.7.5.8.</span> <span class="nav-text">17.5.4.1. Drag events</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#17-5-4-1-1-handleDragStartEvent"><span class="nav-number">1.7.5.8.1.</span> <span class="nav-text">17.5.4.1.1. handleDragStartEvent</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#17-5-4-1-2-handleDragStopEvent"><span class="nav-number">1.7.5.8.2.</span> <span class="nav-text">17.5.4.1.2. handleDragStopEvent</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-5-4-2-Drop-events"><span class="nav-number">1.7.5.9.</span> <span class="nav-text">17.5.4.2. Drop events</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#17-5-4-2-1-handleDragEnterEvent"><span class="nav-number">1.7.5.9.1.</span> <span class="nav-text">17.5.4.2.1. handleDragEnterEvent</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#17-5-4-2-2-handleDragLeaveEvent"><span class="nav-number">1.7.5.9.2.</span> <span class="nav-text">17.5.4.2.2. handleDragLeaveEvent</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#17-5-4-2-3-handleDropEvent"><span class="nav-number">1.7.5.9.3.</span> <span class="nav-text">17.5.4.2.3. handleDropEvent?</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-5-5-Component-PyGUI"><span class="nav-number">1.7.5.10.</span> <span class="nav-text">17.5.5. Component PyGUI</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-6-Mouse-cursor"><span class="nav-number">1.7.6.</span> <span class="nav-text">17.6. Mouse cursor</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-Fonts"><span class="nav-number">1.8.</span> <span class="nav-text">18. Fonts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#18-1-Creating-and-Using-Fonts"><span class="nav-number">1.8.1.</span> <span class="nav-text">18.1. Creating and Using Fonts</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#18-1-1-Creating-a-Font-Definition-File"><span class="nav-number">1.8.1.1.</span> <span class="nav-text">18.1.1. Creating a Font Definition File</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#18-1-1-1-Secondary-Font-Families"><span class="nav-number">1.8.1.1.1.</span> <span class="nav-text">18.1.1.1. Secondary Font Families</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-1-2-Preloading-Glyphs"><span class="nav-number">1.8.1.2.</span> <span class="nav-text">18.1.2. Preloading Glyphs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-1-3-Specifying-the-widest-character"><span class="nav-number">1.8.1.3.</span> <span class="nav-text">18.1.3. Specifying the widest character</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-1-4-Displaying-Text"><span class="nav-number">1.8.1.4.</span> <span class="nav-text">18.1.4. Displaying Text</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-2-Artist-modified-Fonts"><span class="nav-number">1.8.2.</span> <span class="nav-text">18.2. Artist modified Fonts</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#18-2-1-Generating-a-Snapshot-of-a-Font%E2%80%99s-Glyph-Cache"><span class="nav-number">1.8.2.1.</span> <span class="nav-text">18.2.1. Generating a Snapshot of a Font’s Glyph Cache</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-2-2-Modifying-the-Font-Texture"><span class="nav-number">1.8.2.2.</span> <span class="nav-text">18.2.2. Modifying the Font Texture</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-2-3-Explaining-the-Font-Grid-dds-File"><span class="nav-number">1.8.2.3.</span> <span class="nav-text">18.2.3. Explaining the Font Grid .dds File</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-Input-Method-Editors-IME"><span class="nav-number">1.9.</span> <span class="nav-text">19. Input Method Editors (IME)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#19-1-Components-of-an-IME-interface"><span class="nav-number">1.9.1.</span> <span class="nav-text">19.1. Components of an IME interface</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#19-1-1-Examples"><span class="nav-number">1.9.1.1.</span> <span class="nav-text">19.1.1. Examples</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-1-2-Recommended-Reading"><span class="nav-number">1.9.1.2.</span> <span class="nav-text">19.1.2. Recommended Reading</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-2-IME-Python-API"><span class="nav-number">1.9.2.</span> <span class="nav-text">19.2. IME Python API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#19-2-1-Enabling-IME"><span class="nav-number">1.9.2.1.</span> <span class="nav-text">19.2.1. Enabling IME</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-2-2-%E6%8E%A5%E6%94%B6IME%E4%BA%8B%E4%BB%B6"><span class="nav-number">1.9.2.2.</span> <span class="nav-text">19.2.2. 接收IME事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-2-2-1-BWPersonality-handleInputLangChangeEvent"><span class="nav-number">1.9.2.3.</span> <span class="nav-text">19.2.2.1. BWPersonality.handleInputLangChangeEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-2-2-2-BWPersonality-handleIMEEvent"><span class="nav-number">1.9.2.4.</span> <span class="nav-text">19.2.2.2. BWPersonality.handleIMEEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-2-2-3-Finalising-characters"><span class="nav-number">1.9.2.5.</span> <span class="nav-text">19.2.2.3. Finalising characters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-2-3-Displaying-the-IME"><span class="nav-number">1.9.2.6.</span> <span class="nav-text">19.2.3. Displaying the IME</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-BigWorld-Web-Integration"><span class="nav-number">1.10.</span> <span class="nav-text">20 . BigWorld Web Integration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#21-Sounds"><span class="nav-number">1.11.</span> <span class="nav-text">21. Sounds</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="华"
+      src="/images/Avatar.png">
+  <p class="site-author-name" itemprop="name">华</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HBlogs" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HBlogs" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2575861939@qq.com" title="E-Mail → 2575861939@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/06/bigworld_05_02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Keep Running">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="BIGWORLD 客户端编程指南02 | Keep Running">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BIGWORLD 客户端编程指南02
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-11-06 11:20:31" itemprop="dateCreated datePublished" datetime="2024-11-06T11:20:31+08:00">2024-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-07 09:22:41" itemprop="dateModified" datetime="2022-11-07T09:22:41+08:00">2022-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/BigWorld/" itemprop="url" rel="index"><span itemprop="name">BigWorld</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="BIGWORLD-05-Client-Programming-Guide-02"><a href="#BIGWORLD-05-Client-Programming-Guide-02" class="headerlink" title="BIGWORLD_05_Client Programming Guide_02"></a>BIGWORLD_05_Client Programming Guide_02</h1><h2 id="11-Animation-System"><a href="#11-Animation-System" class="headerlink" title="11. Animation System"></a><strong>11. Animation System</strong></h2><p>BigWorld引擎中的动画系统结合了许多复杂的技术，可以通过一个易于使用的界面访问。该系统允许游戏开发者快速创建逼真的角色和环境。这一系统所解决的问题是将美工创造的原始内容整合到可信的动态游戏世界中。</p>
+<p>使用3dsMax或Maya等设计工具的工作者可以创建模型和动画，然后使用BigWorld导出插件将它们导出为图形引擎可以理解的数据文件。</p>
+<p>模型编辑器工具可以用来查看这些模型并回放动画。然后使用它从这些动画创建一个操作列表，这些动画是游戏引擎中python可访问的界面。</p>
+<h3 id="11-1-Basic-keyframed-animations"><a href="#11-1-Basic-keyframed-animations" class="headerlink" title="11.1. Basic keyframed animations"></a><strong>11.1. Basic keyframed animations</strong></h3><p>一个对象在一段时间内的运动可以存储为一组关键帧，这些关键帧描述了一个对象(或一个对象的一部分)在不同时间点的位置、旋转和比例。然后将这些关键帧作为参考值，通过在关键帧数据之间插值来计算中间位置和旋转。</p>
+<p>更真实的复杂对象被描述为表示骨骼层次结构的节点树。一个例子是一个简单的两足动物角色，其典型的层次结构如下所示:</p>
+<p><img src="/image%5Cbigworld%5C05_06.png" alt="05_06"></p>
+<p><em><span style='color:write;background:write;font-size:14px;'>典型的两足动物层次结构</span></em></p>
+<p>每个节点表示一个对象的一个部分的空间状态。这些图形可以直接映射到渲染几何图形的刚性对象(如液压机器)，或作为用于更新皮肤网格的骨骼变换（每个几何图形顶点具有一组用于定义每个骨骼如何影响其移动的权重）。</p>
+<h3 id="11-2-Animation-layering-and-blending"><a href="#11-2-Animation-layering-and-blending" class="headerlink" title="11.2. Animation layering and blending"></a><strong>11.2. Animation layering and blending</strong></h3><p>一个简单的动画，比如一个男人挥手，可能由整个骨骼树子集的关键帧数组组成，例如，仅用于Torso、UpperArmRight和LowerArmRight。</p>
+<p>一个不同的动画的人行走可能只包括Torso和Pelvis树。这两个动画可以看作是整体运动的不同层次。在BigWorld框架中，这个分层是通过使用模型编辑器工具设置节点的alpha值来实现的，如下图所示:</p>
+<p><img src="D:\笔记\image\bigworld\05_07.png" alt="05_07"></p>
+<p>在引擎中，我们可以看到不同的图层在不同的动画轨道上播放，这将控制身体特定部位动画的停止和开始(通常将身体分成上下两部分，从而能够在游戏中顺畅且独立地处理动作)。</p>
+<p>可以同时播放任意数量的动画，并使所产生的运动是所有动画的混合插值。这本质上是与关键帧插值相同的过程，因为我们正在插值位置、旋转和缩放数据。当不同的动画层需要合并成一个单一的运动时，重叠在不同轨道上的节点需要混合在一起。</p>
+<p>动画之间的过渡可以通过创建所有可能的动画过渡来实现，并允许所有动画在开始一个新的动画之前完成它们的循环。</p>
+<p>一种适应性更强和更健壮的方法是混合动画结束，并且在一段时间内混合开始动画。只要动画列表足够大，可以考虑到可能出现的不和谐的过渡。例如，除了站立和奔跑的动画，还包括行走和慢跑的动画，然后这个系统与优秀的动画相结合，在游戏角色中创造流畅的逼真行为。</p>
+<h3 id="11-3-Animation-data-files"><a href="#11-3-Animation-data-files" class="headerlink" title="11.3. Animation data files"></a><strong>11.3. Animation data files</strong></h3><p>BigWorld导出输出以下数据文件(所有文件类型导出到资源树&lt;res&gt;):</p>
+<ul>
+<li><p>.visual 文件</p>
+<p>定义对象的骨骼结构和材质数据。</p>
+</li>
+<li><p>.primitive 文件</p>
+<p>定义蒙皮对象的顶点数据，如偏移量和权重值，并在适当的地方包含BSP数据。</p>
+</li>
+<li><p>.animation 文件</p>
+<p>定义动画的关键帧数据。</p>
+</li>
+</ul>
+<h3 id="11-4-Animation-data-streaming"><a href="#11-4-Animation-data-streaming" class="headerlink" title="11.4. Animation data streaming"></a><strong>11.4. Animation data streaming</strong></h3><p>动画数据以一系列块(block)的形式存储，这些块根据需要异步流到内存中。</p>
+<p>所有这些块的总和被称为流块缓存，其大小受到限制，以防止过多的内存使用。要指定缓存的大小，在<engine_config>.xml中设置animation&#x2F;streamChacheSizeKB标签</p>
+<p>Memory&#x2F;StreamedBlocks_CacheSize和Memory&#x2F;StreamedBlocks_CacheMaxSize两个监视器分别显示当前缓存大小和字节数限制。</p>
+<h3 id="11-5-Actions"><a href="#11-5-Actions" class="headerlink" title="11.5. Actions"></a><strong>11.5. Actions</strong></h3><p>动作是一个将动画与游戏内的行为和事件联系起来的包装器对象。动作对象与动画对象所保存的信息不同，如下所述：</p>
+<ul>
+<li>动画对象(Animation object)<ul>
+<li>原始关键帧数据。</li>
+<li>帧速率信息。</li>
+<li>关于如何在模型上发挥自己的功能。</li>
+</ul>
+</li>
+<li>动作对象(Action object)<ul>
+<li>混合时间信息。</li>
+<li>关于动作是否为循环的信息。</li>
+<li>关于动画是否为运动的信息。</li>
+<li>动画匹配数据，指定特定对象状态值当一个动作被执行。</li>
+</ul>
+</li>
+</ul>
+<p>描述操作的原始数据以XML格式定义在.model文件中(位于&lt;res&gt;资源树下的各种子文件夹中，例如，&lt;res&gt;&#x2F;environments， &lt;res&gt;&#x2F;flora，&lt; res &gt; &#x2F;sets&#x2F;vehicles等…). .该数据是由Model Editor工具生成的。</p>
+<p>有关详细信息，请参见<strong>Action Matcher</strong>。</p>
+<h2 id="12-Integrating-With-BigWorld-Server"><a href="#12-Integrating-With-BigWorld-Server" class="headerlink" title="12. Integrating With BigWorld Server"></a><strong>12. Integrating With BigWorld Server</strong></h2><h3 id="12-1-Overview"><a href="#12-1-Overview" class="headerlink" title="12.1. Overview"></a><strong>12.1. Overview</strong></h3><p>本章介绍如何将任意客户端与BigWorld Server集成。</p>
+<p>一个名为ProcessDefs的工具解析实体定义并生成c++代码，用于与使用相同实体定义的BigWorld服务器交互。实体行为可以用C语言实现或者可以编写glue代码来允许实体行为以另一种语言实现，例如Lua或Objective-C。通过生成包含通常从实体定义文件中读取的所有实体类型数据(方法调用和属性)的代码，这允许客户端应用程序不使用Python作为他们的游戏脚本语言。</p>
+<p>要实现特定于实体的行为，可以对每个实体类型生成的存根类(stub class)进行扩展，以提供特定的行为，以响应来自服务器的方法调用请求或属性更新。所有实体类型通用的更多通用行为可以在派生自BWEntity的用户定义超类(superclass)中实现。</p>
+<p><img src="/image%5Cbigworld%5C05_08.png" alt="05_08"></p>
+<p>例如，上面的类图从一组实体定义中显示了一个名为Avatar的实体类型。代码生成器将为Avatar_Stub、CellMB::Avatar和BaseMB::Avatar类生成存根文件，这些类封装了访问属性和调用远程方法的所有访问器和成员。客户端上Avatar实体类型的具体实现在用户定义的中实现Avatar类(也生成了一个可以用作基础的模板)。</p>
+<p>所有实体类必须有BWEntity作为它们继承的祖先超类(superclasses)之一，但它们也可以从一个用户定义的自定义类继承，该自定义类提供了所有实体类通用的一般游戏特定功能。例如，Avatar_Stub派生自MyEntity而不是上面的BWEntity，允许Avatar类使用从MyEntity继承的成员方法和数据。</p>
+<p>连接库提供了c++类，可以用来连接和验证到BigWorld服务器。一旦连接，volatile数据，属性更新，方法调用就可以在客户端和服务器之间发送和接收。</p>
+<h3 id="12-2-Generating-Code-With-the-ProcessDefs-tool"><a href="#12-2-Generating-Code-With-the-ProcessDefs-tool" class="headerlink" title="12.2. Generating Code With the ProcessDefs tool"></a><strong>12.2. Generating Code With the ProcessDefs tool</strong></h3><p>在最基本的级别上，ProcessDefs命令行工具解析一组实体定义文件，并调用Python模块中定义的处理函数，该函数具有表示已解析实体定义的数据结构。</p>
+<p>默认情况下，它将使用ProcessDefs Python模块，该模块与process_defs可执行文件位于同一目录，该模块将实体定义输出到标准输出流并退出。</p>
+<p>为了生成c++源文件，将使用提供的GenerateCPlusPlus模块。</p>
+<p>所需的Python模块可以使用-m &#x2F;–module开关指定模块名。例如，对于选择GenerateCPlusPlus模块:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./process_defs -m GenerateCPlusPlus ...</span><br></pre></td></tr></table></figure>
+
+<h4 id="12-2-1-ProcessDefs-x2F-GenerateCPlusPlus-Operation"><a href="#12-2-1-ProcessDefs-x2F-GenerateCPlusPlus-Operation" class="headerlink" title="12.2.1. ProcessDefs&#x2F;GenerateCPlusPlus Operation"></a><strong>12.2.1. ProcessDefs&#x2F;GenerateCPlusPlus Operation</strong></h4><p>使用–help开关运行process_defs可执行文件将提供一般选项，以及所选Python模块支持的模块特定选项列表。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">$ ./process_defs -m GenerateCPlusPlus --help</span><br><span class="line">usage: process_defs [OPTION] scriptArgs</span><br><span class="line">This program parses the BigWorld entity definition files. A Python object is</span><br><span class="line">then created representing the entity descriptions. This is passed to a Python</span><br><span class="line">callback moduleName.functionName. By default, this is ProcessDefs.process.</span><br><span class="line">This module (ProcessDefs.py) should be placed in modulePath. This is the</span><br><span class="line">current working directory by default.</span><br><span class="line">Options:</span><br><span class="line"> -r directory 	 			 	 Specifies a resource path. Can be used</span><br><span class="line"> 								multiple times, in order of deccreasing</span><br><span class="line"> 								priority.</span><br><span class="line"> -f, --function funcName 		  The Python function to call. &quot;process&quot; by</span><br><span class="line"> 								default.</span><br><span class="line"> -m, --module moduleName 		  The Python module to load. &quot;ProcessDefs&quot;</span><br><span class="line"> 								by default.</span><br><span class="line"> -p, --path directory 			  The directory to find the module. Current </span><br><span class="line"> 								working directory by default.</span><br><span class="line"> -v, --verbose 					 Displays more verbose output.</span><br><span class="line"> -h, --help 					 Displays this message.</span><br><span class="line">Script Options:</span><br><span class="line"> -h, --help 					 show this help message and exit</span><br><span class="line"> -o FILE, --output=FILE</span><br><span class="line"> 								Directory to output generated files. Defaults to</span><br><span class="line"> 								&quot;GeneratedCPlusPlus&quot;.</span><br><span class="line"> --base-class-header=CLASS_NAME_INCLUDE_PATH</span><br><span class="line">                                   Path to a header file containing the declaration for</span><br><span class="line">                                   the base class for generated entity classes. Defaults</span><br><span class="line">                                   to &quot;connection/bw_entity.hpp&quot;.</span><br><span class="line"> -b CLASS_NAME, --base-class=CLASS_NAME</span><br><span class="line">                                   The base class for generated entity classes. Defaults</span><br><span class="line">                                   to &quot;BWEntity&quot;.</span><br><span class="line"> --generated-header-path=HEADERPATH</span><br><span class="line">                                   This indicates the directory of where to find the</span><br><span class="line">                                   generated sources, and is used for generating the</span><br><span class="line">                                   #include lines for generated headers. Defaults to</span><br><span class="line">                                   &quot;GeneratedEntities&quot;.</span><br><span class="line"> --entity-header-path=HEADERPATH</span><br><span class="line">                                   This indicates the directory of where to find your</span><br><span class="line">                                   entity class header files, and is used for generating</span><br><span class="line">                                   the #include lines for entity header files. Defaults</span><br><span class="line">                                   to &quot;Entities&quot;</span><br><span class="line"> --entity-template-source-extension=EXT</span><br><span class="line">                                   Specifies the extension suffix given to generated</span><br><span class="line">                                   entity stub and template C++ source files. Defaults to</span><br></pre></td></tr></table></figure>
+
+<p>可以使用- r选项指定资源目录，后面跟着资源目录的路径。如果指定多个目录，可以多次使用该选项，按照优先级递减的顺序指定资源路径。通常，bigworld&#x2F;res目录被指定为最后一个资源路径。</p>
+<p>通常，生成的源代码作为更大项目的一部分进行编译，并放置在项目目录结构中自己的目录中。您可以使用ProcessDefs工具通过使用-o &#x2F;–output命令行选项直接编译到它们的目标目录。</p>
+<p>…</p>
+<h4 id="12-2-2-Generating-C-Code"><a href="#12-2-2-Generating-C-Code" class="headerlink" title="12.2.2. Generating C++ Code"></a><strong>12.2.2. Generating C++ Code</strong></h4><p>GenerateCPlusPlus模块接受实体定义描述符对象，并写出几个生成的文件，这些文件可用于连接到运行相同实体定义的服务器。</p>
+<p>对于每个实体类型，GenerateCPlusPlus模块将生成一个存根类，该类将实体类型名称合并到类名中。这个存根类实现了实体属性流和客户端方法分派。</p>
+<p>如果需要，GenerateCPlusPlus模块还将生成用于调用服务器端远程方法的远程实体类(如果它们在实体类型的定义文件中定义)。</p>
+<ul>
+<li><p><em>Entity</em>_Stub.hpp and <em>Entity</em>_Stub.cpp</p>
+<p>Avatar_Stub类间接派生自BWEntity，并包含属性成员变量和访问器，以及为其每个从服务器端填充的属性成员实现流操作符。</p>
+<p>它通过ServerEntityMailBox子类包含对单元格和单元格(如果适用)的访问器，该子类包含调用在实体定义中声明的远程基方法和单元方法的方法。</p>
+<p>它包含可以从服务器端远程调用的客户端方法的纯虚方法声明。</p>
+<p>具体的Avatar类直接从Avatar_Stub派生，并实现纯虚拟方法，继承属性访问器以及基和单元远程实体句柄。</p>
+</li>
+<li><p><em>Entity</em>_CellMB.hpp and <em>Entity</em>_CellMB.cpp</p>
+<p>Avatar类实现了从客户端到服务器端的单元实体的远程方法调用。如果Avatar实体类型的实体定义没有声明任何公开的CellMethods，那么这可能是不可用的。</p>
+</li>
+<li><p><em>Entity</em>_BaseMB.hpp and <em>Entity</em>_BaseMB.cpp</p>
+<p>Avatar类实现了从客户端到服务器端基本实体的远程方法调用。如果Avatar实体类型的实体定义没有声明任何公开的basemethod，那么这可能不可用</p>
+</li>
+<li><p><em>Entity</em>.hpp and <em>Entity</em>.cpp</p>
+<p>还将生成具体的Avatar实体类的模板，该模板可以用作实际具体Avatar实体类实现的基础。它提供了所需的客户端方法和属性setter回调的空实现。这些具体的实体模板源位于输出目录的一个子目录中，名为templates。</p>
+</li>
+</ul>
+<p>GenerateCPlusPlus模块还将输出几个通用的源文件，如下所示:</p>
+<ul>
+<li><p>DefsDigest.hpp and DefsDigest.cpp</p>
+<p>DefsDigest命名空间包含一个方法，该方法返回实体定义摘要的字符串值。当登录到服务器以验证服务器实体定义是否匹配客户端的实体定义时，使用此摘要值。</p>
+</li>
+<li><p>EntityFactory.hpp and EntityFactory.cpp</p>
+<p>EntityFactory类实现了BWEntityFactory接口，并创建了一个新的BWEntity实例，该实例的名称与给定实体类型ID所引用的实体类型相同(例如，Account类用于Account实体类型)。</p>
+</li>
+<li><p>GeneratedTypes.hpp and GeneratedTypes.cpp</p>
+<p>此头文件和源文件描述从FIXED_DICT数据类型派生而来的生成类型。它们在FIXED_DICT数据类型的定义中被标记，它们要么出现在scripts&#x2F;entity_defs&#x2F;alias.xml文件中，要么出现在使用&lt;Label&gt;标记，以便为该FIXED_DICT类型生成的类命名。例如:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="tag">&lt;<span class="name">InventoryEntry</span>&gt;</span> FIXED_DICT</span><br><span class="line">        <span class="tag">&lt;<span class="name">TypeName</span>&gt;</span> InventoryEntry <span class="tag">&lt;/<span class="name">TypeName</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Properties</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">itemType</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Type</span>&gt;</span> ITEMTYPE <span class="tag">&lt;/<span class="name">Type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">itemType</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">serial</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Type</span>&gt;</span> ITEMSERIAL <span class="tag">&lt;/<span class="name">Type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">serial</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">lockHandle</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Type</span>&gt;</span> LOCKHANDLE <span class="tag">&lt;/<span class="name">Type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">lockHandle</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">InventoryEntry</span>&gt;</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>上面的示例将生成一个名为InventoryEntry的类，并将其用作存根类中成员数据的类型，而存根类中的实体类型将InventoryEntry类型作为其客户端可见属性之一的类型。</p>
+<p>标记所有FIXED_DICT类型非常重要，因为如果不这样做，将会导致问题，因为分配给未标记FIXED_DICT类型的任意数字标签(例如，FixedDict0、FixedDict1等)。如果解析顺序发生了变化，那么引用那些未标记FIXED_DICT类型的实体源文件可能会在新的解析顺序中引用不正确的类型，从而在使用子属性访问器时导致编译错误。</p>
+</li>
+</ul>
+<h3 id="12-3-Customising-ProcessDefs-Output"><a href="#12-3-Customising-ProcessDefs-Output" class="headerlink" title="12.3. Customising ProcessDefs Output"></a><strong>12.3. Customising ProcessDefs Output</strong></h3><p>可能有必要改变生成的代码输出，以便根据特定的游戏开发需求定制它。这可以通过修改GenerateCPlusPlus模块用于生成源代码的模板来完成，或者为ProcessDefs工具实现一个全新的处理模块。</p>
+<h4 id="12-3-1-Modifying-the-Generated-Code-Templates"><a href="#12-3-1-Modifying-the-Generated-Code-Templates" class="headerlink" title="12.3.1. Modifying the Generated Code Templates"></a><strong>12.3.1. Modifying the Generated Code Templates</strong></h4><p>GenerateCPlusPlus模块使用提供的jina2 Python模板库来生成代码。jinja模板位于模块目录中名为templates的目录下。使用的模板有:</p>
+<ul>
+<li><p>DefsDigest.hpp and DefsDigest.cpp</p>
+<p>用于生成定义摘要访问器函数( digest accessor)的模板。</p>
+</li>
+<li><p>EntityFactory.hpp and EntityFactory.cpp</p>
+<p>用于生成实体工厂类的模板。</p>
+</li>
+<li><p>EntityMailBoxTemplate.hpp and EntityMailBoxTemplate.cpp</p>
+<p>用于生成基本邮箱和单元邮箱对象的模板，用于调用服务器端远程方法。</p>
+</li>
+<li><p>EntityStubTemplate.hpp and EntityStubTemplate.cpp</p>
+<p>用于生成实现客户端实体方法分派和客户端实体属性流功能的实体存根类的模板。</p>
+</li>
+<li><p>EntityTemplate.hpp and EntityTemplate.cpp</p>
+<p>用于生成空实体类模板的模板。</p>
+</li>
+<li><p>GeneratedTypes.hpp and GeneratedTypes.cpp</p>
+<p>用于生成FIXED_DICT等效类型的模板。</p>
+</li>
+</ul>
+<h4 id="12-3-2-Implementing-a-New-Processing-Module"><a href="#12-3-2-Implementing-a-New-Processing-Module" class="headerlink" title="12.3.2. Implementing a New Processing Module"></a><strong>12.3.2. Implementing a New Processing Module</strong></h4><p>对于代码生成过程的最终控制，一个新的处理模块可以与ProcessDefs一起使用。</p>
+<p>每个ProcessDefs处理模块实现一个函数，该函数传递一个数据结构，该数据结构描述了由ProcessDefs解析的实体定义。默认情况下，函数名为process();ProcessDefs上的命令行选项可以更改调用哪个模块函数。</p>
+<p>传递给处理函数的数据结构是一个Python字典，其键值如下:</p>
+<ul>
+<li>constants</li>
+</ul>
+<p>  这是一个用于连接到服务器的常量字典。特别是，它包含：</p>
+<ul>
+<li><p>digest</p>
+<p>该值是实体定义摘要的字符串，用于验证客户端资源与服务器上的资源是否一致。</p>
+</li>
+<li><p>maxClientServerPropertyCount</p>
+<p>此值是跨所有实体类型的客户机-服务器属性的最大计数。</p>
+</li>
+<li><p>maxExposedBaseMethodCount</p>
+<p>此值是所有实体类型公开的基方法的最大计数。</p>
+</li>
+<li><p>maxExposedCellMethodCount</p>
+<p>此值是跨所有实体类型公开的单元格方法的最大计数。</p>
+</li>
+<li><p>maxExposedClientMethodCount</p>
+<p>此值是跨所有实体类型的客户端方法的最大计数。</p>
+</li>
+<li><p>entityTypes</p>
+<p>该值是一个字典对象序列，每个对象描述一个实体类型。每个实体类型字典有以下键:</p>
+<ul>
+<li><p>clientMethods</p>
+<p>这个值包含一个字典序列，描述这个实体类型的每个客户端方法。</p>
+</li>
+<li><p>baseMethods</p>
+<p>该值包含一个字典序列，描述此实体类型的每个基本方法。</p>
+</li>
+<li><p>cellMethods</p>
+<p>此值包含一个字典序列，描述此实体类型的每个单元格方法。</p>
+</li>
+<li><p>allProperties</p>
+<p>此值包含所有属性的属性描述字典序列。</p>
+</li>
+<li><p>clientProperties</p>
+<p>此值包含从服务器传播的所有客户端属性的属性描述字典序列。</p>
+</li>
+<li><p>baseToClientProperties</p>
+<p>这个值包含BASE_AND_CLIENT属性的属性描述字典序列。</p>
+</li>
+<li><p>cellToClientProperties</p>
+<p>这个值包含一个OWN_CLIENT, OTHER_CLIENT和ALL_CLIENT属性的属性描述字典序列。</p>
+</li>
+</ul>
+<p>每个方法描述字典对象包含以下键:</p>
+<ul>
+<li><p>name</p>
+<p>属性的名称。</p>
+</li>
+<li><p>index</p>
+<p>属性的索引——只对调试重要。</p>
+</li>
+<li><p>clientServerFullIndex</p>
+<p>用于在服务器和客户机之间的通信中标识此属性的属性的索引。</p>
+</li>
+<li><p>isGhostedData</p>
+<p>ALL_CLIENTS, OTHER_CLIENTS或CELL_PUBLIC属性将此值设置为True，否则为False。</p>
+</li>
+<li><p>isOtherClientData</p>
+<p>ALL_CLIENTS和OTHER_CLIENTS属性将此值设置为True，否则为False。</p>
+</li>
+<li><p>isOwnClientData</p>
+<p>OWN_CLIENT属性将此值设置为True，否则为False</p>
+</li>
+<li><p>isCellData</p>
+<p>ALL_CLIENT, OWN_CLIENTS, OTHER_CLIENTS, CELL_PRIVATE和CELL_PUBLIC属性的值设置为True，否则为False。</p>
+</li>
+<li><p>isBaseData</p>
+<p>BASE和BASE_AND_CLIENT属性将此值设置为True，否则为False。</p>
+</li>
+<li><p>isClientServerData</p>
+<p>BASE_AND_CLIENT, ALL_CLIENTS, OTHER_CLIENTS, OWN_CLIENT属性将此值设置为True，否则为False。</p>
+</li>
+<li><p>isPersintent</p>
+<p>如果这是一个持久(persitent)属性，该值设置为True，否则为False。</p>
+</li>
+<li><p>isIdentifier</p>
+<p>如果此属性是其实体类型的标识符属性，则该值设置为True，否则为False。</p>
+</li>
+<li><p>isIndexed</p>
+<p>如果在数据库中索引了此属性，则该值设置为True，否则为False。</p>
+</li>
+<li><p>isUnique</p>
+<p>如果此属性在数据库中标记为唯一，则该值设置为True，否则为False。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="12-4-The-connection-model-Library"><a href="#12-4-The-connection-model-Library" class="headerlink" title="12.4. The connection_model  Library"></a><strong>12.4. The</strong> <strong>connection_model</strong>  <strong>Library</strong></h3><p>connection_model库包含用于连接到BigWorld服务器的类。它使用较低级的连接库。</p>
+<p>BWConnecton类包含连接BigWorld服务器的大部分功能，并提供了连接的简单API。连接是异步执行的，并要求经常点击连接对象（通常是每次游戏点击一次），以处理来自网络的事件。</p>
+<p>BWEntity类是实体类型的基类。通常，一个特定的游戏将有自己的基类来扩展BWEntity类，然后每个实体类型将进一步从BWEntity派生的基类中派生，以实现特定于实体类型的行为。</p>
+<p>例如，sdl客户端(位于bigworld&#x2F;src&#x2F;examples&#x2F;c_plus_plus&#x2F;sdl)包含一个MyEntity类，它派生自BWEntity。Account实体类派生自MyEntity。</p>
+<p>当构造BWConnection实例时，需要一个实现BWEntityFactory接口的类。这个工厂负责根据服务器发送的实体类型ID创建一个新的BWEntity实例。实体类型ID反映了特定实体类型在entities.xml文件中出现的顺序。</p>
+<p>当使用代码生成时，将生成一个BWEntityFactory的子类，其中包含实例化特定的BWEntity类的逻辑，该类以实体类型ID标识的实体类型命名。</p>
+<h4 id="12-4-1-Dependencies"><a href="#12-4-1-Dependencies" class="headerlink" title="12.4.1. Dependencies"></a><strong>12.4.1. Dependencies</strong></h4><p>connection_model库依赖于:</p>
+<ul>
+<li>conneciton,用于连接到服务器的低级类和接口。</li>
+<li>cstdmf,在BigWorld中使用的一个通用实用程序库。</li>
+<li>network,一个用于实现Mercury协议的网络库。</li>
+<li>math,一个普通的数学库。</li>
+<li>OpenSSL库</li>
+</ul>
+<h4 id="12-4-2-BWConnection"><a href="#12-4-2-BWConnection" class="headerlink" title="12.4.2. BWConnection"></a><strong>12.4.2. BWConnection</strong></h4><p>这个类表示到服务器的连接。BWConnection类的简单接口允许应用程序连接到服务器，并用位置和方向数据、属性更新和远程方法调用处理填充BWEntity对象。</p>
+<h5 id="12-4-2-1-LoginApp-Public-Key"><a href="#12-4-2-1-LoginApp-Public-Key" class="headerlink" title="12.4.2.1. LoginApp Public Key"></a><strong>12.4.2.1. LoginApp Public Key</strong></h5><p>为了与服务器通信，必须在连接对象上配置和设置用于加密服务器登录详细信息的公钥。这是通过调用setLoginAppPublicKeyString()或setLoginAppPublicKeyPath()方法来完成的。</p>
+<p>setLoginAppPublicKeyString()方法根据包含公钥的字符串设置LoginApp公钥。例如:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">const</span> <span class="type">char</span> g_publicKeyString[] = <span class="string">&quot;-----BEGIN PUBLIC KEY-----\n&quot;</span> \</span><br><span class="line"><span class="string">&quot;MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7/MNyWDdFpXhpFTO9LHz\n&quot;</span> \</span><br><span class="line"><span class="string">&quot;CUQPYv2YP5rqJjUoxAFa3uKiPKbRvVFjUQ9lGHyjCmtixBbBqCTvDWu6Zh9Imu3x\n&quot;</span> \</span><br><span class="line"><span class="string">&quot;KgCJh6NPSkddH3l+C+51FNtu3dGntbSLWuwi6Au1ErNpySpdx+Le7YEcFviY/ClZ\n&quot;</span> \</span><br><span class="line"><span class="string">&quot;ayvVdA0tcb5NVJ4Axu13NvsuOUMqHxzCZRXCe6nyp6phFP2dQQZj8QZp0VsMFvhh\n&quot;</span> \</span><br><span class="line"><span class="string">&quot;MsZ4srdFLG0sd8qliYzSqIyEQkwO8TQleHzfYYZ90wPTCOvMnMe5+zCH0iPJMisP\n&quot;</span> \</span><br><span class="line"><span class="string">&quot;YB60u6lK9cvDEeuhPH95TPpzLNUFgmQIu9FU8PkcKA53bj0LWZR7v86Oco6vFg6V\n&quot;</span> \</span><br><span class="line"><span class="string">&quot;sQIDAQAB\n&quot;</span></span><br><span class="line"><span class="string">&quot;-----END PUBLIC KEY-----\n&quot;</span></span><br><span class="line">BWConnection <span class="built_in">connection</span>( ... );</span><br><span class="line">connection.<span class="built_in">setLoginAppPublicKeyString</span>( g_publicKeyString );</span><br></pre></td></tr></table></figure>
+
+<p>setLoginAppPublicKeyPath()方法根据位于给定路径的文件设置LoginApp公钥。路径本身是一个普通的文件系统路径;它没有通过资源文件系统解析。</p>
+<p>有关客户端和服务器之间使用的加密的更多信息，请参阅加 <em>Encrypting Client-Server Traffic</em>。</p>
+<h5 id="12-4-2-2-Entity-Definitions-Digest"><a href="#12-4-2-2-Entity-Definitions-Digest" class="headerlink" title="12.4.2.2. Entity Definitions Digest"></a><strong>12.4.2.2. Entity Definitions Digest</strong></h5><p>为了让方法和属性能够通过网络传输，客户端和服务器之间的实体定义必须是相同的。为了防止不一致的实体定义，服务器和客户端接受实体定义的摘要，并且客户端在登录时发送其摘要，以便与服务器进行比较。</p>
+<p>BWConnection对象要求使用setDigest()方法设置摘要。</p>
+<p>当使用ProcessDefs&#x2F;GenerateCPlusPlus生成代码时，会生成函数DefsDigest::constants()，它返回一个常量对象，其中包含定义摘要字符串，以及其他对流属性和方法很重要的常量。</p>
+<p>例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GeneratedSource/DefsDigest.hpp&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;connection/bw_connection.hpp&quot;</span></span></span><br><span class="line">...</span><br><span class="line"> BWConnection * pConnection = <span class="keyword">new</span> <span class="built_in">Connection</span>( *pEntityFactory,</span><br><span class="line"> DefsDigest::<span class="built_in">constants</span>() );</span><br></pre></td></tr></table></figure>
+
+<h5 id="12-4-2-3-Ticking-the-Connection-Instance"><a href="#12-4-2-3-Ticking-the-Connection-Instance" class="headerlink" title="12.4.2.3. Ticking the Connection Instance"></a><strong>12.4.2.3. Ticking the Connection Instance</strong></h5><p>客户端通常会有一个渲染循环，在每一帧中进行渲染。作为每一帧的一部分BWConnection实例应该定期勾选，定期调用BWConnection::update()方法。</p>
+<p>update()方法要求传入自上次更新以来所经过的时间。</p>
+<p>在某些框架下，可以设置计时器来调用update()。例如，在iOS下的Apple Objective-C中，NSTimer可用于定期勾选连接实例。Cocos2D也有类似的计时器。</p>
+<h5 id="12-4-2-4-Logging-Into-a-Server"><a href="#12-4-2-4-Logging-Into-a-Server" class="headerlink" title="12.4.2.4. Logging Into a Server"></a><strong>12.4.2.4. Logging Into a Server</strong></h5><p>在设置了LoginApp公钥之后，实体定义摘要并勾选连接实例，可以通过使用logOnTo()方法登录到服务器来启动连接。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">std::string serverAddress = <span class="string">&quot;10.1.1.1&quot;</span>;</span><br><span class="line">std::sttring username = <span class="string">&quot;MyUser&quot;</span>;</span><br><span class="line">std::string password = <span class="string">&quot;pass&quot;</span>;</span><br><span class="line">pConnection-&gt;<span class="built_in">logOnTo</span>( serverAddress, username, password );</span><br></pre></td></tr></table></figure>
+
+<p>serverAddress字符串参数指定要连接的地址和端口。如果未指定端口，则默认为20013。要指定端口，使用<ip_address>:&lt;port&gt;格式。</p>
+<p>可以通过在连接上设置ServerConnectionHandler对象来处理登录成功、失败和断开连接事件。连接库中的ServerConnectionHandler接口允许您捕捉以下事件:</p>
+<ul>
+<li><p>onLoggedOn()</p>
+<p>当连接尝试成功时调用。</p>
+</li>
+<li><p>onLoggedOff()</p>
+<p>当连接已断开时调用。</p>
+</li>
+<li><p>onLogOnFailure()</p>
+<p>当连接尝试失败时调用。字符串错误消息作为参数提供。</p>
+</li>
+</ul>
+<p>可以在调用logOnTo()之前在连接对象上设置处理程序。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MyConnectionHandler handler;</span><br><span class="line">pConnection-&gt;<span class="built_in">setHandler</span>( &amp;handler );</span><br></pre></td></tr></table></figure>
+
+<h4 id="12-4-3-BWEntity"><a href="#12-4-3-BWEntity" class="headerlink" title="12.4.3. BWEntity"></a><strong>12.4.3. BWEntity</strong></h4><p>BWEntity类是所有实体类的超类(superclass)。BWEntity类的实例是使用在构造时向BWConnection注册的BWEntityFactory实例创建的。</p>
+<h5 id="12-4-3-1-Avatar-Filtering"><a href="#12-4-3-1-Avatar-Filtering" class="headerlink" title="12.4.3.1. Avatar Filtering"></a><strong>12.4.3.1. Avatar Filtering</strong></h5><p>每当从服务器接收到位置和方向数据时，每个BWEntity实例都可以有一个关联的过滤器对象。然后，这个过滤器对象用于根据从服务器接收到的输入输出每帧的位置和方向。</p>
+<p>可以使用预定义的过滤器，例如AvatarFilter类，它是用于基于windows的BWClient中的大多数实体的通用过滤器。您可以通过调用pFilter()方法简单地初始化实体的过滤器对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MyEntity::<span class="built_in">MyEntity</span>() :</span><br><span class="line">...</span><br><span class="line">&#123;</span><br><span class="line"> ...</span><br><span class="line"> <span class="keyword">this</span>-&gt;<span class="built_in">pFilter</span>( <span class="keyword">new</span> <span class="built_in">AvatarFilter</span>( environment ) );</span><br></pre></td></tr></table></figure>
+
+<p>在构造FilterBase子类时需要一个筛选环境对象(派生自FilterEnvironment接口类)。这通常是特定于引擎的，所以每个特定的游戏引擎都需要一个特定的FilterEnvironment。</p>
+<p>FilterEnvironment(可以在连接库中找到)实现了这些虚方法:</p>
+<ul>
+<li><p>void updateCoordinateSystem( EntityBase * pEntity, SpaceID spaceID, EntityID</p>
+<p>vehicleID )</p>
+<p>每当实体改变了它的坐标系统时，这个方法就会被调用，通常是通过上车或下车车辆。当玩家实体传送和改变空间时，它也会被调用。此方法用于对传入实体执行任何统计(bookkeeping)，以支持新的更新坐标空间，以及处理车辆(vehicle)更改。</p>
+</li>
+<li><p>void transformIntoCommon( SpaceID spaceID, EntityID vehicleID, Position3D &amp;</p>
+<p>position, Vector3 &amp; direction ) or </p>
+<p>void transformFromCommon( SpaceID spaceID, EntityID vehicleID, Position3D &amp;</p>
+<p>position, Vector3 &amp; direction )</p>
+<p>这两种方法用于将车辆空间(vehicle-space)坐标转换为通用世界空间坐标。</p>
+</li>
+<li><p>bool filterDropPoint( EntityBase * pEntity, const Position3D &amp; fall, Position3D</p>
+<p>&amp; land, Vector3 * pGroundNormal )</p>
+<p>这种方法用于在场景中最近的地形或其他障碍上获得下降位置。如果接地法线是非null，它也应该在pGroundNormal参数中提供。</p>
+</li>
+<li><p>bool resolveOnGroundPosition( Position3D &amp; position, bool &amp; isOnGround )</p>
+</li>
+</ul>
+<p>  这种方法被用来确定一个特定的点是否可以被认为是“地面”。这是用来优化客户端和服务器之间的网络通信，如果双方都同意一个玩家实体在地面上，因为这允许在发送中省略y位置。</p>
+<p>为了创建新的过滤器，可以实现FilterBase接口类的新子类。每个filter对象都需要实现以下方法:</p>
+<ul>
+<li><p>void input( double time, SpaceID spaceID, EntityID vehicleID, const Position3D</p>
+<p>&amp; position, const Vector3 &amp; positionError, float * auxFiltered )</p>
+<p>调用此方法来接收来自服务器的特定于特定时间的位置和方向更新。auxFiltered参数指向一个包含偏航、俯仰和横摇(yaw,pitch,roll)的3个元素的数组。</p>
+</li>
+<li><p>void output( double time )</p>
+</li>
+</ul>
+<p>  调用此方法来设置在给定时间内实体的位置和方向的最佳估计。这通常在视觉渲染前调用每一帧来设置实体位置。</p>
+<ul>
+<li><p>void reset()</p>
+<p>当需要重置筛选器状态时，调用此方法。这通常是当一个实体第一次进入感兴趣的领域，或当它已经传送。</p>
+</li>
+<li><p>void getLastInput()</p>
+<p>调用此方法来检索从服务器接收到的最后一个输入。</p>
+</li>
+</ul>
+<h4 id="12-4-4-BWEntityFactory"><a href="#12-4-4-BWEntityFactory" class="headerlink" title="12.4.4. BWEntityFactory"></a><strong>12.4.4. BWEntityFactory</strong></h4><p>BWEntityFactory接口类的子类负责创建与给创建方法的实体类型ID相匹配的BWEntity实例。</p>
+<p>生成的代码将包括一个实现BWEntityFactory的具体类，称为EntityFactory，它创建适当的具体BWEntity类，具有与实体类型名称相同的名称。</p>
+<p>构造BWConnection实例需要一个BWEntityFactory实例。</p>
+<h4 id="12-4-5-BWEntitiesListener"><a href="#12-4-5-BWEntitiesListener" class="headerlink" title="12.4.5. BWEntitiesListener"></a><strong>12.4.5. BWEntitiesListener</strong></h4><p>当玩家进入一个空间时，该空间中的实体将进入或离开客户端感兴趣的区域，当发生这种情况时服务器将通知客户端。当这种情况发生时，捕获它是有用的，因此BWConnection允许注册一个BWEntitiesListener对象来接收实体进入和离开事件。</p>
+<p>BWEntitiesListener子类实现了以下方法:</p>
+<ul>
+<li><p>void onEntityEnter( BWEntity * pEntity )</p>
+<p>当实体进入客户端的AoI时，将调用此函数。</p>
+</li>
+<li><p>void onEntityLeave( BWEntity * pEntity )</p>
+<p>当离开进入客户端的AoI时，将调用此函数。</p>
+</li>
+</ul>
+<h4 id="12-4-6-Server-Discovery"><a href="#12-4-6-Server-Discovery" class="headerlink" title="12.4.6. Server Discovery"></a><strong>12.4.6. Server Discovery</strong></h4><p>服务器发现用于在开发过程中找到同一LAN段上本地运行的服务器，并获取启动连接的详细信息。它不打算用于生产客户端。</p>
+<p>抽象ServerFinder类的一个子类用于此目的。通过实现ServerFinder的一个新的具体子类，实例化它并将其传递给BWConnection的findServers()方法，将执行对本地运行服务器的搜索。findServers()中的timeout参数可用于设置搜索的超时时间;默认为10秒。</p>
+<p> 当找到服务器、搜索完成或超时时，将调用虚方法回调。ServerFinder的子类应该实现以下方法:</p>
+<ul>
+<li><p>onServerFound() </p>
+<p>在找到单个服务器时调用。它传递一个ServerInfo对象，该对象包含连接的地址和端口，以及运行服务器的用户的Unix用户ID。</p>
+</li>
+<li><p>onFinished()</p>
+<p>在搜索过程成功完成时调用。</p>
+</li>
+<li><p>onRelease() </p>
+<p>在搜索完成或搜索超时时调用。这通常用于清理对象。</p>
+</li>
+</ul>
+<h5 id="12-4-6-1-Probing-a-Running-Server"><a href="#12-4-6-1-Probing-a-Running-Server" class="headerlink" title="12.4.6.1. Probing a Running Server"></a><strong>12.4.6.1. Probing a Running Server</strong></h5><p>来自ServerFinder的信息只提供要传递的数字地址和端口</p>
+<p>ServerFinder中的信息只提供了要传递给BWConnection::logOnTo()的数字地址和端口，以及运行服务器实例的用户的数字Unix用户ID。可以探测服务器以提供更多信息，例如运行LoginApp的机器的名称，以及运行服务器的用户的用户名。这可以通过使用ServerFinder的sendProbe()方法发送一个服务器探测来完成。</p>
+<p>服务器探测结果由ServerProbeHandler接口类的子类处理。要实现的相关虚拟方法有:</p>
+<ul>
+<li><p>onKeyValue()</p>
+<p>这用于获取探测中特定键值结果的结果。键是:</p>
+<ul>
+<li><p>hostName</p>
+<p>LoginApp机器的名称。</p>
+</li>
+<li><p>ownerName</p>
+<p>运行服务器实例的用户名。</p>
+</li>
+<li><p>userCount</p>
+<p>这个LoginApp处理的成功登录的次数</p>
+</li>
+<li><p>universeName</p>
+<p>未使用，用于向后兼容</p>
+</li>
+<li><p>spaceName</p>
+<p>未使用，用于向后兼容</p>
+</li>
+<li><p>binaryID</p>
+<p>未使用，用于向后兼容</p>
+</li>
+</ul>
+</li>
+<li><p>onSuccess()</p>
+<p>当探测成功完成时，调用这个函数。</p>
+</li>
+<li><p>onFailure()</p>
+<p>当探测超时或以其他方式失败时，将调用此函数。</p>
+</li>
+<li><p>onFinished()</p>
+<p>该方法在调用onSuccess()或onFailure()之后被调用，应该用于清除探测处理程序对象。</p>
+</li>
+</ul>
+<h3 id="12-5-Example-Clients"><a href="#12-5-Example-Clients" class="headerlink" title="12.5. Example Clients"></a><strong>12.5. Example Clients</strong></h3><p>BigWorld提供了示例源代码，演示如何从其他客户端应用程序集成BigWorld服务器。这些示例客户机可以在bigworld&#x2F;src&#x2F;examples&#x2F;client_integration目录中找到。</p>
+<h3 id="12-5-1-python-x2F-simple"><a href="#12-5-1-python-x2F-simple" class="headerlink" title="12.5.1. python&#x2F;simple"></a><strong>12.5.1. python&#x2F;simple</strong></h3><p>这个示例客户端是一个连接到BigWorld服务器的基本应用程序，它演示了连接到服务器并发送玩家移动所需的最小工作量，以及如何将属性更新应用到基于python的实体。</p>
+<p>此示例可在Linux和Windows下编译。</p>
+<h4 id="12-5-2-c-plus-plus-x2F-sdl"><a href="#12-5-2-c-plus-plus-x2F-sdl" class="headerlink" title="12.5.2. c_plus_plus&#x2F;sdl"></a><strong>12.5.2. c_plus_plus&#x2F;sdl</strong></h4><p>DL的例子是一个简单的客户端，它提供了一个使用simple Directmedia Library (<a target="_blank" rel="noopener" href="http://www.libsdl.org)来连接到fantasydemo服务器的自顶向下gui./">http://www.libsdl.org)来连接到FantasyDemo服务器的自顶向下GUI。</a></p>
+<p>它使用ProcessDefs工具生成实体代码。</p>
+<p>这个例子可以在Linux和Mac OS x下编译。它需要SDL和SDL_image库。</p>
+<p>在CentOS Linux下，可以通过安装SDL-devel和SDL_image-devel包来安装这些库。</p>
+<p>SDL和SDL_image的Mac OS X框架库以及如何安装它们的说明可以在SDL站点上找到。</p>
+<p>为了运行这个例子，需要在命令行上指定FantasyDemo的资源路径以及服务器地址，例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./client_integration -r ../../../../fantasydemo/res -r ../../../res -s</span><br><span class="line"> localhost</span><br></pre></td></tr></table></figure>
+
+<p>当在Xcode下运行时，你需要在client_integration方案中设置这些命令行参数Run→arguments→启动时传递的参数。</p>
+<h4 id="12-5-3-c-plus-plus-x2F-ios"><a href="#12-5-3-c-plus-plus-x2F-ios" class="headerlink" title="12.5.3. c_plus_plus&#x2F;ios"></a><strong>12.5.3. c_plus_plus&#x2F;ios</strong></h4><p>这个例子是一个连接到FantasyDemo服务器的简单iOS客户端，提供了一个自上而下的GUI来可视化客户端感兴趣的区域。</p>
+<p>项目文件位于bigworld&#x2F;src&#x2F;examples&#x2F;client_integration&#x2F;c_plus_plus&#x2F;ios&#x2F;FantasyDemo.xcodeproj。它需要XCode 4.3及以上版本，并安装可选的XCode命令行工具。要安装，请转到Preferences→Downloads→Components，并安装命令行工具组件。</p>
+<h2 id="13-Server-Communications"><a href="#13-Server-Communications" class="headerlink" title="13. Server Communications"></a><strong>13. Server Communications</strong></h2><p>与服务器的通信使用基于udp的底层协议Mercury。在“服务器概述”一节“进程间通信(Mercury)”中详细描述了Mercury。</p>
+<p>服务器通信可以通过c++和Python脚本访问</p>
+<h3 id="13-1-Login"><a href="#13-1-Login" class="headerlink" title="13.1. Login"></a><strong>13.1. Login</strong></h3><p>登录时，客户端使用Mercury向登录服务器发送UDP报文，使用知名端口。报文中包含客户端进行身份验证时所需要的所有帐号和字符信息，并选择一个字符。</p>
+<p>如果登录成功，登录服务器将为角色添加一个实体到BigWorld服务器系统，并将客户端指向代理服务器，代理服务器将处理所有游戏内的通信。然后双方开始互相发送数据。有关登录过程的更多详细信息，请参见Server Overview’s section <em>Design Introduction</em> → “Use Cases” → “Logging In”.</p>
+<h3 id="13-2-Online"><a href="#13-2-Online" class="headerlink" title="13.2. Online"></a><strong>13.2. Online</strong></h3><p>在代理和客户端之间创建Mercury通道。在丢包的情况下，只有被列为可靠的选定数据才会重新发送。由于平均包速率和预期的网络延迟，如果一个包的序列号比它更早收到，它就被归类为丢弃。</p>
+<p>由于客户机是在高延迟条件下运行的，服务器在向客户机发送其他未决信息之前不等待被丢弃的数据包重新发送。因此，客户端必须处理接收各种无序消息。</p>
+<p>消息通过ServerConnection类发送到服务器。玩家的位置每秒被发送到服务器10次。在输入循环期间，这个类从服务器接收消息，并将消息分发给实体管理器中的处理程序。</p>
+<ul>
+<li><p>服务器端可以向客户端发送的消息类型如下:</p>
+<ul>
+<li><p><strong>enterEntity</strong></p>
+<p>通知客户端具有给定ID的实体已进入其AoI。</p>
+</li>
+<li><p><strong>leaveEntity</strong></p>
+<p>通知客户端具有给定ID的实体已离开其AoI。</p>
+</li>
+<li><p><strong>createEntity</strong></p>
+<p>在响应来自客户端的查询时，提供实体的类型和其他即时数据。</p>
+</li>
+<li><p><strong>avatarUpdate</strong></p>
+<p>更新位置不稳定的实体的位置。</p>
+<p>这些消息的发送是不可靠的(即，如果包丢失，它们不会重新发送)。</p>
+</li>
+<li><p><strong>entityMessage</strong></p>
+<p>向实体的客户端表示发送脚本消息或更新其属性。</p>
+</li>
+</ul>
+</li>
+<li><p>客户端可以发送给服务器的消息类型如下:</p>
+<ul>
+<li><p><strong>avatarUpdate</strong></p>
+<p>通知服务器客户端的玩家实体的位置。</p>
+</li>
+<li><p><strong>requestEntityUpdate</strong></p>
+<p>请求关于刚刚进入客户端的AoI的具有给定ID的实体的信息。</p>
+<p>这通过有效地将实体(对正在请求的客户端)的最后一次更新时间设置为此消息中包含的时间来实现。</p>
+<p>自那时以来已更改的属性将重新发送。</p>
+</li>
+<li><p><strong>entityMessage</strong></p>
+<p>向实体的服务器端发送脚本消息(在基础上或单元上)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="13-3-Firewalls"><a href="#13-3-Firewalls" class="headerlink" title="13.3. Firewalls"></a><strong>13.3. Firewalls</strong></h3><p>大众市场在线游戏的祸根是防火墙，尤其是企业防火墙。我们的协议被设计成能顺利通过所有防火墙，除了最偏执的防火墙。</p>
+<p>从防火墙的角度来看，它应该显示客户端已经启动了登录和代理信息流——因为登录回复信息流包含了要发送的代理服务器地址，所以客户端可以立即开始发送数据，这让服务器觉得它也启动了这个信息流，也就是说，它“在防火墙上打了一个洞”。</p>
+<p>BigWorld服务器正确地处理了这样的情况:在客户端向它发送任何数据之前，它将数据发送给客户端(如果客户端在防火墙之后，这些数据可能会丢失)——丢失的数据会重新发送。</p>
+<p>为了使这些协议工作，防火墙需要支持的是在转发一个传出的数据包时存储一个UDP应答映射项，这样当一个应答数据包以完全相反的地址到达时(源和目的IP和端口从请求数据包交换)，它被转发回请求客户机。这与普遍存在的Internet域名服务(DNS)的需求是相同的，几乎所有的防火墙都支持DNS。</p>
+<p>BigWorld服务器不需要客户端从任何特定的端口发出请求，所以如果防火墙伪装了端口和IP，也不会混淆。</p>
+<h2 id="14-Particles"><a href="#14-Particles" class="headerlink" title="14. Particles"></a><strong>14. Particles</strong></h2><p>粒子是一个有纹理的矩形或小网格，可以快速和简单地绘制，通常使用添加的混合模式。它们主要用于创建有趣的图形效果。</p>
+<p>粒子是在粒子系统对象中管理的，它跟踪许多具有相似属性的粒子，并使用相同的函数管道来描述其粒子属性的转变。</p>
+<h3 id="14-1-Particle-Systems"><a href="#14-1-Particle-Systems" class="headerlink" title="14.1. Particle Systems"></a><strong>14.1. Particle Systems</strong></h3><p>粒子系统是用c++实现的，可以从脚本环境和c++中访问。用于粒子系统的Python模块名为Pixie。</p>
+<p>每个粒子系统目前负责一组相同纹理的粒子。虽然粒子系统可以动态地改变粒子纹理颜色，但需要不同同时纹理的效果需要单独的粒子系统。</p>
+<p>一个粒子系统是以下因素的集合体:</p>
+<ul>
+<li><p>Particles</p>
+<p>这是一个容器，它具有由渲染器类型确定的特定分配要求。目前有一些相邻的粒子，它们具有最佳的插入&#x2F;擦除特性;和FixedIndex粒子，这些行为就像一个循环缓冲区，并确保粒子索引在其生命周期内保持不变。FixedIndexParticles是跟踪渲染和网格粒子渲染的必要条件。</p>
+</li>
+<li><p>Particle Actions</p>
+<p>它们负责粒子的移动(这些动作完成了移动、创造和摧毁每个粒子的所有工作)。</p>
+</li>
+<li><p>Particle Rederer</p>
+<p>它负责绘制粒子。</p>
+</li>
+</ul>
+<p>粒子系统本身为所有三个对象提供了一个公共接入点。</p>
+<p>粒子渲染器大部分隐藏在粒子系统中。同样，粒子本身也无法被外界接触到。大多数与粒子系统相关的游戏代码都涉及特殊粒子动作的创造。</p>
+<p>粒子操作只在客户端的更新阶段工作。它们在粒子系统的滴答法(tick method)中依次被调用，每一个的联合作用产生系统的整体粒子效应。</p>
+<p>对于每个粒子系统类，都有一个对应的python包装类。例如，MetaParticleSystem被PyMetaParticleSystem包装。这些python包装器不保存状态，它们只保存一个指向底层c++对象的智能指针引用。将c++对象和它们的python等价对象分开的原因是允许在后台线程中完整地构造粒子系统(Python对象只能在主线程中构造。)</p>
+<p>还有一个粒子系统类，它是ChunkParticles类。这完全是c++的，并且为粒子系统实现了一个ChunkItem，它允许粒子系统通过world被放置在世界中编辑器工具(World Editor tool)。注意，这样的粒子系统应该是自动时间触发的，因为在python中没有办法在运行时访问它们并打开或关闭它们。</p>
+<p>目前，使用粒子系统的程序包括以下步骤:</p>
+<ul>
+<li>粒子系统是使用粒子编辑器创建的</li>
+<li>粒子编辑器用于创建控制粒子的不同类型的粒子动作。</li>
+<li>设置任何纹理和材质效果。</li>
+<li>粒子系统被添加到模型中，以便显示和更新。</li>
+</ul>
+<p>粒子系统可以很容易地在BigWorld粒子编辑器中创建并保存为XML文件-通常在资源树&lt;res&gt;文件夹下。在客户端中，它们可以直接使用世界编辑器，或从Python中这样调用:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Pixie</span><br><span class="line">ps = Pixie.create( <span class="string">&quot;my_particle_system.xml&quot;</span> )</span><br><span class="line">BigWorld.player().model.node( <span class="string">&quot;biped head&quot;</span> ).attach( ps )</span><br></pre></td></tr></table></figure>
+
+<p>请注意，粒子系统可能需要相当长的时间来构建——对于一个中等复杂的系统来说，解析xml文件、创建所有子系统并将它们连接在一起可能需要5ms。因此，强烈建议脚本编写器使用Pixie异步加载Particle Systems。createBG方法，BigWorld。loadResourceListBG方法，或使用实体先决条件。例如:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Example <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">import</span> Pixie</span><br><span class="line">    ps = Pixie.createBG( <span class="string">&quot;my_particle_system.xml&quot;</span>, self.onLoadPS )</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">onLoadPS</span>(<span class="params"> self, ps </span>):</span><br><span class="line">        BigWorld.player().model.node( <span class="string">&quot;biped head&quot;</span> ).attach( ps )</span><br><span class="line">Example <span class="number">2</span>:</span><br><span class="line">     <span class="keyword">import</span> BigWorld</span><br><span class="line">     BigWorld.loadResourceListBG( (<span class="string">&quot;particles/one.xml&quot;</span>, <span class="string">&quot;particles/two.xml&quot;</span>),self.onLoadResources )</span><br><span class="line">     <span class="keyword">def</span> <span class="title function_">onLoadResources</span>(<span class="params"> self, resources </span>):</span><br><span class="line">          self.model.root.attach( resources[<span class="string">&quot;particles/one.xml&quot;</span>] )</span><br><span class="line">          self.model.root.attach( resources[<span class="string">&quot;particles/two.xml&quot;</span>] )</span><br></pre></td></tr></table></figure>
+
+<h3 id="14-2-Particle-Actions"><a href="#14-2-Particle-Actions" class="headerlink" title="14.2. Particle Actions"></a><strong>14.2. Particle Actions</strong></h3><p>粒子作用主要有四类:</p>
+<ul>
+<li><p>Source</p>
+<p>创建粒子</p>
+</li>
+<li><p>Movement</p>
+<p>根据一套规则改变粒子的速度或位置。一个运动动作是特殊的，因为它将速度的影响应用到每个粒子的位置上。</p>
+</li>
+<li><p>Sink</p>
+<p>根据一组规则从活动粒子列表中删除粒子。</p>
+</li>
+<li><p>Alteration</p>
+<p>改变粒子的外观。</p>
+</li>
+</ul>
+<h4 id="14-2-1-Source-actions"><a href="#14-2-1-Source-actions" class="headerlink" title="14.2.1. Source actions"></a><strong>14.2.1. Source actions</strong></h4><p>源动作可以在固定的时间内，按需创建粒子，甚至对它所附加的模型的移动很敏感。粒子的大小、颜色、速度、位置甚至年龄都可以在创建时指定。粒子矢量描述背后的关键是矢量生成子系统。</p>
+<p>每个源操作都需要三个矢量生成器。矢量生成器是一类在给定空间中随机生成矢量的对象;空间通常由生成器的类型和给定的参数来定义。例如，球面生成器可以接受三维空间中的一个点和一个半径值，而线生成器可以接受三维空间中的两个点。</p>
+<p>这三个生成器被用来找到粒子的初始位置、速度和颜色。在计算位置和速度时考虑了模型的局部空间，但仅用于粒子的创建。这意味着由(-0.5，-0.5，-0.5)到(0.5, 0.5, 0.5)两个点描述的立方体大致是位置上粒子的边界盒。</p>
+<h4 id="14-2-2-Movement-actions"><a href="#14-2-2-Movement-actions" class="headerlink" title="14.2.2. Movement actions"></a><strong>14.2.2. Movement actions</strong></h4><p>运动作用于系统中的每一个粒子。有各种各样的运动可以应用到一个粒子。例如force、stream、barrier和jitter。</p>
+<p>粒子的基本运动由于速度在粒子系统内自动计算，也考虑到风。</p>
+<p>粒子也可以经历整个场景的碰撞-例如，用过的子弹滚下台阶。</p>
+<h4 id="14-2-3-Sink-actions"><a href="#14-2-3-Sink-actions" class="headerlink" title="14.2.3. Sink actions"></a><strong>14.2.3. Sink actions</strong></h4><p>沉降动作将粒子从系统中移除，无论是由于年龄增长还是由于移动到指定的边界之外。下沉动作的例子有下沉、障碍和飞溅。</p>
+<p>需要注意的是，如果没有下沉动作，一旦创建的粒子将永远不会离开系统，最终迫使它达到粒子极限。</p>
+<h4 id="14-2-4-Alteration-actions"><a href="#14-2-4-Alteration-actions" class="headerlink" title="14.2.4. Alteration actions"></a><strong>14.2.4. Alteration actions</strong></h4><p>改变作用影响粒子的外观。随着时间的推移，他们可以修改阴影、alpha级别和粒子的大小。它们通常用于烟雾效果，温和的淡出和发光效果。如果指定的纹理是动画纹理，粒子纹理可以被动画化。</p>
+<h3 id="14-3-Particle-types"><a href="#14-3-Particle-types" class="headerlink" title="14.3. Particle types"></a><strong>14.3. Particle types</strong></h3><p>粒子系统渲染器与主要的粒子系统计算是分开的，它不仅允许基于纹理的粒子，还允许基于精灵和基于网格的粒子。多个粒子系统可以共享同一个渲染器。</p>
+<p>网格粒子渲染器可以使用任何视觉效果，但为了最佳性能，特定用于粒子系统的网格应该从3ds Max或Maya中导出，每组15个，在其各自的导出对话框中选择网格粒子选项按钮。</p>
+<h3 id="14-4-Attaching-particle-systems-to-bones"><a href="#14-4-Attaching-particle-systems-to-bones" class="headerlink" title="14.4. Attaching particle systems to bones"></a><strong>14.4. Attaching particle systems to bones</strong></h3><p>要让粒子系统跟随骨骼并定位到外部目标，你应该将它连接到一个节点，然后使用跟踪器指向该节点。</p>
+<p>BigWorld模块(BigWorld. tracker)提供的跟踪器类可以使用各种DirectionProviders将节点指向适当的方向:</p>
+<ul>
+<li><p><strong>EntityDirProvider</strong></p>
+<p>将节点指向实体所面对的方向</p>
+</li>
+<li><p><strong>DiffDirProvider</strong></p>
+<p>将节点指向MatrixProvider给出的位置(例如，指向另一个实体的头部节点，或指向一个恒定的世界方向)。</p>
+</li>
+<li><p><strong>ScanDirProvider</strong></p>
+<p>使一个节点绕其y轴来回摆动(例如，模拟一个安全摄像机)</p>
+</li>
+</ul>
+<p>根据您的特定游戏，您可能无法使用跟踪器来指向源模型上的节点。例如，节点可能是角色骨架的一部分，并带有一些网格，所以你可能不希望实际指向这个骨架(只有连接到它的粒子系统)。如果是这种情况，那么你将需要创建一个新的节点来安装你的粒子系统-要求制作者在他们的模型中建立虚拟节点来挂载FX。</p>
+<p>要让粒子系统存在于一个不是由骨骼提供的位置，您应该将其附加到一个单独的模型，并使用Entity.addModel显示单独的模型。使用实体。添加model而不是Entity.model.node(xxx)。附加意味着模型存在于独立于实体的位置——事实上，它意味着没有人会设置模型的位置&#x2F;方向，这完全取决于脚本。</p>
+<p>一旦你有一个独立的模型，你可以设置它的位置和方向到任何MatrixProvider，通过使用Servo Motor。正如在Client Python API中解释的那样，Servo类是一个Motor，它将模型的转换设置为给定的MatrixProvider——当MatrixProvider被更新时，模型将移动。signal属性是设置模型转换的MatrixProvider。</p>
+<p>这样，您可以使用Servo Motor移动模型到任何动态矩阵提供的位置。如果独立模型有一个要指向的节点，那么您可以使用Tracker来设置它的方向，如上所述。这允许您将粒子系统的位置与骨骼分离，但仍然将粒子系统的方向设置为骨骼的方向，或指向外部目标。</p>
+<p>最后，如果你想要一个粒子系统以一个固定的点&#x2F;方向存在，那么使用particlessystem的explicitPosition和explicitDirection属性。这些只设置一次粒子系统的位置&#x2F;方向，不能设置为动态矩阵。注意，如果你使用其中一个属性，你将需要同时使用两个属性(设置其中一个属性告诉粒子系统它正在使用从两个属性派生的“显式转换”)。</p>
+<p>***将粒子系统附着到骨头上时要小心!***要将粒子系统连接到骨骼，必须检索PyModelNode。如果没有现有的PyModelNode引用您想要使用的骨骼，那么它的转换在下一次绘制调用之前都是未定义的。因为python脚本是在调用draw之前更新的，所以在第一次获取节点时无法知道节点在哪里。因此在本例中，您应该只在知道PyModelNode已更新时才将粒子系统附加到PyModelNode。你可能的选择是:</p>
+<ul>
+<li><p>在创建模型时检索并保留对骨骼的引用。这将确保以后当粒子系统附着在骨头上时，骨头的位置是众所周知的。</p>
+</li>
+<li><p>检索到您需要的骨骼的引用，并回调自己的下一帧来将粒子系统连接到它。例如:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BigWorld.callback( <span class="number">0.0</span>, partial( self.model.node(<span class="string">&quot;HP particles&quot;</span>).attach,self.particles ) )</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="15-Detail-Objects"><a href="#15-Detail-Objects" class="headerlink" title="15. Detail Objects"></a><strong>15. Detail Objects</strong></h2><p>一个细节对象是一个在相机位置周围的地形上大量绘制的小网格。为了提高效率，它们与普通模型分开了。这些对象的选择和放置在很大程度上是自动的-它是基于底层地形使用的纹理。</p>
+<p>细节对象的例子有:草、蕨类植物、芦苇、鹅卵石和岩石。用户不与细节对象交互(例如，不执行碰撞检测)。</p>
+<h3 id="15-1-Flora"><a href="#15-1-Flora" class="headerlink" title="15.1. Flora"></a><strong>15.1. Flora</strong></h3><p>在任何时候，BigWorld默认有大约60000个三角形的植物群活跃，其中大约15000个将在任何时候被绘制。你可以通过改变flora配置文件中的vb_size标记值来改变顶点缓冲区的大小(该值由配置文件&lt;res&gt;&#x2F;resources.xml中的environment&#x2F;floraXML标记来指定</p>
+<h4 id="15-1-1-Placement"><a href="#15-1-1-Placement" class="headerlink" title="15.1.1. Placement"></a><strong>15.1.1. Placement</strong></h4><p>由于涉及的对象众多，用手放置细节对象是不切实际的。相反，BigWorld拥有生态类型。</p>
+<p>生态类型定义的对象自动放置在世界中，由地形纹理引导。它们是用XML定义的，具有以下属性:</p>
+<ul>
+<li>一个或多个单位(Moo视觉效果)。</li>
+<li>一个或多个纹理，用于将地形与生态类型匹配。</li>
+<li>声音标签，用于人物脚步。</li>
+</ul>
+<p>例如，一个草生态类型可以包含两个单独的网格:一个用于低高度的草，另一个用于中等高度的草。</p>
+<p>当前活动的生态类型集由Flora类管理，它还管理单独的活动详细对象，根据需要分配和取消分配它们。</p>
+<p>每个地形块可以有四个纹理，每个纹理可以有一个相关的生态类型。这允许每个地形块有四个不同的生态类型。因此，在细节范围内(距相机50米半径)可以看到多达16种不同的生态类型。</p>
+<p>细节对象不能精确地放置在地形块中，这将创建细节对象的正方形区域。在查询地形的细节映射之前，详细对象“抖动”它们的位置。这将有效地反对别名的量化细节映射。</p>
+<p>植物区由世界编辑器计算并存储在地形文件中。</p>
+<h5 id="15-1-1-1-Visual-consistency"><a href="#15-1-1-1-Visual-consistency" class="headerlink" title="15.1.1.1. Visual consistency"></a><strong>15.1.1.1. Visual consistency</strong></h5><p>细节对象直接从地形纹理映射。从视觉上看，这是正确的，因为在现实生活中，地形的颜色实际上是由数百万个细节对象(草叶等)的颜色构成的。因此，一个绿色的“草”地形纹理可以完美地映射到一个草生态类型。</p>
+<p>在BigWorld中，无论何时使用一个纹理，都会显示其伴随的细节对象。</p>
+<h4 id="15-1-2-Implementation"><a href="#15-1-2-Implementation" class="headerlink" title="15.1.2. Implementation"></a><strong>15.1.2. Implementation</strong></h4><p>绘制细节对象是一个非常关键的性能领域，因为所有例程每帧要运行数千次。</p>
+<p>顶点缓冲区是完美的解决方案。细节对象被保存在一个大的顶点缓存中。因此，每个6个顶点处的1000片草意味着世界空间的顶点缓冲区有6000个顶点。这允许所有草被绘制使用一个调用视频卡，使用一个变换矩阵。3D加速器非常快地执行这种批处理渲染。</p>
+<p>当玩家在游戏世界中移动时，他会看到附近(50m)的细节对象。实际上，这意味着细节对象的活动集合必须根据相机的位置而改变。使用alpha混合淡出刚刚进入alpha的细节对象。</p>
+<p>flora配置XML文件&lt;flora&gt;.xml(关于该文件语法的详细信息，请参见文档文件语法指南的章节“&lt;flora&gt;.xml”)可以静态定义顶点缓冲区的大小，也可以通过FLORA_DENSITY图形设置将顶点缓冲区的大小定义为用户可选择的一组选项。</p>
+<h4 id="15-1-3-Frame-coherency"><a href="#15-1-3-Frame-coherency" class="headerlink" title="15.1.3. Frame coherency"></a><strong>15.1.3. Frame coherency</strong></h4><p>在一个多目标系统中，必须充分利用帧相干性。最明显的框架一致性选择是顶点变换。每个细节对象在世界空间的顶点缓冲区中保持转换，直到它的地形贴图(或“flora block”)离开细节半径，此时另一个地形贴图将移动到细节半径中。然后，新贴图的细节对象将被转换，并放置在释放的顶点缓冲区内存中。</p>
+<p>平均而言，细节对象在帧之间显示出97%左右的一致性，这大大节省了转换成本。</p>
+<h4 id="15-1-4-Animation"><a href="#15-1-4-Animation" class="headerlink" title="15.1.4. Animation"></a><strong>15.1.4. Animation</strong></h4><p>为了创造一个沉浸式的、活生生的、会呼吸的世界，大多数东西都必须是有生命的。</p>
+<p>动态的细节对象大大增加了世界的幻觉。BigWorld客户端使用基于(wx, wz，time)的3D Perlin噪声为细节对象创建可信的程序动画。选择Perlin噪声是因为它是一种制造时空相干噪声的廉价方法。这个实现在顶点着色器中高效地执行动画。</p>
+<h4 id="15-1-5-Lighting"><a href="#15-1-5-Lighting" class="headerlink" title="15.1.5. Lighting"></a><strong>15.1.5. Lighting</strong></h4><p>当使用简化的网格(这是至关重要的在一个数千对象装饰系统)，照明变得具有挑战性。考虑一个纵横交错的草物体垂直地从地形中升起。如果使用标准程序点燃，这些纵横交错的物体会在傍晚的太阳下燃烧起来。</p>
+<p>在BigWorld客户端中，细节对象的照明是使用从实际地形计算的光照图来执行的。因此，它也可以拾取地形阴影。这是一个基本正确的解决方案，因为基于网格的地形本身实际上是数以百万计的细节对象的简化版本。</p>
+<h4 id="15-1-6-File-format"><a href="#15-1-6-File-format" class="headerlink" title="15.1.6. File format"></a><strong>15.1.6. File format</strong></h4><p>XML植物群文件定义了要使用的灯光图，以及生态类型和噪声生成函数。关于该文件语法的详细信息，请参见文档文 File Grammar Guide’s section “&lt;flora&gt;.xml”。</p>
+<h2 id="16-Water"><a href="#16-Water" class="headerlink" title="16. Water"></a>16. Water</h2><p>水体可以通过世界编辑器放置在世界中，使用提供的帮助文件bigworld&#x2F;res&#x2F; helpers&#x2F;misc&#x2F;water.xml -详细信息，请参阅文档 Content Creation Manual’s lesson <strong>Add Water to the World</strong></p>
+<p>因为所有的水对象都是VLO的，每个实例将在chunk文件夹中创建两个新文件(以每个实例的唯一ID命名):</p>
+<ul>
+<li><p>.vlo 文件</p>
+<p>包含水对象的XML块项目部分。</p>
+</li>
+<li><p>. odata 文件</p>
+<p>包含与VLO相关的二进制信息(在本例中，水的逐顶点透明度&#x2F;边缘数据)。</p>
+</li>
+</ul>
+<h3 id="16-1-Code-overview"><a href="#16-1-Code-overview" class="headerlink" title="16.1. Code overview"></a><strong>16.1. Code overview</strong></h3><p>水的实现包含在bigworld&#x2F;src&#x2F;lib&#x2F;romp库中，具体来说，在以下文件中:</p>
+<ul>
+<li><p><strong>chunk_water.cpp,chunk_water.hpp</strong></p>
+<p>水与BigWorld分块系统的联系。</p>
+<p>参见:bigworld&#x2F;src&#x2F;lib&#x2F;chunk&#x2F;chunk_vlo.cpp和bigworld&#x2F;src&#x2F;lib&#x2F;chunk&#x2F; chunk_vlo.hpp。</p>
+</li>
+<li><p><strong>editor_chunk_water.cpp,editor_chunk_water.hpp</strong></p>
+<p>与编辑器相关的功能，如保存、移动和编辑。</p>
+<p>参见:bigworld&#x2F;src&#x2F;lib&#x2F;chunk&#x2F;editor_chunk_vlo.cpp和bigworld&#x2F;src&#x2F;lib&#x2F;chunk&#x2F; editor_chunk_vlo.hpp。</p>
+</li>
+<li><p><strong>water.cpp,water.hpp,water.ipp</strong></p>
+<p>主要文件。包含曲面图形&#x2F;设置</p>
+</li>
+<li><p><strong>water_scene_renderer.cpp,water_scene_renderer.hpp</strong></p>
+<p>实现水景(反射&#x2F;折射)的生成</p>
+</li>
+<li><p><strong>water_simulation.cpp,water_simulation.hpp</strong></p>
+<p>实现水面的模拟。</p>
+</li>
+<li><p><strong>water.fx</strong></p>
+<p>水的主要表面着色器。</p>
+</li>
+<li><p><strong>simulation.fx</strong></p>
+<p>用于GPU水交互模拟的着色器。</p>
+</li>
+</ul>
+<p>世界上的每个ChunkWater都创建自己的水对象。ChunkWater是由ChunkVLO遇到的第一个引用创建的。水是一个非常大的对象(VLO)，这意味着它可以跨越&#x2F;属于多个块。这是通过在水重叠的每个块中放置一个VLO引用对象(ChunkVLO)来实现的。每个引用都被视为实际的大对象，从它那里传递和检索数据。</p>
+<p>每个水对象在每一帧添加自己到绘制列表，使用Waters::addToDrawList。然后，引擎通过调用Waters::drawWaters来绘制水面列表。</p>
+<h3 id="16-2-Scene-generation"><a href="#16-2-Scene-generation" class="headerlink" title="16.2. Scene generation"></a><strong>16.2. Scene generation</strong></h3><p>反射场景会根据当前的水质水平进行渲染(详细信息 “Setting the quality”)。反射场景是一个渲染目标，在主游戏循环中更新，在调用TextureRenderer:: updatdynamics期间。</p>
+<p>多个水面可以共享一个反射渲染目标(水景类)，如果他们都在y轴上的相同位置。水景生成假设水在定义的y轴位置周围反射&#x2F;剪辑一个平面。</p>
+<p>折射场景使用包含主渲染目标副本的失真通道纹理。</p>
+<h3 id="16-3-Render-settings"><a href="#16-3-Render-settings" class="headerlink" title="16.3. Render settings"></a><strong>16.3. Render settings</strong></h3><p>地形总是会被绘制出来，但是其他的一切都与当前的质量设置相关，这些设置由以下变量定义:</p>
+<ul>
+<li><p><strong>WaterSceneRenderer::s_drawDynamics_</strong></p>
+<p>确定动态对象是否被绘制到水景中。</p>
+</li>
+<li><p><strong>WaterSceneRenderer::s_drawPlayer_</strong></p>
+<p>确定玩家模型是否被绘制到水景中。</p>
+</li>
+<li><p><strong>WaterSceneRenderer::s_drawTrees_</strong></p>
+<p>确定树是否被绘制到水景中。</p>
+</li>
+<li><p><strong>WaterSceneRenderer::s_maxReflectionDistance_</strong></p>
+<p>动态物体离水面的最大距离。缺省值为25。</p>
+</li>
+<li><p><strong>WaterSceneRenderer::s_maxReflections_</strong></p>
+<p>要绘制的最大动态对象数。缺省值为10。</p>
+</li>
+<li><p><strong>WaterSceneRenderer::s_useClipPlane_</strong></p>
+</li>
+<li><p>切换硬件裁剪平面的使用。</p>
+</li>
+</ul>
+<h4 id="16-3-1-Setting-the-quality"><a href="#16-3-1-Setting-the-quality" class="headerlink" title="16.3.1. Setting the quality"></a><strong>16.3.1. Setting the quality</strong></h4><p>Water::init方法用于初始化图形设置选项菜单链接和FX文件，只调用一次。它将提供以下菜单项:</p>
+<ul>
+<li><p><strong>Water Quality</strong> → <strong>High</strong> –Waters::setQualityOption</p>
+<p>所有世界项目都绘制在水景中。最高细节着色器也被使用。</p>
+</li>
+<li><p><strong>Water Quality</strong> → <strong>Mid</strong>–Waters::setQualityOption</p>
+<p>除了动态对象，所有的世界项目都绘制在水景中。</p>
+</li>
+<li><p><strong>Water Quality</strong> → <strong>Low</strong>–Waters::setQualityOption</p>
+<p>玩家，树和天空在反射中绘制。反射纹理尺寸减小。</p>
+</li>
+<li><p><strong>Water Quality</strong> → <strong>Lowest</strong>–Waters::setQualityOption</p>
+<p>动态对象、玩家绘图、地形和树木都被禁用。只有天空会被反射进来</p>
+</li>
+<li><p><strong>Water Simulation Quality</strong> → <strong>High</strong>– Waters::setSimulationOption</p>
+<p>扰动可以在cell之间传播</p>
+</li>
+<li><p><strong>Water Simulation Quality</strong> → <strong>Low</strong>– Waters::setSimulationOption </p>
+<p>模拟仅限于单个cell</p>
+</li>
+<li><p><strong>Water Simulation Quality</strong> → <strong>Off</strong>– Waters::setSimulationOption</p>
+<p>模拟被禁用</p>
+</li>
+</ul>
+<h3 id="16-4-Simulation"><a href="#16-4-Simulation" class="headerlink" title="16.4. Simulation"></a><strong>16.4. Simulation</strong></h3><p>水面被划分成大小由水面定义的单元格(默认为100.0单位)。每个单元都定义了一个可以活动的水域模拟区域。</p>
+<p>有一个公共的模拟纹理池(大小为MAX_SIM_TEXTURE_BLOCKS)由SimulationManager类维护。</p>
+<p>当移动进入其定义的区域时，单元格被激活，并在一段时间不活动后被停用(由SimulationManager::maxIdleTime_定义，默认值为5.0秒)。</p>
+<p>当选择高细节模拟选项时，水的运动将传播(并激活)邻近的cell。</p>
+<p>活动移动的最大数量由MAX_SIM_MOVEMENTS定义。水的运动通过Sway系统传入模拟管理器—详细信息 Client C API’s entry Class List → ChunkWater**, Public Member Fuction** <strong>sway</strong></p>
+<h3 id="16-5-Rain"><a href="#16-5-Rain" class="headerlink" title="16.5. Rain"></a><strong>16.5. Rain</strong></h3><p>水会自动受到雨的影响——在SimulationManager中还有另一个模拟纹理块，它用于雨。</p>
+<h3 id="16-6-Water-depth"><a href="#16-6-Water-depth" class="headerlink" title="16.6. Water depth"></a><strong>16.6. Water depth</strong></h3><p>水深由水下最低地形点决定。根据这个值生成的边界框也可以用来定义游戏中的水量。这可以通过在bigworld&#x2F;src&#x2F;lib&#x2F;romp&#x2F;water.cpp中搜索bbDeep_引用来找到。</p>
+<p>该深度信息还用于根据水面的实际每像素深度为水的折射着色。这使用了在主场景渲染中生成的MRT(多重渲染目标)深度纹理。使用此信息还可以添加泡沫边缘效果。</p>
+<h3 id="16-7-Watchers"><a href="#16-7-Watchers" class="headerlink" title="16.7. Watchers"></a><strong>16.7. Watchers</strong></h3><p>为了配置水系统的行为，使用了下面的观察者(所有观察者的前缀都是<strong>Client Settings&#x2F;Water&#x2F;</strong>):</p>
+<ul>
+<li><p><strong>character impact</strong></p>
+<p>在其中一个运动强度将冲击水面模拟</p>
+</li>
+<li><p><strong>draw</strong></p>
+<p>定义是否绘制水面。</p>
+</li>
+<li><p><strong>Draw Dynamics</strong></p>
+<p>连接到WaterSceneRenderer:: s_drawDynamics_</p>
+</li>
+<li><p><strong>Draw Player</strong></p>
+<p>连接到WaterSceneRenderer::s_drawPlayer_.</p>
+</li>
+<li><p><strong>Draw Trees</strong></p>
+<p>连接到WaterSceneRenderer:: s_drawTrees_</p>
+</li>
+<li><p><strong>Max Reflection Distance</strong></p>
+<p>连接到WaterSceneRenderer:: s_maxReflectionDistance_</p>
+</li>
+<li><p><strong>Max Reflections</strong></p>
+<p>连接到WaterSceneRenderer:: s_maxReflections_</p>
+</li>
+<li><p><strong>Scene&#x2F;Use Clip Plane</strong></p>
+<p>连接到WaterSceneRenderer:: s_useClipPlane_</p>
+</li>
+<li><p><strong>water speed square</strong></p>
+<p>波浪在水中传播的速度。</p>
+</li>
+<li><p><strong>wireframe</strong></p>
+<p>切换水面线框模式。</p>
+</li>
+</ul>
+<h2 id="17-Graphical-User-Interface-GUI"><a href="#17-Graphical-User-Interface-GUI" class="headerlink" title="17. Graphical User Interface (GUI)"></a><strong>17. Graphical User Interface (GUI)</strong></h2><p>BigWorld的GUI可以分为独立的(菜单和选项界面)和游戏内覆盖。</p>
+<p>游戏内的叠加需要3D集成，因此有一个单独的设计。游戏内部界面的独特功能支持:</p>
+<ul>
+<li>链接到游戏内的对象(特别是模型的边界框)，</li>
+<li>混合，或者叠加在场景上，</li>
+<li>特殊效果，如缩放，旋转，颜色变化，淡入淡出，运动模糊。</li>
+</ul>
+<p>游戏内界面最重要的功能是当不使用时可以消失。这让游戏设计师能够创造出更具沉浸感的游戏世界体验。虽然GUI需要将重要信息与玩家联系起来，但它应该只在需要这些信息时才这么做。在其他时候，玩家不应该被叠加内容分心，而应该完全沉浸在3D世界中。</p>
+<p>以下是一些游戏内部界面的例子:</p>
+<ul>
+<li>目标</li>
+<li>当前项目显示</li>
+<li>玩家生命值和伤害</li>
+<li>聊天窗口</li>
+</ul>
+<h3 id="17-1-C-GUI-support"><a href="#17-1-C-GUI-support" class="headerlink" title="17.1. C++ GUI support"></a><strong>17.1. C++ GUI support</strong></h3><p>有两个支持GUI的c++基类:</p>
+<ul>
+<li>SimpleGUIComponent</li>
+<li>GUIShader</li>
+</ul>
+<p>还有一个管理类:</p>
+<ul>
+<li>SimpleGUI</li>
+</ul>
+<h4 id="17-1-1-SimpleGUIComponent"><a href="#17-1-1-SimpleGUIComponent" class="headerlink" title="17.1.1. SimpleGUIComponent"></a><strong>17.1.1. SimpleGUIComponent</strong></h4><p>simpleguiccomponent类只是一个有纹理的矩形。派生类TextGUIComponent绘制文本，派生类FrameGUIComponent使用三个位图(角、边、背景)绘制可调整大小的框架。</p>
+<p>SimpleGUIComponent有很多属性，主要从Python和XML文件访问。</p>
+<p>组件只有在父组件绘制子组件时才具有层次性;孩子不会继承父母的转变。windowGUIComponent是这个规则的一个例外——子组件会被父组件自动剪切和转变。注意，这是windowGUIComponent的一个特性，而不是一般的GUI系统。</p>
+<h4 id="17-1-2-GUIShader"><a href="#17-1-2-GUIShader" class="headerlink" title="17.1.2. GUIShader"></a><strong>17.1.2. GUIShader</strong></h4><p>GUIShader类改变了组件绘制的方式，以类似于顶点着色器的形式(事实上，99%的GUI着色器只操作临时变量，而不是顶点，硬件TnL支持)。</p>
+<ul>
+<li>ClipGUIShader将GUIComponents按其原始长度的比例进行剪辑，这对于制作生命条非常有用。</li>
+<li>ColourGUIShader为组件着色。</li>
+<li>AlphaGUIShader淡入一个组件。</li>
+<li>MatrixGUIShader对组件进行转换。</li>
+</ul>
+<p>着色器应用于所有的子组件-所以使用MatrixGUIShader来实现窗口，和AlphaGUIShader来淡入&#x2F;淡出整个组件树。</p>
+<h4 id="17-1-3-SimpleGUI"><a href="#17-1-3-SimpleGUI" class="headerlink" title="17.1.3. SimpleGUI"></a><strong>17.1.3. SimpleGUI</strong></h4><p>这是GUI的根，它在每一帧都被勾选和绘制。使用SimpleGUI::addSimpleComponent()和SimpleGUI::removeSimpleComponent()来构建GUI组件树。请注意，您通常不会从c++中调用这些方法，因为它们大多是由脚本调用的。</p>
+<h3 id="17-2-Python-GUI-support"><a href="#17-2-Python-GUI-support" class="headerlink" title="17.2. Python GUI support"></a><strong>17.2. Python GUI support</strong></h3><p>大多数时候，您可能会使用Python和XML创建GUI。不存在BigWorld GUI编辑器，因此目前所有的GUI都是使用Python控制台在游戏中创建的。</p>
+<p>下面的代码显示了一个示例:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> GUI</span><br><span class="line"><span class="comment">#create a simple GUI component</span></span><br><span class="line">s=GUI.Simple( <span class="string">&quot;maps/guis/stats_bar.dds&quot;</span> )</span><br><span class="line"><span class="comment">#width/height initially in pixels. can use widthRelative/heightRelative</span></span><br><span class="line"><span class="comment">#to designate the component uses clip coordinates ( -1 .. +1 ) instead.</span></span><br><span class="line">s.width = <span class="number">64</span></span><br><span class="line">s.height = <span class="number">16</span></span><br><span class="line"><span class="comment">#colour attribute is ( r,g,b,a )</span></span><br><span class="line">s.colour = ( <span class="number">255</span>, <span class="number">128</span>, <span class="number">0</span>, <span class="number">255</span> )</span><br><span class="line"><span class="comment">#the materialFX is simply the blend mode. can be &quot;BLEND&quot;,&quot;SOLID&quot;,&quot;ADD&quot;... </span></span><br><span class="line">s.materialFX = <span class="string">&quot;BLEND&quot;</span></span><br><span class="line"><span class="comment">#the position is always in clip coordinates ( -1 .. +1 )</span></span><br><span class="line">s.position = ( <span class="number">0</span>, <span class="number">0.85</span>, <span class="number">0.5</span> )</span><br><span class="line"><span class="comment">#the anchors determine what the position means with respect to the width </span></span><br><span class="line"><span class="comment">#and height. in this example, the position of (0,0.85,0.5) and anchors</span></span><br><span class="line"><span class="comment">#&quot;TOP,CENTER&quot; means that the top centre of the component will rest at </span></span><br><span class="line"><span class="comment">#the given position.</span></span><br><span class="line"><span class="comment">#The component will hang down from y=0.85, and will be centred on x=0.0</span></span><br><span class="line">s.verticalAnchor = <span class="string">&quot;TOP&quot;</span></span><br><span class="line">s.horizontalAnchor = <span class="string">&quot;CENTER&quot;</span></span><br><span class="line"><span class="comment">#create a clipper for the health amount. clip shaders are used to</span></span><br><span class="line"><span class="comment">#implement stats bars. the constructor parameter &quot;RIGHT&quot; means the </span></span><br><span class="line"><span class="comment">#shader will clip the component from the right hand side.</span></span><br><span class="line">c=GUI.ClipShader( <span class="string">&quot;RIGHT&quot;</span> )</span><br><span class="line"><span class="comment">#all shaders animate their values. the speed indicates how long the</span></span><br><span class="line"><span class="comment">#internal parameter will change from the old value to the new. This speed</span></span><br><span class="line"><span class="comment">#indicates the health bar will always take 1/2 a second to change.</span></span><br><span class="line">c.speed = <span class="number">0.5</span></span><br><span class="line"><span class="comment">#the value is what the game normally changes if player&#x27;s health changes.</span></span><br><span class="line">c.value = <span class="number">1.0</span></span><br><span class="line"><span class="comment">#this line adds the shader. Note that you can call your shader any name</span></span><br><span class="line"><span class="comment">#you like. Internally, the simple GUI component sees you are trying to </span></span><br><span class="line"><span class="comment">#add a GuiShader to it, under the name of clipper.</span></span><br><span class="line"><span class="comment">#Internally it will call SimpleGUIComponent::addShader()</span></span><br><span class="line">s.clipper = c</span><br><span class="line"><span class="comment">#create a colourer for the health amount</span></span><br><span class="line">c=GUI.ColourShader()</span><br><span class="line"><span class="comment">#the start,middle and end simply represent colours to blend to when the</span></span><br><span class="line"><span class="comment"># value parameter is 1.0, 0.5 and 0.0 respectively.</span></span><br><span class="line">c.start=(<span class="number">255</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">192</span>)</span><br><span class="line">c.middle=(<span class="number">255</span>,<span class="number">255</span>,<span class="number">0</span>,<span class="number">192</span>)</span><br><span class="line">c.end=(<span class="number">0</span>,<span class="number">255</span>,<span class="number">0</span>,<span class="number">192</span>)</span><br><span class="line">c.speed=<span class="number">0.5</span></span><br><span class="line">c.value=<span class="number">1.0</span></span><br><span class="line">s.colourer=c</span><br><span class="line"><span class="comment">#and make the health bar be drawn</span></span><br><span class="line">GUI.addRoot( s )</span><br></pre></td></tr></table></figure>
+
+<p>然后你可以通过在着色器中设置适当的值来定制新的生命条:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># player&#x27;s health went down to 80%</span></span><br><span class="line">s.clipper.value = s.colourer.value = <span class="number">0.8</span></span><br></pre></td></tr></table></figure>
+
+<p>最后，您可以将脚本与GUI组件关联起来，以便处理输入和I&#x2F;O事件，并在其上构建高级功能。使用script属性将脚本对象与组件关联:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.script = PyGUI.Button( s )</span><br></pre></td></tr></table></figure>
+
+<p>关于GUI脚本的更多信息，请参见“XML和Python”，以及“Input events”，详细请看 Client Python API’s entry <strong>Main Page</strong> → <strong>Client</strong> → <strong>GUI</strong> →<strong>Classes</strong> → <strong>SimpleGUIComponent</strong>.</p>
+<p>如果您纯粹使用Python创建GUI，那么您必须确保在删除它时正确地删除对它的所有引用，否则将出现内存泄漏。这是因为在BigWorld引擎中关闭了Python垃圾收集，它使用引用计数来代替速度。你可能会得到如下警告信息:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---------------------------------------------------------</span><br><span class="line">Some SimpleGUIComponent instances haven&#x27;t been destroyed.</span><br><span class="line">To debug, in &lt;engine_config&gt;.xml, set:</span><br><span class="line"> 	&lt;simpleGui&gt;</span><br><span class="line"> 		&lt;breakOnAllocId&gt; AllocId &lt;/breakOnAllocId&gt;</span><br><span class="line"> 		&lt;breakOnLeak&gt; true &lt;/breakOnLeak&gt;</span><br><span class="line"> 	&lt;/simpleGui&gt;</span><br><span class="line">---------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+<p>要删除，必须将对GUI组件的所有引用设置为None，这包括从父组件中删除组件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> s.parent:</span><br><span class="line"> 	s.parent.delChild( s )</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line"> 	GUI.delRoot( s )</span><br><span class="line">s = <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="17-3-XML"><a href="#17-3-XML" class="headerlink" title="17.3. XML"></a><strong>17.3. XML</strong></h3><p>GUI也可以表示为XML文件。它们可以保存在&lt;res&gt;&#x2F;guis文件夹中，例如，使用上面描述的方法构造之后。</p>
+<p>Python接口的优势在于，一旦你创建了GUI，只需调用:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.save( <span class="string">&quot;guis/health_bar.gui&quot;</span> )</span><br></pre></td></tr></table></figure>
+
+<p>将创建一个XML文件，封装GUI组件、它的着色器和它的所有子组件。一旦你这样做了，就写:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GUI.delRoot( s )</span><br><span class="line">s = <span class="literal">None</span></span><br><span class="line">s = GUI.load( <span class="string">&quot;guis/health_bar.gui&quot;</span> )</span><br><span class="line">GUI.addRoot( s )</span><br></pre></td></tr></table></figure>
+
+<p>在那之后，你将拥有完全相同的组件，它的所有着色器和子组件都设置好了。</p>
+<p>高级用户会发现手工创建XML是创建GUI的最快方法。另外，GUI编辑器完全可以用Python创建。</p>
+<h3 id="17-4-XML-and-Python"><a href="#17-4-XML-and-Python" class="headerlink" title="17.4. XML and Python"></a><strong>17.4. XML and Python</strong></h3><p>当你有一个GUI组件的脚本保存在XML中，你的Python脚本必须实现以下方法(至少存根它们):</p>
+<ul>
+<li>def onLoad( self, section )</li>
+<li>def onBound( self )</li>
+<li>def onSave( self, section )</li>
+</ul>
+<h4 id="17-4-1-onLoad-self-section"><a href="#17-4-1-onLoad-self-section" class="headerlink" title="17.4.1. onLoad(self,section)"></a><strong>17.4.1.</strong> <strong>onLoad(self,section)</strong></h4><p>onLoad方法是在调用c++ load方法、设置标准成员变量和构造相关脚本之后调用的。</p>
+<p>从其中加载GUI组件的数据部分被传递到方法中。这允许定义自定义属性，特别是用于将自定义数据加载到脚本对象。</p>
+<p>注意，该方法是在加载任何子组件或着色器之前调用的。</p>
+<h4 id="17-4-2-onBound-self"><a href="#17-4-2-onBound-self" class="headerlink" title="17.4.2. onBound(self)"></a><strong>17.4.2.</strong> <strong>onBound(self)</strong></h4><p>onBound方法在加载完成后被调用。</p>
+<p>这个方法和onLoad之间的主要区别是，在调用onBound时，整个GUI组件树已经创建好了。因此，在onBound方法中，您可以编写自定义脚本处理来操作子组件。例如，您可以在此方法中调用自己的自定义布局管理器。</p>
+<h4 id="17-4-3-onSave-self-section"><a href="#17-4-3-onSave-self-section" class="headerlink" title="17.4.3. onSave(self,section)"></a><strong>17.4.3.</strong> <strong>onSave(self,section)</strong></h4><p>onSave方法在c++ save方法保存所有标准GUI组件成员之后调用，但在着色器和子组件保存之前调用。</p>
+<h3 id="17-5-Input-events"><a href="#17-5-Input-events" class="headerlink" title="17.5. Input events"></a><strong>17.5. Input events</strong></h3><p>SimpleGUI提供对键盘、操纵杆和鼠标输入的支持。要捕获事件，组件需要将其属性focus设置为true，并附加相关的Python脚本。</p>
+<p>当从GUI文件加载组件时，如果XML声明了脚本字段，SimpleGUIComponent的属性将自动设置。该字段的值用于实例化脚本对象(它必须是一个可调用对象，接收一个参数—正在创建的SimpleGUIComponent—并返回一个Python对象)。返回的Python对象将是为新创建的组件指定的脚本对象。</p>
+<p>还可以为现有组件手动设置脚本属性，如下例所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># instantiate a new PyGUI Button class, and make it the component&#x27;s </span></span><br><span class="line"><span class="comment"># script attribute. note most scripts are passed the GUI component </span></span><br><span class="line"><span class="comment"># in their constructor so they can perform operations on them.</span></span><br><span class="line">s.script = PyGUI.Button( s )</span><br></pre></td></tr></table></figure>
+
+<p>每一类输入事件都有单独的焦点属性，如下所述:</p>
+<ul>
+<li><p>focus</p>
+<p>关联:键盘事件(包括角色事件)、操纵杆(轴)事件和全局鼠标按钮事件。</p>
+</li>
+<li><p>mouseButtonFocus</p>
+<p>关联:当鼠标位置包含在组件区域内时发生的鼠标按钮事件。</p>
+</li>
+<li><p>crossFocus</p>
+<p>关联:鼠标输入事件，鼠标离开事件。</p>
+</li>
+<li><p>moveFocus</p>
+<p>关联的:鼠标移动事件。</p>
+</li>
+<li><p>dragFocus</p>
+<p>关联:删除事件。</p>
+</li>
+</ul>
+<p>要让组件开始接收输入事件，必须将相应的属性设置为True，并将其不再接收事件设置为False，如下图所示:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># start receiving key/axis events</span></span><br><span class="line">c.focus = <span class="literal">True</span></span><br><span class="line"><span class="comment"># stop receiving mouse enter/leave events</span></span><br><span class="line">c.crossFocus = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>当组件有一个脚本并且启用了焦点时，该脚本将开始捕获输入事件。</p>
+<p>脚本必须定义适当的方法来处理事件。下面的例子演示了一个脚本，它定义了处理键盘和操纵杆(轴)事件的方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Button</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">handleKeyEvent</span>(<span class="params"> self, event </span>):</span><br><span class="line">        <span class="comment"># do whatever, and return 1 if </span></span><br><span class="line">        <span class="comment"># this key event was consumed</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">handleAxisEvent</span>(<span class="params"> self, event </span>):</span><br><span class="line">        <span class="comment"># do whatever, and return 1 </span></span><br><span class="line">        <span class="comment"># if this axis event was consumed</span></span><br></pre></td></tr></table></figure>
+
+<p>下面的小节描述了SimpleGUI支持的事件。更多信息请参见Client Python API的入口Main Page→Client→GUI→Classes→<strong>SimpleGUIComponent</strong>。</p>
+<h4 id="17-5-1-Keyboard-Events"><a href="#17-5-1-Keyboard-Events" class="headerlink" title="17.5.1. Keyboard Events"></a><strong>17.5.1. Keyboard Events</strong></h4><p>键盘事件与键盘、鼠标和操纵杆按钮的输入有关。它们通过handleKeyEvent方法报告给脚本对象:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleKeyEvent</span>(<span class="params"> self, event</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数说明如下:</p>
+<ul>
+<li><p>event</p>
+<p>PyKeyEvent，包含关于该事件的信息。</p>
+</li>
+</ul>
+<p>返回值为True意味着事件已被消耗，从而有效地防止它传播到其他组件或游戏脚本。返回值为False允许进一步传播。</p>
+<p>要接收key事件，组件必须将属性focus设置为True。</p>
+<p>注意，通过方法handleKeyEvent报告的鼠标按钮事件与通过handleMouseButtonEvent报告的不同之处在于，鼠标光标不必在组件定义的区域内，该组件才能捕获事件。捕获的唯一要求是将属性焦点设置为True，而不是在焦点列表中使用使用事件的其他组件。</p>
+<p>字符事件附加到键事件。检查PyKeyEvent。字符参数，它将是包含完整翻译字符的字符串。否则它将是None。请记住，由于更复杂的输入法(如dead-key)，字符串的长度可以大于1。</p>
+<h4 id="17-5-2-Axis-Events"><a href="#17-5-2-Axis-Events" class="headerlink" title="17.5.2. Axis Events"></a><strong>17.5.2. Axis Events</strong></h4><p>轴事件与操纵杆轴输入有关。它们通过handleAxisEvent方法报告给脚本对象:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleAxisEvent</span>(<span class="params"> self, axis, value, dTime </span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数：</p>
+<ul>
+<li><p>event</p>
+<p>PyAxisEvent，包含关于此事件的信息。</p>
+</li>
+</ul>
+<p>返回值True意味着事件已经被消耗，有效地阻止它传播到其他组件或游戏脚本。返回值为False允许进一步传播。</p>
+<p>要接收轴事件，组件必须将属性focus设置为True。</p>
+<h4 id="17-5-3-Mouse-Events"><a href="#17-5-3-Mouse-Events" class="headerlink" title="17.5.3. Mouse Events"></a><strong>17.5.3. Mouse Events</strong></h4><p>鼠标事件可以分为三类:</p>
+<ul>
+<li>Button events</li>
+<li>Cross events</li>
+<li>Move events</li>
+</ul>
+<p>鼠标事件从鼠标光标下方的最顶部组件向下传播到底部组件，直到由组件处理为止(通过在其事件处理方法之一中返回True)。</p>
+<p>下面的小节描述了如何处理来自每一类鼠标的输入</p>
+<p>注意，鼠标事件只在MouseCursor对象处于活动状态时生成。</p>
+<h4 id="17-5-3-1-Button-events"><a href="#17-5-3-1-Button-events" class="headerlink" title="17.5.3.1. Button events"></a><strong>17.5.3.1. Button events</strong></h4><p>​		按钮事件与鼠标按钮输入相关。它们通过方法handleMouseButtonEvent和handlemousecickevent报告给脚本对		象。</p>
+<h5 id="17-5-3-1-1-handleMouseButtonEvent"><a href="#17-5-3-1-1-handleMouseButtonEvent" class="headerlink" title="17.5.3.1.1. handleMouseButtonEvent"></a><strong>17.5.3.1.1.</strong> <strong>handleMouseButtonEvent</strong></h5><p>​		这个方法是由SimpleGUI在mouseButtonFocus设置为True的鼠标最上面的组件上调用的:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleMouseButtonEvent</span>(<span class="params"> self, comp, event </span>)</span><br></pre></td></tr></table></figure>
+
+<p>​		参数说明如下:</p>
+<ul>
+<li><p><strong>comp</strong></p>
+<p>按钮被按下或释放的部件。</p>
+</li>
+<li><p><strong>event</strong></p>
+<p>PyKeyEvent，包含关于该事件的信息。</p>
+<p>返回值True意味着事件已经被消耗，有效地阻止它传播到其他组件或游戏脚本。返回值为False允许进一步传播。</p>
+<p>要接收鼠标按钮事件，组件必须将mouseButtonFocus属性设置为True</p>
+</li>
+</ul>
+<h5 id="17-5-3-1-2-handleMouseClickEvent"><a href="#17-5-3-1-2-handleMouseClickEvent" class="headerlink" title="17.5.3.1.2. handleMouseClickEvent"></a><strong>17.5.3.1.2.</strong> <strong>handleMouseClickEvent</strong></h5><p>​	   当在组件上按下并释放鼠标左键时，SimpleGUI将调用此方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleMouseClickEvent</span>(<span class="params"> self, comp, pos </span>)</span><br></pre></td></tr></table></figure>
+
+<p>​		参数说明如下:</p>
+<ul>
+<li><p>comp</p>
+<p>按钮被按到的组件。</p>
+</li>
+<li><p>pos</p>
+<p>点击鼠标按钮时鼠标的位置。</p>
+<p>Value是一个剪辑空间浮点数的2元组，范围从-1.0 (x轴最左，y轴最上)到1.0 (x轴最右，y轴最下)。</p>
+</li>
+</ul>
+<p>返回值True意味着事件已经被消耗，有效地阻止它传播到其他组件或游戏脚本。返回值为False允许进一步传播。</p>
+<p>要接收鼠标单击事件，组件必须将属性focus设置为True。</p>
+<h4 id="17-5-3-2-Cross-events"><a href="#17-5-3-2-Cross-events" class="headerlink" title="17.5.3.2. Cross events"></a><strong>17.5.3.2. Cross events</strong></h4><p>交叉事件与鼠标指针进入或离开屏幕上组件定义的区域有关。它们通过方法handleMouseEnterEvent和handlemouseleevent报告给脚本对象。</p>
+<p>handleMouseEnterEvent的签名描述如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleMouseEnterEvent</span>(<span class="params"> self, comp, pos </span>)</span><br></pre></td></tr></table></figure>
+
+<p>handleMouseLeaveEvent的签名描述如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleMouseLeaveEvent</span>(<span class="params"> self, comp, pos </span>)</span><br></pre></td></tr></table></figure>
+
+<p>两种方法的参数说明如下:</p>
+<ul>
+<li><p>comp</p>
+<p>鼠标进入或离开的组件。</p>
+</li>
+<li><p>pos</p>
+<p>进入或离开组件时鼠标的第一个位置。</p>
+<p>Value是一个裁切空间浮点数的2元组，范围从-1.0 (x轴最左，y轴最上)到1.0 (x轴最右，y轴最下)。</p>
+</li>
+</ul>
+<p>返回值True意味着事件已经被消耗，有效地阻止它传播到其他组件或游戏脚本。返回值为False允许进一步传播。</p>
+<p>要接收鼠标进入和离开事件，组件必须将属性focus和crossFocus设置为True。</p>
+<h4 id="17-5-3-3-Move-events"><a href="#17-5-3-3-Move-events" class="headerlink" title="17.5.3.3. Move events"></a><strong>17.5.3.3. Move events</strong></h4><p>移动事件与鼠标指针悬停在由屏幕中的组件定义的区域上有关。它们通过handleMouseEvent方法报告给脚本对象:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleMouseEvent</span>(<span class="params"> self, comp, event </span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数说明如下:</p>
+<ul>
+<li><p>comp</p>
+<p>鼠标光标悬停在其上的组件。</p>
+</li>
+<li><p>event</p>
+<p>PyMouseEvent，包含关于此事件的信息。</p>
+</li>
+</ul>
+<p>返回值True意味着事件已经被消耗，有效地阻止它传播到其他组件或游戏脚本。返回值为False允许进一步传播。</p>
+<p>要接收鼠标移动事件，组件必须将属性focus和moveFocus设置为True。</p>
+<h4 id="17-5-4-Drag-and-drop-events"><a href="#17-5-4-Drag-and-drop-events" class="headerlink" title="17.5.4. Drag-and-drop events"></a><strong>17.5.4. Drag-and-drop events</strong></h4><p>SimpleGUI提供对拖放功能的支持。拖放事件可以分为两类:</p>
+<ul>
+<li>Drag event</li>
+<li>Drop event</li>
+</ul>
+<p>下面的小节描述了如何处理每个类别的拖放事件的输入。注意，拖放事件只在MouseCursor处于活动状态时生成。</p>
+<h4 id="17-5-4-1-Drag-events"><a href="#17-5-4-1-Drag-events" class="headerlink" title="17.5.4.1. Drag events"></a><strong>17.5.4.1. Drag events</strong></h4><p>拖动事件与用户正在拖动的组件相关。它们总是在被拖动的组件上生成，并通过方法handleDragStartEvent和handleDragStopEvent报告。</p>
+<h5 id="17-5-4-1-1-handleDragStartEvent"><a href="#17-5-4-1-1-handleDragStartEvent" class="headerlink" title="17.5.4.1.1. handleDragStartEvent"></a><strong>17.5.4.1.1.</strong> <strong>handleDragStartEvent</strong></h5><p>当用户试图拖动组件时，会调用此方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleDragStartEvent</span>(<span class="params"> self, comp, pos </span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数说明如下:</p>
+<ul>
+<li><p>comp</p>
+<p>用户试图拖动的组件</p>
+</li>
+<li><p>pos</p>
+<p>事件发生时鼠标的位置。</p>
+<p>Value是一个剪辑空间浮点数的2元组，范围从-1.0 (x轴最左，y轴最上)到1.0 (x轴最右，y轴最下)。</p>
+</li>
+</ul>
+<p>True的返回值向GUI管理器发出信号，表示此组件愿意被拖动，并使用该事件。返回值为False将防止拖拽组件，并允许进一步传播事件。</p>
+<p>要接收此事件，组件必须将属性dragFocus设置为True。</p>
+<h5 id="17-5-4-1-2-handleDragStopEvent"><a href="#17-5-4-1-2-handleDragStopEvent" class="headerlink" title="17.5.4.1.2. handleDragStopEvent"></a><strong>17.5.4.1.2.</strong> <strong>handleDragStopEvent</strong></h5><p>当用户释放鼠标左键，因此想要放下组件时，调用此方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleDragStopEvent</span>(<span class="params"> self, comp, pos</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数说明如下:</p>
+<ul>
+<li><p>comp</p>
+<p>被拖动的组件。</p>
+</li>
+<li><p>pos</p>
+<p>事件发生时鼠标的位置。</p>
+<p>Value是一个剪辑空间浮点数的2元组，范围从-1.0 (x轴最左，y轴最上)到1.0 (x轴最右，y轴最下)。</p>
+</li>
+</ul>
+<p>此方法的返回值总是被忽略，并允许原始鼠标按钮事件进一步传播。</p>
+<p>要接收此事件，组件必须将属性dragFocus设置为True。</p>
+<h4 id="17-5-4-2-Drop-events"><a href="#17-5-4-2-Drop-events" class="headerlink" title="17.5.4.2. Drop events"></a><strong>17.5.4.2. Drop events</strong></h4><p>删除事件与一个组件被删除到另一个组件上相关。它们总是在接收组件上生成，并通过handleDragEnterEvent、handleDragEnterEvent和handleDropEvent方法报告。</p>
+<h5 id="17-5-4-2-1-handleDragEnterEvent"><a href="#17-5-4-2-1-handleDragEnterEvent" class="headerlink" title="17.5.4.2.1. handleDragEnterEvent"></a><strong>17.5.4.2.1.</strong> <strong>handleDragEnterEvent</strong></h5><p>当用户刚刚将另一个组件拖到这个组件上，但还没有删除它时，就会调用这个方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleDragEnterEvent</span>(<span class="params"> self, comp, pos, dropped </span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数说明如下：</p>
+<ul>
+<li><p>comp</p>
+<p>即将接收drop的组件。</p>
+</li>
+<li><p>pos</p>
+<p>事件发生时鼠标的位置。</p>
+<p>Value是一个剪辑空间浮点数的2元组，范围从-1.0 (x轴最左，y轴最上)到1.0 (x轴最右，y轴最下)。</p>
+</li>
+<li><p>dropped</p>
+<p>被拖动的组件。</p>
+</li>
+</ul>
+<p>此方法的返回值用于确定接收方组件是否愿意接受drop。此事件在第一次触发时总是被认为已使用，并且不会进一步传播原始的鼠标移动事件。</p>
+<p>要接收此事件，组件必须将属性dropFocus设置为True。</p>
+<h5 id="17-5-4-2-2-handleDragLeaveEvent"><a href="#17-5-4-2-2-handleDragLeaveEvent" class="headerlink" title="17.5.4.2.2. handleDragLeaveEvent"></a><strong>17.5.4.2.2.</strong> <strong>handleDragLeaveEvent</strong></h5><p>当被拖动的组件不再经过这个组件时，调用这个方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleDragLeaveEvent</span>(<span class="params"> self, comp, pos </span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数如下：</p>
+<ul>
+<li><p>comp</p>
+<p>即将接收drop的组件。</p>
+</li>
+<li><p>pos</p>
+<p>事件发生时鼠标的位置。</p>
+<p>Value是一个剪辑空间浮点数的2元组，范围从-1.0 (x轴最左，y轴最上)到1.0 (x轴最右，y轴最下)。</p>
+</li>
+</ul>
+<p>返回值为True意味着事件已经被消耗，从而有效地阻止了最初的鼠标事件传播到其他组件或游戏脚本中。返回值为False允许进一步传播。</p>
+<p>要接收此事件，组件必须将属性dropFocus设置为True。</p>
+<h5 id="17-5-4-2-3-handleDropEvent"><a href="#17-5-4-2-3-handleDropEvent" class="headerlink" title="17.5.4.2.3. handleDropEvent?"></a><strong>17.5.4.2.3.</strong> <strong>handleDropEvent</strong>?</h5><p>当用户在这个组件上删除了一个组件时，这个方法会被调用:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleDropEvent</span>(<span class="params"> self, comp, pos, dropped </span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数如下：</p>
+<ul>
+<li><p>comp</p>
+<p>接收drop的组件。</p>
+</li>
+<li><p>pos</p>
+<p>事件发生时鼠标的位置。</p>
+<p>Value是一个剪辑空间浮点数的2元组，范围从-1.0 (x轴最左，y轴最上)到1.0 (x轴最右，y轴最下)。</p>
+</li>
+<li><p>dropped</p>
+<p>接收drop的组件。</p>
+</li>
+</ul>
+<p>此方法的返回值总是被忽略，并允许原始鼠标按钮事件进一步传播。</p>
+<p>要接收此事件，组件必须将属性dropFocus设置为True。</p>
+<h4 id="17-5-5-Component-PyGUI"><a href="#17-5-5-Component-PyGUI" class="headerlink" title="17.5.5. Component PyGUI"></a><strong>17.5.5. Component PyGUI</strong></h4><p>您可能会发现用自定义GUI组件构建自己的Python模块很有用。为此，最好的起点是模块PyGUI。</p>
+<p>PyGUI是基本GUI元素的非正式Python模块，为内部项目创建，定义在fantasydemo&#x2F;res&#x2F;scripts&#x2F;client&#x2F;Helpers&#x2F;PyGUI中。</p>
+<p>从SimpleGUI本机组件提供的基本功能开始，您可以用Python编写自己的GUI工具包。下面是一些你可以创建的小工具的例子:</p>
+<ul>
+<li>Page control</li>
+<li>Drop-down List</li>
+<li>Edit field</li>
+<li>Multi-line text field</li>
+<li>Check box</li>
+</ul>
+<h3 id="17-6-Mouse-cursor"><a href="#17-6-Mouse-cursor" class="headerlink" title="17.6. Mouse cursor"></a><strong>17.6. Mouse cursor</strong></h3><p>可以通过游戏脚本控制鼠标光标的行为和外观。可以通过MouseCursor对象访问鼠标光标相关的函数和属性。</p>
+<p>MouseCursor对象是一个单例对象，可以通过GUI.mcursor方法获得。</p>
+<p>它公布的属性如下:</p>
+<ul>
+<li><p>postion –Read&#x2F;write</p>
+<p>鼠标光标位置</p>
+</li>
+<li><p>shape–Read&#x2F;write</p>
+<p>鼠标光标形状</p>
+</li>
+<li><p>visible–Read&#x2F;write</p>
+<p>鼠标光标可见状态</p>
+</li>
+<li><p>active–Read-only</p>
+<p>鼠标活动状态</p>
+</li>
+<li><p>clipped–Read&#x2F;write</p>
+<p>当设置为true时，鼠标光标将被剪贴到客户端窗口所在的区域</p>
+</li>
+</ul>
+<p>MouseCursor是抽象概念InputCursor的一个实例。在任何给定时间只能有一个活动的InputCursor。</p>
+<p>要激活MouseCursor，使用BigWorld.setCursor方法。要停用它，请激活另一个输入游标，或将None传递给BigWorld.setCursor。</p>
+<p>鼠标和拖放事件仅在MouseCursor处于活动状态时传播到GUI组件。</p>
+<p>下面的代码演示了如何使用MouseCursor:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># access and modify the mouse cursor</span></span><br><span class="line"><span class="keyword">import</span> GUI</span><br><span class="line"><span class="keyword">import</span> BigWorld</span><br><span class="line"></span><br><span class="line">mc = GUI.mcursor()</span><br><span class="line">mc.shape = <span class="string">&quot;arrow&quot;</span></span><br><span class="line">mc.visible = <span class="literal">True</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> mc.active:</span><br><span class="line">    lastPosition = mc.position</span><br><span class="line">    mc.position = ( <span class="number">0.0</span>, <span class="number">0.0</span> )</span><br><span class="line">    BigWorld.setCursor( mc )</span><br><span class="line">    <span class="comment"># mc.active is now True</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="18-Fonts"><a href="#18-Fonts" class="headerlink" title="18. Fonts"></a><strong>18. Fonts</strong></h2><p>BigWorld有一个内置的字体生成和字形缓存系统。它支持大型国际字符集。在内部，BigWorld使用GDI+，并需要安装一个真实类型的字体文件来将字形绘制到字形缓存呈现目标中。作为一种替代方法，你可以使用预先缓存的字体地图来发行游戏，但是这种方法不支持动态字形的使用，因此不适用于大型字符集。</p>
+<h3 id="18-1-Creating-and-Using-Fonts"><a href="#18-1-Creating-and-Using-Fonts" class="headerlink" title="18.1. Creating and Using Fonts"></a><strong>18.1. Creating and Using Fonts</strong></h3><p>要使用字体，必须首先创建一个描述字体样式、字体大小和所需效果的字体定义文件。一旦定义了字体，就可以使用该字体在屏幕上显示文本。在屏幕上显示文本的主要方法是通过Python GUI。文本组件。</p>
+<h4 id="18-1-1-Creating-a-Font-Definition-File"><a href="#18-1-1-Creating-a-Font-Definition-File" class="headerlink" title="18.1.1. Creating a Font Definition File"></a><strong>18.1.1. Creating a Font Definition File</strong></h4><p>字体定义文件是一个XML文件，描述字体本身、字形缓存的大小和任何预加载字形的详细信息:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">example_font.font</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">creation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sourceFont</span>&gt;</span> Arial <span class="tag">&lt;/<span class="name">sourceFont</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sourceFontSize</span>&gt;</span> 16 <span class="tag">&lt;/<span class="name">sourceFontSize</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">effectsMargin</span>&gt;</span> 1 <span class="tag">&lt;/<span class="name">effectsMargin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">textureMargin</span>&gt;</span> 1 <span class="tag">&lt;/<span class="name">textureMargin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dropShadow</span>&gt;</span> true <span class="tag">&lt;/<span class="name">dropShadow</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">shadowAlpha</span>&gt;</span> 192 <span class="tag">&lt;/<span class="name">shadowAlpha</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">bold</span>&gt;</span> true <span class="tag">&lt;/<span class="name">bold</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">creation</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">example_font.font</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>因为字体是动态生成的，它们的字形是在运行时缓存的，所以这就是开始使用新字体所需要做的全部工作。如果指定的源字体名称在系统上不存在，则Windows将自动选择最接近的匹配字体。为了避免任何潜在的问题，请确保您授权并在终端用户的系统上安装所需的真实类型的字体(例如，作为安装脚本的一部分)。如果您决定只选择Windows字体(并假设它们存在于终端用户的机器上)，那么请注意标准字体之间有很大的差异。</p>
+<h5 id="18-1-1-1-Secondary-Font-Families"><a href="#18-1-1-1-Secondary-Font-Families" class="headerlink" title="18.1.1.1. Secondary Font Families"></a><strong>18.1.1.1. Secondary Font Families</strong></h5><p>为了允许在同一个文本字符串中混合不同的字符集，同时保持对每个字符集的呈现方式的控制，可以定义次要字体族。例如，latin-1(例如英语)字符可能需要使用Arial，但是Arial不是为呈现东亚字符集而设计的(如中国)。这意味着在渲染东亚角色时，需要制作手工艺品。</p>
+<p>次要字体是在创建部分中使用一个或多个次要标记定义的。辅助字体由字体名称和用于选择使用哪一种辅助字体的Unicode范围组成。</p>
+<p>例如，要使用Arial和中文，你可以使用SimSun添加第二种字体:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">example_font.font</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">creation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sourceFont</span>&gt;</span> Arial <span class="tag">&lt;/<span class="name">sourceFont</span>&gt;</span></span><br><span class="line">        ...</span><br><span class="line">        <span class="tag">&lt;<span class="name">secondary</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">sourceFont</span>&gt;</span> SimSun <span class="tag">&lt;/<span class="name">sourceFont</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">unicodeRange</span>&gt;</span> U+2F00-U+9FFF <span class="tag">&lt;/<span class="name">unicodeRange</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">secondary</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">creation</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">example_font.font</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="18-1-2-Preloading-Glyphs"><a href="#18-1-2-Preloading-Glyphs" class="headerlink" title="18.1.2. Preloading Glyphs"></a><strong>18.1.2. Preloading Glyphs</strong></h4><p>对于字形数量有限的语言(例如英语)，您可能希望将所有字形预加载到缓存中，这样客户机就不必在运行时执行更多操作。此外，对于较大的亚洲语言，您可能仍然希望用一些常用的字形预加载缓存，然后让缓存在运行时处理那些不常用的字形。字形缓存系统仍然有效，但缓存将首先包含这些字形。此外，预加载的字形将永远不会离开缓存期间的客户端。</p>
+<p>要预加载符号或一系列符号，请将下列标记的任意组合添加到字体定义文件中。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">startChar</span>&gt;</span> 32 <span class="tag">&lt;/<span class="name">startChar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">endChar</span>&gt;</span> 192 <span class="tag">&lt;/<span class="name">endChar</span>&gt;</span></span><br><span class="line">or</span><br><span class="line"><span class="tag">&lt;<span class="name">unicodeChar</span>&gt;</span> U+3000 <span class="tag">&lt;<span class="name">unicodeChar</span>&gt;</span></span><br><span class="line">    and/or</span><br><span class="line"><span class="tag">&lt;<span class="name">unicodeRange</span>&gt;</span> U+AC00-U+D7A3 <span class="tag">&lt;/<span class="name">unicodeRange</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="18-1-3-Specifying-the-widest-character"><a href="#18-1-3-Specifying-the-widest-character" class="headerlink" title="18.1.3. Specifying the widest character"></a><strong>18.1.3. Specifying the widest character</strong></h4><p>字体符号被缓存到一个纹理中，并被定位在一个规则的网格上(即每个网格元素都是相同的宽度和高度)。为了预先确定每个网格元素的大小，字形缓存必须知道最宽字符的尺寸。默认情况下使用字母’W’来计算这个大小，但这可能对某些字符集(包括中文)不合适。如果最宽的字符太窄，则会出现视觉假象(字符会被剪切，相邻字符可能会相互“泄漏”)。如果太宽，那么纹理空间就会被浪费。</p>
+<p>最宽字符可以使用字体定义文件中的&lt;widestChar&gt;标记设置。例如:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">example_font.font</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">creation</span>&gt;</span></span><br><span class="line">        ...</span><br><span class="line">        <span class="tag">&lt;<span class="name">widestChar</span>&gt;</span> U+FF1F <span class="tag">&lt;/<span class="name">widestChar</span>&gt;</span></span><br><span class="line">        ...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">creation</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">example_font.font</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="18-1-4-Displaying-Text"><a href="#18-1-4-Displaying-Text" class="headerlink" title="18.1.4. Displaying Text"></a><strong>18.1.4. Displaying Text</strong></h4><p>文本GUI组件是字体用于在屏幕上显示文本的主要方式。有关Text GUI组件及其python GUI的详细信息。文本对应，请参阅Python客户端API指南，在GUI.Text一节。GUI.Text类支持“font”属性，这指定了字体定义文件的名称，相对于字体根(参见文件 File Grammar Guide &#x2F; resources.xml，了解如何选择或更改字体根文件夹)。</p>
+<p>下面是如何使用上述示例字体文件的示例，目前我们假定该文件已保存到$FONT_ROOT &#x2F; example_font.font。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> GUI</span><br><span class="line">t = GUI.Text( <span class="string">&quot;Some Text&quot;</span> )</span><br><span class="line">t.font = <span class="string">&quot;example_font.font&quot;</span></span><br><span class="line">GUI.addRoot(t)</span><br></pre></td></tr></table></figure>
+
+<h3 id="18-2-Artist-modified-Fonts"><a href="#18-2-Artist-modified-Fonts" class="headerlink" title="18.2. Artist modified Fonts"></a><strong>18.2. Artist modified Fonts</strong></h3><p>内置字体或授权字体不一定符合你的游戏外观。例如，您可能希望使用有发光效果的字体，或内部渐变填充。在这些情况下，您可以选择将字形缓存的固定快照输出为.dds文件。然后，美术人员可以对这个文件进行处理，生成他们喜欢的任何字体效果。注意，这个过程只适用于一组固定的字形，因为客户端内部不具备重新创建艺术家修改字体的步骤的能力。</p>
+<h4 id="18-2-1-Generating-a-Snapshot-of-a-Font’s-Glyph-Cache"><a href="#18-2-1-Generating-a-Snapshot-of-a-Font’s-Glyph-Cache" class="headerlink" title="18.2.1. Generating a Snapshot of a Font’s Glyph Cache"></a><strong>18.2.1. Generating a Snapshot of a Font’s Glyph Cache</strong></h4><p>python API包含一个函数BigWorld。saveFontCacheMap，将字体字形缓存的内容输出到DDS文件，并将字体指标的详细信息输出到.font文件。一旦这个快照被捕获，.font文件包含一个&lt;generated&gt;节，字体将不再使用字形缓存，或者能够在运行时生成任何新的字形。要恢复此更改，只需从.font文件中删除&lt;生成的&gt;部分，并删除.dds文件。纹理将被命名为$FONT_ROOT&#x2F;$FONTNAME_font.dds。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> BigWorld</span><br><span class="line">BigWorld.saveFontCacheMap( <span class="string">&quot;super_turbo.font&quot;</span> )</span><br><span class="line"><span class="comment">#this generates super_turbo.font.dds, super_turbo.font.generated, and super_turbo.font.grid.dds</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="18-2-2-Modifying-the-Font-Texture"><a href="#18-2-2-Modifying-the-Font-Texture" class="headerlink" title="18.2.2. Modifying the Font Texture"></a><strong>18.2.2. Modifying the Font Texture</strong></h4><p>一旦创建了快照，生成的font.dds文件就可以加载到Photoshop中(你可能需要下载并安装一个.dds文件插件，这取决于你使用的Photoshop版本)。然后可以自由修改字形，但是必须注意不要超出每个字符的指定边界。网格参考位图描述了行和不行区域，它的alpha通道有一个字形副本，提供形状信息，并简单地演示哪个字符到哪里去了。</p>
+<p>修改完字体纹理后，只需将其保存在*.font.DDS文件，确保它和* .font.generated文件作为资产存储库的一部分提交。磁盘上这些文件的存在指示字体系统从现在开始使用生成的映射，并且永远不要尝试扩展字形缓存。如果遇到不存在作为生成的字形缓存一部分的字形，则将向调试窗口输出警告，并使用填充字符。</p>
+<h4 id="18-2-3-Explaining-the-Font-Grid-dds-File"><a href="#18-2-3-Explaining-the-Font-Grid-dds-File" class="headerlink" title="18.2.3. Explaining the Font Grid .dds File"></a><strong>18.2.3. Explaining the Font Grid .dds File</strong></h4><p>下面是一个font.grid.dds文件的一部分，在photoshop中复制了3次，提取了各种颜色通道。你可以看到三个颜色通道，其中alpha通道用白色覆盖。</p>
+<p><img src="/image%5Cbigworld%5C05_09.png" alt="05_09"></p>
+<p>在左侧，红色通道描述了GDI+给出的原始字形矩形。正如您在示例中所看到的，W和&#x2F;字形位于该区域之外。这是因为这个特殊的字体已经应用了投影。投影，如引擎中提供的，是字形的副本，具有单个像素偏移。下面的绿色区域展示了这一点。</p>
+<p>绿色区域描述符号区域加上效果边界，是引擎将绘制的矩形。在屏幕上绘制文本时，绿色区域外的任何像素都将被剪切。还要注意的是，当字形绘制在一起时，创建一个字符串或句子，红色区域(原始大小)决定字符之间的间距，任何效果边缘都由下一个字形重叠，这确保添加效果，如投影不会增加字符串的宽度。</p>
+<p>蓝色区域用于描述符号区域、效果边界和纹理边界。纹理边缘用于填充纹理映射中的符号，以避免任何过滤伪影。纹理边缘永远不应该绘制，这是浪费了很多空间。如果你确定你的字体只会在像素和文本之间以1:1的比例绘制(例如，文本将永远不会缩小，或绘制在3D中，它可以旋转和mip-map发挥作用)，然后你可以安全地做任何纹理边缘。</p>
+<h2 id="19-Input-Method-Editors-IME"><a href="#19-Input-Method-Editors-IME" class="headerlink" title="19. Input Method Editors (IME)"></a><strong>19. Input Method Editors (IME)</strong></h2><p>输入法编辑器(IME)是一种高级用户界面，用于输入东亚地区的输入文本，如中文，其中的字符集比实际上可以直接映射到键盘按钮的字符集大得多。这是Windows提供的一种机制，由当前安装的键盘布局决定。</p>
+<p>不幸的是，Windows使用的默认IME接口覆盖了额外的子弹出窗口，这些窗口在游戏的上下文中不能很好地工作。这些弹出窗口将与Direct3D设备发生冲突（特别是在全屏模式下），不能剥离，而且，由于Windows不知道你的游戏用户界面，它将不能与你的游戏编辑控制保持一致。因此，为了很好地与游戏集成，并为用户提供流畅的体验，IME界面应该使用游戏内的GUI系统来呈现。</p>
+<p>BigWorld引擎提供了一个API，它允许Python脚本响应操作系统生成的IME事件，并根据系统输入驱动的当前状态填充游戏内的IME。</p>
+<p>目前支持的IME类型有:</p>
+<ul>
+<li>简体中文<ul>
+<li>微软拼音</li>
+<li>全拼</li>
+<li>搜狗拼音</li>
+<li>搜狗五笔</li>
+<li>谷歌拼音</li>
+</ul>
+</li>
+<li>繁体中文<ul>
+<li>微软新语音IME</li>
+</ul>
+</li>
+<li>日语<ul>
+<li>微软IME</li>
+</ul>
+</li>
+<li>韩文<ul>
+<li>微软IME</li>
+</ul>
+</li>
+</ul>
+<p>本章描述如何设置Python脚本来响应IME事件并显示相应的接口。</p>
+<p>除了这个文档之外，在fantasydemo&#x2F;res&#x2F;scripts&#x2F;client&#x2F;Helpers&#x2F;PyGUI&#x2F;IME.py中还有一个示例实现。这个脚本由PyGUI.EditField类使用。</p>
+<p>请注意，如果启用Scaleform IME库，BigWorld IME系统将被禁用。</p>
+<h3 id="19-1-Components-of-an-IME-interface"><a href="#19-1-Components-of-an-IME-interface" class="headerlink" title="19.1. Components of an IME interface"></a><strong>19.1. Components of an IME interface</strong></h3><p>有三个组成输入法编辑器的主要组件:</p>
+<ul>
+<li><p>Composition string</p>
+<p>它包含用户用IME组成的字符，是用户完成后将发送给应用程序的字符串。复合字符串通常绘制在编辑控件上输入光标的当前位置。</p>
+</li>
+<li><p>Reading window</p>
+<p>通常只在中文输入法中使用，它包含最近的尚未翻译成目标语言的击键。</p>
+</li>
+<li><p>Candidate list</p>
+<p>这是一个基于复合字符串当前内容的候选字符列表。</p>
+<p>用户可以使用箭头键来循环使用可用的选项，如果有多个页面的选项，则可以使用pageup和pagedown。通过按与候选列表项对应的数字键或按高亮显示项上的enter键来选择所需的候选项。</p>
+</li>
+</ul>
+<p>一个特定的IME可以使用全部或部分组件。Python脚本使用PyIME对象来确定何时需要绘制特定组件(例如，BigWorld.ime.readingVisible标志可以用来确定在任何特定时间是否应该绘制阅读窗口)。</p>
+<p>虽然不是严格意义上的IME本身的一部分，但在编辑控件上包括一个语言指示器作为视觉辅助是有用的，可以跟踪当前活动的语言。通过改变它的颜色，您还可以指示IME的当前状态(例如，IME当前是否处于字母-数字模式)。</p>
+<h4 id="19-1-1-Examples"><a href="#19-1-1-Examples" class="headerlink" title="19.1.1. Examples"></a><strong>19.1.1. Examples</strong></h4><p><img src="/image%5Cbigworld%5C05_10.png" alt="05_10"></p>
+<h4 id="19-1-2-Recommended-Reading"><a href="#19-1-2-Recommended-Reading" class="headerlink" title="19.1.2. Recommended Reading"></a><strong>19.1.2. Recommended Reading</strong></h4><p>[Installing and Using Input Method Editors, MSDN - <a target="_blank" rel="noopener" href="http://msdn.microsoft.com/en-us/library/bb174599%28VS.85%29.aspx]">http://msdn.microsoft.com/en-us/library/bb174599%28VS.85%29.aspx]</a></p>
+<p>[Using an Input Method Editor in a Game, MSDN - <a target="_blank" rel="noopener" href="http://msdn.microsoft.com/en-us/library/bb206300%28VS.85%29.aspx]">http://msdn.microsoft.com/en-us/library/bb206300%28VS.85%29.aspx]</a></p>
+<h3 id="19-2-IME-Python-API"><a href="#19-2-IME-Python-API" class="headerlink" title="19.2. IME Python API"></a><strong>19.2. IME Python API</strong></h3><p>BigWorld IME Python API是通过BigWorld访问的。输入法设置对象。这是一个PyIME类的单例实例。有关这里提到的所有方法和属性的详细信息，请参阅Python客户端API文档。</p>
+<h4 id="19-2-1-Enabling-IME"><a href="#19-2-1-Enabling-IME" class="headerlink" title="19.2.1. Enabling IME"></a><strong>19.2.1. Enabling IME</strong></h4><p>默认是禁用的，可以从Python脚本中启用和禁用IME。通常，应用程序会在文本输入界面进入焦点(例如编辑框)时启用IME，在失去焦点时再次禁用IME。PyIME对象上的enabled属性控制当前状态:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BigWorld.ime.enabled = enableBoolean</span><br></pre></td></tr></table></figure>
+
+<p>当IME被禁用时，内部状态将被重置。</p>
+<h4 id="19-2-2-接收IME事件"><a href="#19-2-2-接收IME事件" class="headerlink" title="19.2.2. 接收IME事件"></a>19.2.2. 接收IME事件</h4><p>一旦IME系统被启用，引擎将开始向个性脚本发布事件。</p>
+<h4 id="19-2-2-1-BWPersonality-handleInputLangChangeEvent"><a href="#19-2-2-1-BWPersonality-handleInputLangChangeEvent" class="headerlink" title="19.2.2.1. BWPersonality.handleInputLangChangeEvent"></a><strong>19.2.2.1. BWPersonality.handleInputLangChangeEvent</strong></h4><p>BWPersonality.handleInputLangChangeEvent将在用户切换当前输入语言时被调用。该函数不接受任何参数，因此处理程序应该检查BigWorld.ime.language属性和BigWorld.localeInfo函数来检查新的语言并进行相应的更新。</p>
+<p>通常，应用程序会根据新语言更新语言指示器和&#x2F;或字体。</p>
+<h4 id="19-2-2-2-BWPersonality-handleIMEEvent"><a href="#19-2-2-2-BWPersonality-handleIMEEvent" class="headerlink" title="19.2.2.2. BWPersonality.handleIMEEvent"></a><strong>19.2.2.2. BWPersonality.handleIMEEvent</strong></h4><p>每当用户执行一些导致内部IME状态被更改的操作（通常是击键）时，就会调用BWPersonality.handleIMEEvent。handleIMEEvent的唯一参数是一个PyIMEEvent对象。事件对象本身没有任何数据，而是有一组标志，指示哪些BigWorld.ime属性已经更新。当发生以下事件时，将调用handeIMEEvent函数：</p>
+<ul>
+<li>当前输入法状态已被更改(例如在日语中在字母数字模式和平假名模式之间切换)</li>
+<li>复合字符串已被修改。</li>
+<li>光标在复合字符串中的位置已被修改。</li>
+<li>读取窗口字符串已更改。</li>
+<li>读取窗口的可见性发生了变化。</li>
+<li>候选列表的可见性发生了变化。</li>
+<li>候选列表项已更改。</li>
+<li>用户更改了候选列表中突出显示的项。</li>
+</ul>
+<h4 id="19-2-2-3-Finalising-characters"><a href="#19-2-2-3-Finalising-characters" class="headerlink" title="19.2.2.3. Finalising characters"></a><strong>19.2.2.3. Finalising characters</strong></h4><p>当用户在方法编辑器中输入完所需的文本后，他们将按回车键提交字符串。当这种情况发生时，BWPersonality.handleKeyEvent将会被调用，以key code Keys.KEY_IME_CHAR的形式发布。</p>
+<h4 id="19-2-3-Displaying-the-IME"><a href="#19-2-3-Displaying-the-IME" class="headerlink" title="19.2.3. Displaying the IME"></a><strong>19.2.3. Displaying the IME</strong></h4><p>根据当前的底层状态实际显示IME接口的任务是Python脚本程序员的任务。IME表示脚本的复杂性取决于需要支持多少种语言，因为每种语言都有自己的IME表示标准方法。</p>
+<p> 请注意，由于单个语言可用的不同IME的数量，以及Windows XP和Windows Vista之间的差异，建议尽可能多地跨这些不同的配置进行测试。</p>
+<h2 id="20-BigWorld-Web-Integration"><a href="#20-BigWorld-Web-Integration" class="headerlink" title="20 . BigWorld Web Integration"></a><strong>20 . BigWorld Web Integration</strong></h2><p>BigWorld技术引擎现在包含了开源的Mozilla项目，可以作为客户端的一部分显示和交互网页。本文暂不介绍</p>
+<h2 id="21-Sounds"><a href="#21-Sounds" class="headerlink" title="21. Sounds"></a><strong>21. Sounds</strong></h2><p>BigWorld通过第三方FMOD声音库(<a target="_blank" rel="noopener" href="http://www.fmod.org)提供声音支持.有关更多信息,请参阅文档“third-party/">www.fmod.org)提供声音支持。有关更多信息，请参阅文档“Third-Party</a> Integrations”。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BigWorld/" rel="tag"># BigWorld</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/11/06/bigworld_05_01/" rel="prev" title="BIG WORLD 客户端编程指南01">
+                  <i class="fa fa-chevron-left"></i> BIG WORLD 客户端编程指南01
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/11/06/bigworld_06_01/" rel="next" title="BIGWORLD 服务端编程指南01">
+                  BIGWORLD 服务端编程指南01 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华</span>
+</div>
+  <div class="powered-by">
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

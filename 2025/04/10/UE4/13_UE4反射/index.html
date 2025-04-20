@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1 UE反射的原理1.1 UE是如何实现反射机制Unreal Engine（UE）通过一套宏、元数据和自定义的对象系统实现了反射机制。这些机制允许在运行时获取类型信息、访问和修改对象的属性和方法。以下是UE反射机制的核心部分及其实现方式： 1.1.1 核心组件 UObject和UClass 宏系统 元数据系统 反射API  1. UObject和UClassUObject：所有支持反射的类都必须继">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE反射">
+<meta property="og:url" content="http://example.com/2025/04/10/UE4/13_UE4%E5%8F%8D%E5%B0%84/index.html">
+<meta property="og:site_name" content="H&#39;s Blogs">
+<meta property="og:description" content="1 UE反射的原理1.1 UE是如何实现反射机制Unreal Engine（UE）通过一套宏、元数据和自定义的对象系统实现了反射机制。这些机制允许在运行时获取类型信息、访问和修改对象的属性和方法。以下是UE反射机制的核心部分及其实现方式： 1.1.1 核心组件 UObject和UClass 宏系统 元数据系统 反射API  1. UObject和UClassUObject：所有支持反射的类都必须继">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-10T14:23:59.822Z">
+<meta property="article:modified_time" content="2025-04-20T07:06:01.201Z">
+<meta property="article:author" content="华">
+<meta property="article:tag" content="UE,反射">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2025/04/10/UE4/13_UE4%E5%8F%8D%E5%B0%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2025/04/10/UE4/13_UE4%E5%8F%8D%E5%B0%84/","path":"2025/04/10/UE4/13_UE4反射/","title":"UE反射"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>UE反射 | H's Blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-UE%E5%8F%8D%E5%B0%84%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">1 UE反射的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-UE%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 UE是如何实现反射机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1 核心组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-%E5%8F%8D%E5%B0%84%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2.2 反射的实现步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-2-1-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">1.2.2.1 反射机制的工作流程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.2.2 示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8UE%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">2 使用UE反射机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E7%9A%84%E5%89%8D%E6%8F%90"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 使用反射机制的前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%B0%84API"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 使用反射API</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="华"
+      src="/images/Avatar.png">
+  <p class="site-author-name" itemprop="name">华</p>
+  <div class="site-description" itemprop="description">个人博客记录</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HBlogs" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HBlogs" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2575861939@qq.com" title="E-Mail → 2575861939@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/10/UE4/13_UE4%E5%8F%8D%E5%B0%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="UE反射 | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UE反射
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-10 22:23:59" itemprop="dateCreated datePublished" datetime="2025-04-10T22:23:59+08:00">2025-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-20 15:06:01" itemprop="dateModified" datetime="2025-04-20T15:06:01+08:00">2025-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/UE/" itemprop="url" rel="index"><span itemprop="name">UE</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1-UE反射的原理"><a href="#1-UE反射的原理" class="headerlink" title="1 UE反射的原理"></a>1 UE反射的原理</h2><h3 id="1-1-UE是如何实现反射机制"><a href="#1-1-UE是如何实现反射机制" class="headerlink" title="1.1 UE是如何实现反射机制"></a>1.1 UE是如何实现反射机制</h3><p>Unreal Engine（UE）通过一套宏、元数据和自定义的对象系统实现了反射机制。这些机制允许在运行时获取类型信息、访问和修改对象的属性和方法。以下是UE反射机制的核心部分及其实现方式：</p>
+<h4 id="1-1-1-核心组件"><a href="#1-1-1-核心组件" class="headerlink" title="1.1.1 核心组件"></a>1.1.1 核心组件</h4><ul>
+<li><strong>UObject和UClass</strong></li>
+<li><strong>宏系统</strong></li>
+<li><strong>元数据系统</strong></li>
+<li><strong>反射API</strong></li>
+</ul>
+<p><strong>1. UObject和UClass</strong><br><strong>UObject</strong>：所有支持反射的类都必须继承自<code>UObject</code>。<code>UObject</code>是UE的所有反射类的基类，提供了反射所需的基础设施。<br><strong>UClass</strong>：<code>UClass</code>是<code>UObject</code>的元类，包含了反射信息，如类的名称、属性和方法。</p>
+<span id="more"></span>
+
+<p><strong>2. 宏系统</strong><br>UE使用一套宏来标记和生成反射信息，这些宏包括<code>UCLASS</code>、<code>USTRUCT</code>、<code>UPROPERTY</code>和<code>UFUNCTION</code>等。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//UCLASS：用于声明一个类支持反射。</span></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MYGAME_API</span> AMyActor : <span class="keyword">public</span> AActor &#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//USTRUCT：用于声明一个结构体支持反射。</span></span><br><span class="line"><span class="built_in">USTRUCT</span>()</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">FMyStruct</span> &#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line">    <span class="built_in">UPROPERTY</span>()</span><br><span class="line">    int32 MyProperty;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//UPROPERTY：用于声明类或结构体中的属性支持反射。</span></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MYGAME_API</span> AMyActor : <span class="keyword">public</span> AActor &#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, BlueprintReadWrite, Category=<span class="string">&quot;Custom&quot;</span>)</span><br><span class="line">    int32 MyProperty;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//UFUNCTION：用于声明类中的方法支持反射。</span></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MYGAME_API</span> AMyActor : <span class="keyword">public</span> AActor &#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">UFUNCTION</span>(BlueprintCallable, Category=<span class="string">&quot;Custom&quot;</span>)</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">MyFunction</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 元数据系统</strong><br>UE的反射系统通过生成元数据文件来记录类、属性和方法的信息。这些<strong>元数据在编译时生成，并在运行时使用</strong>。</p>
+<p><strong>编译时生成</strong>：使用宏系统，UE在编译时生成元数据文件，描述类、属性和方法的反射信息。</p>
+<p><strong>运行时使用</strong>：在运行时，UE使用这些元数据来实现反射功能，如动态属性访问、方法调用等。</p>
+<p><strong>4. 反射API</strong><br>UE提供了一套反射API，用于在运行时访问和操作反射信息。这些API包括但不限于：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查找类和创建实例: FindObject和StaticConstructObject用于查找类并创建其实例。</span></span><br><span class="line">UClass* MyActorClass = <span class="built_in">FindObject</span>&lt;UClass&gt;(ANY_PACKAGE, <span class="built_in">TEXT</span>(<span class="string">&quot;MyActor&quot;</span>));</span><br><span class="line"><span class="keyword">if</span> (MyActorClass) &#123;</span><br><span class="line">    AMyActor* MyActorInstance = <span class="built_in">NewObject</span>&lt;AMyActor&gt;(MyActorClass);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>访问属性</strong>:UProperty类及其派生类（如UIntProperty、UFloatProperty等）用于访问和修改对象的属性。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">UClass* MyActorClass = AMyActor::<span class="built_in">StaticClass</span>();</span><br><span class="line">UProperty* MyProperty = <span class="built_in">FindField</span>&lt;UProperty&gt;(MyActorClass, <span class="built_in">TEXT</span>(<span class="string">&quot;MyProperty&quot;</span>));</span><br><span class="line"></span><br><span class="line">AMyActor* MyActorInstance = <span class="built_in">NewObject</span>&lt;AMyActor&gt;(MyActorClass);</span><br><span class="line"><span class="keyword">if</span> (MyProperty) &#123;</span><br><span class="line">    MyProperty-&gt;<span class="built_in">SetPropertyValue_InContainer</span>(MyActorInstance, <span class="number">42</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>调用方法</strong>:<code>UFunction</code>类用于调用对象的方法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">UClass* MyActorClass = AMyActor::<span class="built_in">StaticClass</span>();</span><br><span class="line">UFunction* MyFunction = MyActorClass-&gt;<span class="built_in">FindFunctionByName</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;MyFunction&quot;</span>));</span><br><span class="line"></span><br><span class="line">AMyActor* MyActorInstance = <span class="built_in">NewObject</span>&lt;AMyActor&gt;(MyActorClass);</span><br><span class="line"><span class="keyword">if</span> (MyFunction) &#123;</span><br><span class="line">    MyActorInstance-&gt;<span class="built_in">ProcessEvent</span>(MyFunction, <span class="literal">nullptr</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-2-反射的实现步骤"><a href="#1-2-2-反射的实现步骤" class="headerlink" title="1.2.2 反射的实现步骤"></a>1.2.2 反射的实现步骤</h4><p>Unreal Engine（UE）通过一套<strong>宏</strong>、<strong>元数据</strong>和<strong>自定义的对象系统</strong>实现了反射机制，这些机制依赖于编译时的代码生成和运行时的反射API。</p>
+<p>以下是反射机制的实现过程，详细解释了<code>.generated.h</code>文件、<code>GENERATED_BODY()</code>宏、<code>UHT（Unreal Header Tool）</code>和<code>UBT（Unreal Build Tool）</code>的作用及其在不同阶段的功能：</p>
+<p><strong>1. Unreal Header Tool (UHT)</strong><br><strong>作用</strong>: UHT是一个在编译时运行的工具，只用于解析带有UE4宏的C++头文件，并生成反射信息和必要的代码。</p>
+<p><strong>工作流程</strong>:</p>
+<ol>
+<li><strong>解析C++头文件</strong>:<ul>
+<li>UHT读取和解析C++头文件，识别其中的反射宏（如<code>UCLASS</code>、<code>USTRUCT</code>、<code>UPROPERTY</code>、<code>UFUNCTION</code>等）。</li>
+</ul>
+</li>
+<li><strong>生成代码</strong><ul>
+<li>根据解析到的<strong>元数据</strong>，UHT生成对应的<code>.generated.h</code>文件，这些文件包含反射系统所需的额外代码。</li>
+<li>生成的代码包括类型信息、属性和方法的元数据注册代码等。</li>
+</ul>
+</li>
+</ol>
+<p><strong>2. .generated.h 文件</strong></p>
+<p><strong>作用</strong>:<code>.generated.h</code>文件由UHT生成，包含了反射系统所需的自动生成的代码。它们通常会在每个类或结构体的头文件中被包含。</p>
+<p><strong>3. GENERATED_BODY() 宏</strong></p>
+<p><strong>作用</strong>:<code>GENERATED_BODY()</code>宏是一个复杂的宏，它扩展为一系列声明和定义，这些声明和定义由UHT生成，用于支持UE4的反射系统。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MYGAME_API</span> AMyActor : <span class="keyword">public</span> AActor &#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>() <span class="comment">// 这里插入由UHT生成的代码</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 用户定义的属性和方法</span></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, BlueprintReadWrite, Category = <span class="string">&quot;Custom&quot;</span>)</span><br><span class="line">    int32 MyProperty;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UFUNCTION</span>(BlueprintCallable, Category = <span class="string">&quot;Custom&quot;</span>)</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">MyFunction</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>展开后的效果</strong>: <code>GENERATED_BODY()</code>宏会展开为在<code>.generated.h</code>文件中生成的实际代码，包括反射信息和元数据注册函数的声明。</p>
+<p><strong>4. Unreal Build Tool (UBT)</strong></p>
+<p><strong>作用</strong>: UBT是UE4的构建系统，用于管理项目的编译过程。它调用UHT并处理生成的代码文件。</p>
+<p><strong>工作流程</strong>:</p>
+<ol>
+<li><strong>调用UHT</strong><ul>
+<li>在编译过程中，UBT会调用UHT来解析头文件，并生成<code>.generated.h</code>文件</li>
+</ul>
+</li>
+<li><strong>编译生成的代码</strong><ul>
+<li>UBT会将生成的<code>.generated.h</code>文件与原始代码一起编译，确保所有反射信息和元数据都被正确集成到最终的二进制文件中。</li>
+</ul>
+</li>
+</ol>
+<h5 id="1-2-2-1-反射机制的工作流程"><a href="#1-2-2-1-反射机制的工作流程" class="headerlink" title="1.2.2.1 反射机制的工作流程"></a>1.2.2.1 反射机制的工作流程</h5><ol>
+<li><strong>代码编写</strong><ul>
+<li>开发者在C++头文件中使用<code>UCLASS</code>、<code>USTRUCT</code>、<code>UPROPERTY</code>、<code>UFUNCTION</code>等宏标记类、结构体、属性和方法。</li>
+</ul>
+</li>
+<li><strong>UHT解析</strong><ul>
+<li>UBT在编译时调用UHT，UHT解析C++头文件，识别反射宏，并生成<code>.generated.h</code>文件。</li>
+</ul>
+</li>
+<li><strong>代码生成</strong><ul>
+<li>UHT生成的<code>.generated.h</code>文件包含了类型信息、属性和方法的元数据注册代码。</li>
+</ul>
+</li>
+<li><strong>编译</strong><ul>
+<li>UBT将原始代码和生成的代码一起编译，生成最终的二进制文件。</li>
+</ul>
+</li>
+<li><strong>运行时反射</strong><ul>
+<li>在运行时，UE4使用生成的元数据和反射API来动态访问和操作对象的属性和方法。</li>
+</ul>
+</li>
+</ol>
+<h4 id="1-2-2-示例"><a href="#1-2-2-示例" class="headerlink" title="1.2.2 示例"></a>1.2.2 示例</h4><p>以下是一个完整的示例，展示了如何使用UE的反射机制动态访问属性和调用方法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyActor.h</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;CoreMinimal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GameFramework/Actor.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyActor.generated.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MYGAME_API</span> AMyActor : <span class="keyword">public</span> AActor &#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, BlueprintReadWrite, Category = <span class="string">&quot;Custom&quot;</span>)</span><br><span class="line">    int32 MyProperty;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UFUNCTION</span>(BlueprintCallable, Category = <span class="string">&quot;Custom&quot;</span>)</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">MyFunction</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// MyActor.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyActor.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AMyActor::MyFunction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">UE_LOG</span>(LogTemp, Warning, <span class="built_in">TEXT</span>(<span class="string">&quot;MyFunction called!&quot;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// UsageExample.cpp</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UseReflection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 查找MyActor类</span></span><br><span class="line">    UClass* MyActorClass = AMyActor::<span class="built_in">StaticClass</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建MyActor实例</span></span><br><span class="line">    AMyActor* MyActorInstance = <span class="built_in">NewObject</span>&lt;AMyActor&gt;(MyActorClass);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 动态设置属性</span></span><br><span class="line">    UProperty* MyProperty = <span class="built_in">FindField</span>&lt;UProperty&gt;(MyActorClass, <span class="built_in">TEXT</span>(<span class="string">&quot;MyProperty&quot;</span>));</span><br><span class="line">    <span class="keyword">if</span> (MyProperty) &#123;</span><br><span class="line">        MyProperty-&gt;<span class="built_in">SetPropertyValue_InContainer</span>(MyActorInstance, <span class="number">42</span>);</span><br><span class="line">        int32 PropertyValue;</span><br><span class="line">        MyProperty-&gt;<span class="built_in">GetValue_InContainer</span>(MyActorInstance, &amp;PropertyValue);</span><br><span class="line">        <span class="built_in">UE_LOG</span>(LogTemp, Warning, <span class="built_in">TEXT</span>(<span class="string">&quot;MyProperty value: %d&quot;</span>), PropertyValue);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 动态调用方法</span></span><br><span class="line">    UFunction* MyFunction = MyActorClass-&gt;<span class="built_in">FindFunctionByName</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;MyFunction&quot;</span>));</span><br><span class="line">    <span class="keyword">if</span> (MyFunction) &#123;</span><br><span class="line">        MyActorInstance-&gt;<span class="built_in">ProcessEvent</span>(MyFunction, <span class="literal">nullptr</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-使用UE反射机制"><a href="#2-使用UE反射机制" class="headerlink" title="2 使用UE反射机制"></a>2 使用UE反射机制</h2><h3 id="2-1-使用反射机制的前提"><a href="#2-1-使用反射机制的前提" class="headerlink" title="2.1 使用反射机制的前提"></a>2.1 使用反射机制的前提</h3><p>要使用反射机制有四个必要条件：①继承UObject类；②包含.generated.h头文件；③添加了GENERATED_BODY()宏；④给需要反射的类、属性、方法通过宏进行标记。</p>
+<p>前三个条件都没必要强调，在UE中创建一个集成UObject的类自动就帮我们设置好了。所以讨论下第四点就行。</p>
+<p>使用反射系统的总开关是类的反射，UCLASS（），如果这个类没有用这个宏进行标记，则内部的属性或方法标记了也不能反射。这一点需要注意。</p>
+<p>同时反射宏还有需要可以配置的</p>
+<h3 id="2-2-使用反射API"><a href="#2-2-使用反射API" class="headerlink" title="2.2 使用反射API"></a>2.2 使用反射API</h3><p>Unreal Engine 4（UE4）反射API提供了一套强大且灵活的工具，用于在运行时动态地访问和操作对象的属性和方法。以下是对UE4反射API的详细介绍，包括常用类和函数的使用方法。</p>
+<p><strong>1. 核心类和函数</strong></p>
+<p>UE4的反射API主要涉及以下几个核心类和函数：</p>
+<ul>
+<li><strong>UClass</strong>: 描述一个UObject类的元数据。</li>
+<li><strong>UObject</strong>: 所有反射对象的基类。</li>
+<li><strong>UProperty</strong>: 描述对象属性的元数据。</li>
+<li><strong>UFunction</strong>: 描述对象方法的元数据。</li>
+<li><strong>FField</strong>: 用于访问对象的属性和方法。</li>
+</ul>
+<p><strong>2. 查找类 &#x3D;&#x3D; 查找UClass对象</strong></p>
+<p>使用StaticClass、FindObject或GetClass函数来查找类。这三种方法使用场景不一样。<br>StaticClass函数是静态函数，直接通过类调用静态函数即可。<br>FindObject函数直接在运行时通过类名来查找UClass对象。<br>GetClass函数是通过对象实例来查找UClass对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过StaticClass查找类（静态函数查找）</span></span><br><span class="line">UClass* MyActorClass = AMyActor::<span class="built_in">StaticClass</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过FindObject查找类（运行时根据对象名称查找类）</span></span><br><span class="line">UClass* MyActorClass = <span class="built_in">FindObject</span>&lt;UClass&gt;(ANY_PACKAGE, <span class="built_in">TEXT</span>(<span class="string">&quot;MyActor&quot;</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取对象的类（通过对象来查找）</span></span><br><span class="line">UClass* ObjectClass = Object-&gt;<span class="built_in">GetClass</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 创建实例</strong></p>
+<p>使用<code>NewObject</code>函数来创建类的实例。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AMyActor* MyActorInstance = <span class="built_in">NewObject</span>&lt;AMyActor&gt;(MyActorClass);</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. 访问属性</strong></p>
+<p>使用<code>FindField</code>函数查找属性，然后使用属性的API来获取或设置属性值</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UProperty* MyProperty = <span class="built_in">FindField</span>&lt;UProperty&gt;(MyActorClass, <span class="built_in">TEXT</span>(<span class="string">&quot;MyProperty&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>获取和设置属性值</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (MyProperty) &#123;</span><br><span class="line">    <span class="comment">// 设置属性值</span></span><br><span class="line">    MyProperty-&gt;<span class="built_in">SetPropertyValue_InContainer</span>(MyActorInstance, <span class="number">42</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取属性值</span></span><br><span class="line">    int32 PropertyValue;</span><br><span class="line">    MyProperty-&gt;<span class="built_in">GetValue_InContainer</span>(MyActorInstance, &amp;PropertyValue);</span><br><span class="line">    <span class="built_in">UE_LOG</span>(LogTemp, Warning, <span class="built_in">TEXT</span>(<span class="string">&quot;MyProperty value: %d&quot;</span>), PropertyValue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>5. 调用方法</strong></p>
+<p>使用<code>FindFunctionByName</code>函数查找方法，然后使用<code>ProcessEvent</code>函数调用方法。</p>
+<p>查找方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UFunction* MyFunction = MyActorClass-&gt;<span class="built_in">FindFunctionByName</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;MyFunction&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>调用方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (MyFunction) &#123;</span><br><span class="line">    MyActorInstance-&gt;<span class="built_in">ProcessEvent</span>(MyFunction, <span class="literal">nullptr</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>6. 实际应用示例</strong></p>
+<p>下面是一个完整的示例，展示如何使用UE4反射API在运行时访问和操作对象的属性和方法。</p>
+<p><strong>MyActor.h</strong>:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;CoreMinimal.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;GameFramework/Actor.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyActor.generated.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">UCLASS</span>()</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MYGAME_API</span> AMyActor : <span class="keyword">public</span> AActor &#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">UPROPERTY</span>(EditAnywhere, BlueprintReadWrite, Category = <span class="string">&quot;Custom&quot;</span>)</span><br><span class="line">    int32 MyProperty;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UFUNCTION</span>(BlueprintCallable, Category = <span class="string">&quot;Custom&quot;</span>)</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">MyFunction</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>MyActor.cpp</strong>:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyActor.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">AMyActor::MyFunction</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">UE_LOG</span>(LogTemp, Warning, <span class="built_in">TEXT</span>(<span class="string">&quot;MyFunction called!&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>UsageExample.cpp</strong>:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;MyActor.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">UseReflection</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 查找MyActor类</span></span><br><span class="line">    UClass* MyActorClass = AMyActor::<span class="built_in">StaticClass</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建MyActor实例</span></span><br><span class="line">    AMyActor* MyActorInstance = <span class="built_in">NewObject</span>&lt;AMyActor&gt;(MyActorClass);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 动态设置属性</span></span><br><span class="line">    UProperty* MyProperty = <span class="built_in">FindField</span>&lt;UProperty&gt;(MyActorClass, <span class="built_in">TEXT</span>(<span class="string">&quot;MyProperty&quot;</span>));</span><br><span class="line">    <span class="keyword">if</span> (MyProperty) &#123;</span><br><span class="line">        MyProperty-&gt;<span class="built_in">SetPropertyValue_InContainer</span>(MyActorInstance, <span class="number">42</span>);</span><br><span class="line">        int32 PropertyValue;</span><br><span class="line">        MyProperty-&gt;<span class="built_in">GetValue_InContainer</span>(MyActorInstance, &amp;PropertyValue);</span><br><span class="line">        <span class="built_in">UE_LOG</span>(LogTemp, Warning, <span class="built_in">TEXT</span>(<span class="string">&quot;MyProperty value: %d&quot;</span>), PropertyValue);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 动态调用方法</span></span><br><span class="line">    UFunction* MyFunction = MyActorClass-&gt;<span class="built_in">FindFunctionByName</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;MyFunction&quot;</span>));</span><br><span class="line">    <span class="keyword">if</span> (MyFunction) &#123;</span><br><span class="line">        MyActorInstance-&gt;<span class="built_in">ProcessEvent</span>(MyFunction, <span class="literal">nullptr</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>7. 高级用法</strong></p>
+<p>获取类的所有属性：可以使用<code>TFieldIterator</code>来遍历类的所有属性。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (TFieldIterator&lt;UProperty&gt; <span class="built_in">It</span>(MyActorClass); It; ++It) &#123;</span><br><span class="line">    UProperty* Property = *It;</span><br><span class="line">    <span class="built_in">UE_LOG</span>(LogTemp, Warning, <span class="built_in">TEXT</span>(<span class="string">&quot;Property: %s&quot;</span>), *Property-&gt;<span class="built_in">GetName</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取类的所有方法：可以使用<code>TFieldIterator</code>来遍历类的所有方法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (TFieldIterator&lt;UFunction&gt; <span class="built_in">It</span>(MyActorClass); It; ++It) &#123;</span><br><span class="line">    UFunction* Function = *It;</span><br><span class="line">    <span class="built_in">UE_LOG</span>(LogTemp, Warning, <span class="built_in">TEXT</span>(<span class="string">&quot;Function: %s&quot;</span>), *Function-&gt;<span class="built_in">GetName</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>动态创建对象并设置属性</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DynamicCreateAndSetProperty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建对象</span></span><br><span class="line">    UClass* MyActorClass = AMyActor::<span class="built_in">StaticClass</span>();</span><br><span class="line">    AMyActor* MyActorInstance = <span class="built_in">NewObject</span>&lt;AMyActor&gt;(MyActorClass);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置属性</span></span><br><span class="line">    UProperty* MyProperty = <span class="built_in">FindField</span>&lt;UProperty&gt;(MyActorClass, <span class="built_in">TEXT</span>(<span class="string">&quot;MyProperty&quot;</span>));</span><br><span class="line">    <span class="keyword">if</span> (MyProperty) &#123;</span><br><span class="line">        MyProperty-&gt;<span class="built_in">SetPropertyValue_InContainer</span>(MyActorInstance, <span class="number">100</span>);</span><br><span class="line">        int32 PropertyValue;</span><br><span class="line">        MyProperty-&gt;<span class="built_in">GetValue_InContainer</span>(MyActorInstance, &amp;PropertyValue);</span><br><span class="line">        <span class="built_in">UE_LOG</span>(LogTemp, Warning, <span class="built_in">TEXT</span>(<span class="string">&quot;Property value: %d&quot;</span>), PropertyValue);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 调用方法</span></span><br><span class="line">    UFunction* MyFunction = MyActorClass-&gt;<span class="built_in">FindFunctionByName</span>(<span class="built_in">TEXT</span>(<span class="string">&quot;MyFunction&quot;</span>));</span><br><span class="line">    <span class="keyword">if</span> (MyFunction) &#123;</span><br><span class="line">        MyActorInstance-&gt;<span class="built_in">ProcessEvent</span>(MyFunction, <span class="literal">nullptr</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/hhw_hhw/article/details/139287867">【UE 反射】反射的原理是什么？如何使用机制？-CSDN博客</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/UE-%E5%8F%8D%E5%B0%84/" rel="tag"># UE,反射</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/04/10/UE4/11_UE4%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96/" rel="prev" title="UE内存优化篇章">
+                  <i class="fa fa-chevron-left"></i> UE内存优化篇章
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/04/10/UE4/14_UE4%E5%BA%8F%E5%88%97%E5%8C%96/" rel="next" title="UE性能优化CPU篇章">
+                  UE性能优化CPU篇章 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">136k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">7:33</span>
+  </span>
+</div>
+  <div class="powered-by">
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

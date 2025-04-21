@@ -21,13 +21,13 @@
 
     <meta name="description" content="Lua面向对象在Lua语言中可以使用函数setmetatable来设置或修改任意表的元表 我们只能为表设置元表；如果要为其他类型的值设置元表，则必须通过C代码或者调试库完成（该限制存在的主要原因是为了防止过度使用对某类型的所有值生效的元表。Lua语言老版本中的经验表明，这样的全局设置经常导致不可重用的代码）。字符串标准库为所有的字符串都设置了同一个元表，而其他类型在默认情况中都没有元表。 Lua语">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Lua">
+<meta property="og:title" content="Lua面向对象">
 <meta property="og:url" content="http://example.com/2025/04/20/6_Lua/Lua%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/index.html">
 <meta property="og:site_name" content="H&#39;s Blogs">
 <meta property="og:description" content="Lua面向对象在Lua语言中可以使用函数setmetatable来设置或修改任意表的元表 我们只能为表设置元表；如果要为其他类型的值设置元表，则必须通过C代码或者调试库完成（该限制存在的主要原因是为了防止过度使用对某类型的所有值生效的元表。Lua语言老版本中的经验表明，这样的全局设置经常导致不可重用的代码）。字符串标准库为所有的字符串都设置了同一个元表，而其他类型在默认情况中都没有元表。 Lua语">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-20T00:55:16.779Z">
-<meta property="article:modified_time" content="2025-04-21T03:33:14.418Z">
+<meta property="article:modified_time" content="2025-04-21T03:45:47.963Z">
 <meta property="article:author" content="华">
 <meta property="article:tag" content="Lua,面向对象">
 <meta name="twitter:card" content="summary">
@@ -37,10 +37,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2025/04/20/6_Lua/Lua%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/","path":"2025/04/20/6_Lua/Lua面向对象/","title":"Lua"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2025/04/20/6_Lua/Lua%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/","path":"2025/04/20/6_Lua/Lua面向对象/","title":"Lua面向对象"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Lua | H's Blogs</title>
+<title>Lua面向对象 | H's Blogs</title>
   
 
 
@@ -131,18 +131,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -202,12 +202,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Lua | H's Blogs">
+      <meta itemprop="name" content="Lua面向对象 | H's Blogs">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Lua
+          Lua面向对象
         </h1>
 
         <div class="post-meta-container">
@@ -225,7 +225,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-04-21 11:33:14" itemprop="dateModified" datetime="2025-04-21T11:33:14+08:00">2025-04-21</time>
+      <time title="修改时间：2025-04-21 11:45:47" itemprop="dateModified" datetime="2025-04-21T11:45:47+08:00">2025-04-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -373,14 +373,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">138k</span>
+    <span title="站点总字数">8k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:40</span>
+    <span title="站点阅读时长">28 分钟</span>
   </span>
 </div>
   <div class="powered-by">

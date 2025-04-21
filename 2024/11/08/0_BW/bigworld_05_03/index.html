@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="BIGWORLD_05_Client Programming Guide_0322. 3D Engine (Moo)Moo是一个使用DirectX 9的3D引擎，提供了基于资源、对象和设备的服务，但不包括场景数据库。 基于资源的服务包括顶点缓冲区、索引缓冲区、顶点着色器、像素着色器和效果的生成和管理。纹理被自动压缩和存储。所有不受Direct3D管理的资源都由Moo管理，允许大量数据进出使用。 基">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BIGWORLD 客户端编程指南03">
+<meta property="og:url" content="http://example.com/2024/11/08/0_BW/bigworld_05_03/index.html">
+<meta property="og:site_name" content="H&#39;s Blogs">
+<meta property="og:description" content="BIGWORLD_05_Client Programming Guide_0322. 3D Engine (Moo)Moo是一个使用DirectX 9的3D引擎，提供了基于资源、对象和设备的服务，但不包括场景数据库。 基于资源的服务包括顶点缓冲区、索引缓冲区、顶点着色器、像素着色器和效果的生成和管理。纹理被自动压缩和存储。所有不受Direct3D管理的资源都由Moo管理，允许大量数据进出使用。 基">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_11.png">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_12.png">
+<meta property="article:published_time" content="2024-11-08T09:24:52.305Z">
+<meta property="article:modified_time" content="2025-04-21T03:26:17.814Z">
+<meta property="article:author" content="华">
+<meta property="article:tag" content="BigWorld">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image%5Cbigworld%5C05_11.png">
+
+
+<link rel="canonical" href="http://example.com/2024/11/08/0_BW/bigworld_05_03/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/11/08/0_BW/bigworld_05_03/","path":"2024/11/08/0_BW/bigworld_05_03/","title":"BIGWORLD 客户端编程指南03"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BIGWORLD 客户端编程指南03 | H's Blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BIGWORLD-05-Client-Programming-Guide-03"><span class="nav-number">1.</span> <span class="nav-text">BIGWORLD_05_Client Programming Guide_03</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#22-3D-Engine-Moo"><span class="nav-number">1.1.</span> <span class="nav-text">22. 3D Engine (Moo)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#22-1-Features"><span class="nav-number">1.1.1.</span> <span class="nav-text">22.1. Features</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-1-D3DXEffects-vertex-and-pixel-shader-support"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">22.1.1. D3DXEffects vertex and pixel shader support</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-2-Cubic-environment-maps"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">22.1.2. Cubic environment maps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-3-Render-targets"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">22.1.3. Render targets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-4-Lighting"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">22.1.4. Lighting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-4-1-Light-maps"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">22.1.4.1. Light maps</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#22-1-4-1-1-Flora-light-map"><span class="nav-number">1.1.1.5.1.</span> <span class="nav-text">22.1.4.1.1. Flora light map</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-1-4-1-2-Sky-light-map"><span class="nav-number">1.1.1.5.2.</span> <span class="nav-text">22.1.4.1.2. Sky light map</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-5-Normal-mapping-x2F-bump-mapping"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">22.1.5. Normal mapping&#x2F;bump mapping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-6-Terrain"><span class="nav-number">1.1.1.7.</span> <span class="nav-text">22.1.6. Terrain</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-7-Animation"><span class="nav-number">1.1.1.8.</span> <span class="nav-text">22.1.7. Animation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-1-8-Vertex-morphing"><span class="nav-number">1.1.1.9.</span> <span class="nav-text">22.1.8. Vertex morphing</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-2-Supported-video-cards"><span class="nav-number">1.1.2.</span> <span class="nav-text">22.2. Supported video cards</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-3-Hardware-requirements-for-special-effects"><span class="nav-number">1.1.3.</span> <span class="nav-text">22.3. Hardware requirements for special effects</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-4-Visual"><span class="nav-number">1.1.4.</span> <span class="nav-text">22.4. Visual</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-5-EffectMaterial"><span class="nav-number">1.1.5.</span> <span class="nav-text">22.5. EffectMaterial</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-5-1-Format"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">22.5.1. Format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-5-3-Artist-editable-x2F-tweakable-variables"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">22.5.3. Artist-editable&#x2F;tweakable variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-5-4-Multiple-layered-effects-per-material"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">22.5.4. Multiple-layered effects per material</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-5-5-Recording-material-states"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">22.5.5. Recording material states</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-5-6-Using-BigWorld-fx-files-with-3ds-Max"><span class="nav-number">1.1.5.5.</span> <span class="nav-text">22.5.6. Using BigWorld .fx files with 3ds Max</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-6-Visual-channels"><span class="nav-number">1.1.6.</span> <span class="nav-text">22.6. Visual channels</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-6-1-Sorted-channel"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">22.6.1. Sorted channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-6-2-Internal-sorted-channel"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">22.6.2. Internal sorted channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-6-3-Shimmer-channel"><span class="nav-number">1.1.6.3.</span> <span class="nav-text">22.6.3. Shimmer channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-6-4-Sorted-shimmer-channel"><span class="nav-number">1.1.6.4.</span> <span class="nav-text">22.6.4. Sorted shimmer channel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-6-5-Distortion-channel"><span class="nav-number">1.1.6.5.</span> <span class="nav-text">22.6.5. Distortion channel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-7-Textures"><span class="nav-number">1.1.7.</span> <span class="nav-text">22.7. Textures</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-7-1-Texture-detail-levels-x2F-compression"><span class="nav-number">1.1.7.1.</span> <span class="nav-text">22.7.1. Texture detail levels&#x2F;compression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-7-2-Animated-textures"><span class="nav-number">1.1.7.2.</span> <span class="nav-text">22.7.2. Animated textures</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-7-3-Applying-a-code-generated-texture-to-a-character"><span class="nav-number">1.1.7.3.</span> <span class="nav-text">22.7.3. Applying a code-generated texture to a character</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#22-7-3-1-Loading-textures-from-disk"><span class="nav-number">1.1.7.3.1.</span> <span class="nav-text">22.7.3.1. Loading textures from disk</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-7-3-2-Manipulate-individual-pixels-within-a-texture"><span class="nav-number">1.1.7.3.2.</span> <span class="nav-text">22.7.3.2. Manipulate individual pixels within a texture</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-7-3-3-Using-a-shader-to-build-a-custom-texture"><span class="nav-number">1.1.7.3.3.</span> <span class="nav-text">22.7.3.3. Using a shader to build a custom texture</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-7-3-4-Dealing-with-the-texture-cache"><span class="nav-number">1.1.7.3.4.</span> <span class="nav-text">22.7.3.4. Dealing with the texture cache</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-7-3-5-Assigning-custom-textures-to-a-model"><span class="nav-number">1.1.7.3.5.</span> <span class="nav-text">22.7.3.5. Assigning custom textures to a model</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-8-Vertex-declaration"><span class="nav-number">1.1.8.</span> <span class="nav-text">22.8. Vertex declaration</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-8-1-File-format"><span class="nav-number">1.1.8.1.</span> <span class="nav-text">22.8.1. File format</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-9-Graphics-settings"><span class="nav-number">1.1.9.</span> <span class="nav-text">22.9. Graphics settings</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-9-1-Customising-options"><span class="nav-number">1.1.9.1.</span> <span class="nav-text">22.9.1. Customising options</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#22-9-1-1-TEXTURE-QUALITY-and-TEXTURE-COMPRESSION"><span class="nav-number">1.1.9.1.1.</span> <span class="nav-text">22.9.1.1. TEXTURE_QUALITY and TEXTURE_COMPRESSION</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-9-1-2-SHADOWS-COUNT"><span class="nav-number">1.1.9.1.2.</span> <span class="nav-text">22.9.1.2. SHADOWS_COUNT</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-9-1-3-FLORA-DENSITY"><span class="nav-number">1.1.9.1.3.</span> <span class="nav-text">22.9.1.3. FLORA_DENSITY</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-9-1-4-FAR-PLANE"><span class="nav-number">1.1.9.1.4.</span> <span class="nav-text">22.9.1.4. FAR_PLANE</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-9-1-5-OBJECT-LOD"><span class="nav-number">1.1.9.1.5.</span> <span class="nav-text">22.9.1.5. OBJECT_LOD</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#22-9-2-Using-settings"><span class="nav-number">1.1.9.2.</span> <span class="nav-text">22.9.2. Using settings</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#22-9-2-1-Auto-detecting-settings"><span class="nav-number">1.1.9.2.1.</span> <span class="nav-text">22.9.2.1. Auto-detecting settings</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-9-2-2-GraphicsPresets-class"><span class="nav-number">1.1.9.2.2.</span> <span class="nav-text">22.9.2.2. GraphicsPresets class</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-9-2-3-Delayed-settings"><span class="nav-number">1.1.9.2.3.</span> <span class="nav-text">22.9.2.3. Delayed settings</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22-9-2-4-Settings-that-require-restarting-the-client"><span class="nav-number">1.1.9.2.4.</span> <span class="nav-text">22.9.2.4. Settings that require restarting the client</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-10-Taking-Screenshots"><span class="nav-number">1.1.10.</span> <span class="nav-text">22.10. Taking Screenshots</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-10-1-High-Resolution-Screenshots"><span class="nav-number">1.1.10.1.</span> <span class="nav-text">22.10.1. High Resolution Screenshots</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-11-Dynamic-Entity-Shadows"><span class="nav-number">1.1.11.</span> <span class="nav-text">22.11. Dynamic Entity Shadows</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#22-11-2-Shadow-maps"><span class="nav-number">1.1.11.1.</span> <span class="nav-text">22.11.2. Shadow maps</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-Post-Processing"><span class="nav-number">1.2.</span> <span class="nav-text">23. Post Processing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#23-1-Pipeline-Overview"><span class="nav-number">1.2.1.</span> <span class="nav-text">23.1. Pipeline Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-2-Creating-a-Custom-Post-Processing-Effect"><span class="nav-number">1.2.2.</span> <span class="nav-text">23.2. Creating a Custom Post-Processing Effect</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#23-2-1-Creating-the-Custom-Pixel-Shader"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">23.2.1. Creating the Custom Pixel Shader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#23-2-2-Previewing-the-Results"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">23.2.2. Previewing the Results</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#23-2-3-Writing-a-Custom-Pixel-Shader-for-Previewing-the-Results"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">23.2.3. Writing a Custom Pixel Shader for Previewing the Results</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#23-2-4-Authoring-a-Post-Processing-Effect-in-Python"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">23.2.4. Authoring a Post-Processing Effect in Python</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-3-Render-Targets"><span class="nav-number">1.2.3.</span> <span class="nav-text">23.3. Render Targets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-4-Performance"><span class="nav-number">1.2.4.</span> <span class="nav-text">23.4. Performance</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#23-4-1-Measuring-the-Time-Spent-on-the-GPU"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">23.4.1. Measuring the Time Spent on the GPU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#23-4-2-Background-Loading"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">23.4.2. Background Loading</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#24-Job-System"><span class="nav-number">1.3.</span> <span class="nav-text">24. Job System</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#24-2-Under-the-Hood"><span class="nav-number">1.3.1.</span> <span class="nav-text">24.2. Under the Hood</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-3-Wrapper-API"><span class="nav-number">1.3.2.</span> <span class="nav-text">24.3. Wrapper API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-4-Job-System-API"><span class="nav-number">1.3.3.</span> <span class="nav-text">24.4. Job System API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-5-An-Example"><span class="nav-number">1.3.4.</span> <span class="nav-text">24.5. An Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-6-Implementing-it"><span class="nav-number">1.3.5.</span> <span class="nav-text">24.6. Implementing it</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#25-Debugging"><span class="nav-number">1.4.</span> <span class="nav-text">25. Debugging</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#25-1-Build-configuration-%E2%80%94-conditional-feature-inclusion"><span class="nav-number">1.4.1.</span> <span class="nav-text">25.1. Build configuration — conditional feature inclusion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-2-Watchers"><span class="nav-number">1.4.2.</span> <span class="nav-text">25.2. Watchers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#25-2-1-Watcher-types"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">25.2.1. Watcher types</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#25-2-2-Using-watchers"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">25.2.2. Using watchers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#25-2-3-Watcher-Console"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">25.2.3. Watcher Console</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#25-2-4-Remote-watcher-access"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">25.2.4. Remote watcher access</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-4-Scripts"><span class="nav-number">1.4.3.</span> <span class="nav-text">25.4. Scripts</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#25-4-1-Python-Console"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">25.4.1. Python Console</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#25-4-2-Remote-Python-Console"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">25.4.2. Remote Python Console</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#25-4-3-Script-reloading"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">25.4.3. Script reloading</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#25-4-4-Common-errors"><span class="nav-number">1.4.3.4.</span> <span class="nav-text">25.4.4. Common errors</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-5-Script-interactive-debugging"><span class="nav-number">1.4.4.</span> <span class="nav-text">25.5. Script interactive debugging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-6-Client-Access-Tool-CAT"><span class="nav-number">1.4.5.</span> <span class="nav-text">25.6. Client Access Tool (CAT)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#25-6-1-Connecting-to-the-client"><span class="nav-number">1.4.5.1.</span> <span class="nav-text">25.6.1. Connecting to the client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#25-6-2-CAT-Scripts"><span class="nav-number">1.4.5.2.</span> <span class="nav-text">25.6.2. CAT Scripts</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="华"
+      src="/images/Avatar.png">
+  <p class="site-author-name" itemprop="name">华</p>
+  <div class="site-description" itemprop="description">个人博客记录</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HBlogs" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HBlogs" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2575861939@qq.com" title="E-Mail → 2575861939@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/0_BW/bigworld_05_03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="BIGWORLD 客户端编程指南03 | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BIGWORLD 客户端编程指南03
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-11-08 17:24:52" itemprop="dateCreated datePublished" datetime="2024-11-08T17:24:52+08:00">2024-11-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:26:17" itemprop="dateModified" datetime="2025-04-21T11:26:17+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/BigWorld/" itemprop="url" rel="index"><span itemprop="name">BigWorld</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>20k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1:05</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="BIGWORLD-05-Client-Programming-Guide-03"><a href="#BIGWORLD-05-Client-Programming-Guide-03" class="headerlink" title="BIGWORLD_05_Client Programming Guide_03"></a>BIGWORLD_05_Client Programming Guide_03</h1><h2 id="22-3D-Engine-Moo"><a href="#22-3D-Engine-Moo" class="headerlink" title="22. 3D Engine (Moo)"></a><strong>22. 3D Engine (Moo)</strong></h2><p>Moo是一个使用DirectX 9的3D引擎，提供了基于资源、对象和设备的服务，但不包括场景数据库。</p>
+<p>基于资源的服务包括顶点缓冲区、索引缓冲区、顶点着色器、像素着色器和效果的生成和管理。纹理被自动压缩和存储。所有不受Direct3D管理的资源都由Moo管理，允许大量数据进出使用。</p>
+<p>基于对象的服务包括完整的动画系统、带皮肤的两足动物、复合骨骼几何和专门的地形渲染。Moo公开了一个视觉的概念，一个重要的中层几何结构，它位于场景数据库之下，并大大简化了场景数据库代码。</p>
+<p>基于设备的服务包括渲染状态的细节控制，封装在材料和着色器中。3D窗口被封装为一个RenderContext，并提供了渲染几何图形和存储照明状态的参考框架。</p>
+<p>最后，Moo提供了基本的alpha混合排序三角形管道，不幸的是，Direct3D或(大多数)硬件仍然没有提供这种服务。</p>
+<p>需要注意的是，在可能的情况下，Moo使用底层的Direct3DX结构，如D3DXMatrix,D3DXVector和D3DXQuaternion。DirectX团队不断改进这些数学类的实现，它们的功能经常利用处理器特定的指令，如MMX, SIMD和3DNow!利用这些工程师的努力是谨慎的。</p>
+<span id="more"></span>
+
+<h3 id="22-1-Features"><a href="#22-1-Features" class="headerlink" title="22.1. Features"></a><strong>22.1. Features</strong></h3><p>Moo的一些高级功能如下:</p>
+<ul>
+<li>D3DXEffects的顶点和像素着色器支持</li>
+<li>立方环境地图</li>
+<li>渲染目标</li>
+<li>光照</li>
+<li>法线贴图&#x2F;凹凸贴图</li>
+<li>地形</li>
+<li>动画</li>
+<li>定点渐变</li>
+</ul>
+<p>以下部分描述了这些特性。</p>
+<h4 id="22-1-1-D3DXEffects-vertex-and-pixel-shader-support"><a href="#22-1-1-D3DXEffects-vertex-and-pixel-shader-support" class="headerlink" title="22.1.1. D3DXEffects vertex and pixel shader support"></a><strong>22.1.1. D3DXEffects vertex and pixel shader support</strong></h4><p>Moo中广泛使用效果文件。大多数渲染管道都是基于类EffectMaterial，它实现了一种管理效果使用的全局值的方法，以及每个实例的效果数据，如纹理、自照明值和镜面反射常数。</p>
+<p>效果文件也使它更容易管理像素和顶点着色器，因为他们是一起创建在一个文件。使用D3DXEffect格式消除了向引擎添加新的着色器效果的复杂性，并允许快速创建新的视觉效果原型。</p>
+<h4 id="22-1-2-Cubic-environment-maps"><a href="#22-1-2-Cubic-environment-maps" class="headerlink" title="22.1.2. Cubic environment maps"></a><strong>22.1.2. Cubic environment maps</strong></h4><p>立方体环境映射可以用于一些反射和标准化立方体映射(用于法线映射)。</p>
+<h4 id="22-1-3-Render-targets"><a href="#22-1-3-Render-targets" class="headerlink" title="22.1.3. Render targets"></a><strong>22.1.3. Render targets</strong></h4><p>渲染目标用于创建广告牌纹理。它们还可以与GUI组件一起使用，在2D GUI中显示3D对象(例如，用于项目选择预览)。</p>
+<h4 id="22-1-4-Lighting"><a href="#22-1-4-Lighting" class="headerlink" title="22.1.4. Lighting"></a><strong>22.1.4. Lighting</strong></h4><p>Moo的照明组件支持三种不同的灯:</p>
+<ul>
+<li>Directional lights（平行光）</li>
+<li>Point lights（点光源）</li>
+<li>Spot lights（聚光灯）</li>
+</ul>
+<p>任何物体都可以用两个方向灯、四个点灯和两个射灯来照明。这些灯是根据衰减度量来挑选的，所以通常会选择最近的灯。还需要注意的是，使用的灯光越少，光照顶点着色器的执行速度就越快。</p>
+<h4 id="22-1-4-1-Light-maps"><a href="#22-1-4-1-Light-maps" class="headerlink" title="22.1.4.1. Light maps"></a><strong>22.1.4.1. Light maps</strong></h4><p>bigworld&#x2F;src&#x2F;lib&#x2F;romp&#x2F;light_map.cpp被一般化以同时支持flora和sky光贴图。光照贴图可以在XML文件中配置。</p>
+<h5 id="22-1-4-1-1-Flora-light-map"><a href="#22-1-4-1-1-Flora-light-map" class="headerlink" title="22.1.4.1.1. Flora light map"></a><strong>22.1.4.1.1. Flora light map</strong></h5><p>flora.xml中指定了flora.xml光照图的详细信息，它的位置在文件resources.xml中指定。</p>
+<p>植物群灯光贴图的材质标签应该是system&#x2F;materials&#x2F;light_map。(关于该文件语法的详细信息，请参阅文件语法指南的.mfm)。</p>
+<p>flora light贴图的默认宽度&#x2F;高度是64x64。这是很小的，但仍然足够的分辨率投影到植物群，因为它的可见面积是100x100米。</p>
+<p><img src="/image%5Cbigworld%5C05_11.png" alt="05_11"></p>
+<h5 id="22-1-4-1-2-Sky-light-map"><a href="#22-1-4-1-2-Sky-light-map" class="headerlink" title="22.1.4.1.2. Sky light map"></a><strong>22.1.4.1.2. Sky light map</strong></h5><p>天空灯光的细节在空间的sky.xml文件中指定，它的位置在空间的空间中指定。(关于该文件语法的详细信息，请参阅文件语法指南的space.setting)</p>
+<p>天光贴图的材质标签应该是system&#x2F;materials&#x2F;sky_light_map。(关于该文件语法的详细信息，请参阅文件语法指南的.mfm)。</p>
+<p>天光贴图的默认宽度&#x2F;高度是512x512。这是相当大的，因为光地图是投射在整个可见世界(通常约1x1公里)。</p>
+<p><img src="/image%5Cbigworld%5C05_12.png" alt="05_12"></p>
+<p><em>天光贴图可以通过SKY_LIGHT_MAP图形设置来禁用</em></p>
+<h4 id="22-1-5-Normal-mapping-x2F-bump-mapping"><a href="#22-1-5-Normal-mapping-x2F-bump-mapping" class="headerlink" title="22.1.5. Normal mapping&#x2F;bump mapping"></a><strong>22.1.5. Normal mapping&#x2F;bump mapping</strong></h4><p>法线贴图通过使用每个贴图的法线来添加物体的表面细节。Moo目前支持在动态照明的物体上进行高光和漫反射照明的法线贴图，以及在静态照明的物体上进行高光照明。当前版本的导出器只支持切线空间法线映射。</p>
+<h4 id="22-1-6-Terrain"><a href="#22-1-6-Terrain" class="headerlink" title="22.1.6. Terrain"></a><strong>22.1.6. Terrain</strong></h4><p>Moo利用了支持的显卡的多纹理、顶点和像素着色能力。因为它使用了一个混合的4层纹理系统的地形，Moo利用硬件的四个纹理阶段的最佳，所以大多数地形可以在一个通道渲染。地形也支持来自定向光源的自阴影。</p>
+<h4 id="22-1-7-Animation"><a href="#22-1-7-Animation" class="headerlink" title="22.1.7. Animation"></a><strong>22.1.7. Animation</strong></h4><p>Moo支持基于节点和基于顶点(变形)的动画。Moo还可以混合动画一起提供他们之间的平滑过渡。</p>
+<h4 id="22-1-8-Vertex-morphing"><a href="#22-1-8-Vertex-morphing" class="headerlink" title="22.1.8. Vertex morphing"></a><strong>22.1.8. Vertex morphing</strong></h4><p>Moo的顶点变形适用于表面的小变化，如面部动画。变形目标从内容创建包中导出，并通过普通的动画系统进行控制。</p>
+<p>请注意，由于变形目标应用于软件，大量使用将影响渲染性能。</p>
+<h3 id="22-2-Supported-video-cards"><a href="#22-2-Supported-video-cards" class="headerlink" title="22.2. Supported video cards"></a><strong>22.2. Supported video cards</strong></h3><p>支持的显卡</p>
+<h3 id="22-3-Hardware-requirements-for-special-effects"><a href="#22-3-Hardware-requirements-for-special-effects" class="headerlink" title="22.3. Hardware requirements for special effects"></a><strong>22.3. Hardware requirements for special effects</strong></h3><p>下表列出了Moo中可用的特效及其硬件要求:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Special effect</strong></th>
+<th><strong>Vertex shader version</strong></th>
+<th><strong>Pixel shader version</strong></th>
+<th><strong>Texture stages required</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bloom</td>
+<td>1.1</td>
+<td>1.1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Cloud shadows</td>
+<td>1.1</td>
+<td>-</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Flora</td>
+<td>1.1</td>
+<td>-</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Heat Shimmer</td>
+<td>1.1</td>
+<td>-</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Normal mapping</td>
+<td>1.1</td>
+<td>1.1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>PyModel Shimmer</td>
+<td>1.1</td>
+<td>-</td>
+<td>1</td>
+</tr>
+<tr>
+<td>PyModel stipple</td>
+<td>1.1</td>
+<td>1.1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Entity shadows</td>
+<td>2.0</td>
+<td>2.0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Simulated sub-surface scattering</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Sky Gradient dome</td>
+<td>1.1</td>
+<td>-</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Terrian shadows</td>
+<td>1.1</td>
+<td>1.1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Terrain Specular</td>
+<td>1.1</td>
+<td>1.1</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<h3 id="22-4-Visual"><a href="#22-4-Visual" class="headerlink" title="22.4. Visual"></a><strong>22.4. Visual</strong></h3><p>Visual类实现3D引擎绘制的基本可渲染对象。一个可视对象包含用于绘制对象的节点层次结构、顶点、索引和材质，它还包含用于碰撞检测的BSP树。当渲染对象时，节点层次结构为可渲染对象提供了一个参考框架。Visual使用EffectMaterial、Primitives和Vertices类来渲染其几何图形。</p>
+<h3 id="22-5-EffectMaterial"><a href="#22-5-EffectMaterial" class="headerlink" title="22.5. EffectMaterial"></a><strong>22.5. EffectMaterial</strong></h3><p>BigWorld 3D引擎中的材料系统广泛地使用了D3DXEffects文件</p>
+<p>材料系统是通过类EffectMaterial实现的，它包含一个或多个D3DX效果，它们的覆盖值，以及关于碰撞属性和材料表面类型的信息。</p>
+<p>材料系统背后的想法是给美工尽可能多的控制权，让他们在不涉及程序员的情况下试验新的渲染技术。</p>
+<h4 id="22-5-1-Format"><a href="#22-5-1-Format" class="headerlink" title="22.5.1. Format"></a><strong>22.5.1. Format</strong></h4><p>EffectMaterial在磁盘上的格式非常简单，只有少数几个部分，大部分工作都是通过.fx文件完成的。</p>
+<p><strong>22.5.2. Automatic variables&#x2F;Globals</strong></p>
+<p>自动变量用于由引擎控制的任何变量，如变换、灯光、相机位置等。自动变量使用变量语义向Effect文件公开。</p>
+<p>在Effect文件中，自动变量的定义如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt; &lt;variableName&gt; : &lt;semantic&gt;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>&lt;type&gt;</p>
+<p>变量类型(float, bool，纹理等)。</p>
+</li>
+<li><p>&lt;veriableName&gt;</p>
+<p>效果文件中变量的名称。</p>
+</li>
+<li><p>&lt;semantic&gt;</p>
+<p>公开给引擎的名称。</p>
+</li>
+</ul>
+<p>自动变量通过类EffectConstantValue连接到效果。可以通过覆盖EffectConstantValue接口、实现操作()以及使用EffectConstantValue::set或使用EffectConstantValue::get返回的句柄添加新类的实例来添加新的自动变量。</p>
+<p> 以下是Moo::EffectVisualContext设置的自动变量:</p>
+<ul>
+<li><p><strong>Ambient(float4)</strong></p>
+<p>当前的环境色。</p>
+</li>
+<li><p><strong>CamerPos(float3)</strong></p>
+<p>当前相机在世界空间的位置。</p>
+</li>
+<li><p><strong>CamerPosObjectSpace(float3)</strong></p>
+<p>当前相机在物体空间中的位置。</p>
+</li>
+<li><p><strong>DepthTex(trxtrue)</strong></p>
+</li>
+<li><p><strong>DirectionalLightCount (int)</strong></p>
+</li>
+<li><p><strong>DirectionalLights</strong>  <strong>(DirectionalLights[2])</strong></p>
+</li>
+<li><p><strong>DirectionalLightsObjectSpace</strong>  <strong>(DirectionalLights[2])</strong></p>
+</li>
+<li><p><strong>EnvironmentCubeMap(texture)</strong></p>
+</li>
+<li><p><strong>EnvironmentTransform(float4x4)</strong></p>
+</li>
+<li><p><strong>EnvironmentShadowTransform(float4x4)</strong></p>
+</li>
+<li><p><strong>FarPlane(float)</strong></p>
+</li>
+<li><p><strong>FloraAnimationGrid(float4[64])</strong></p>
+</li>
+<li><p><strong>FloraTexture(texture)</strong></p>
+</li>
+<li><p><strong>FogColour(float4)</strong></p>
+</li>
+<li><p><strong>FogEnd(float)</strong></p>
+</li>
+<li><p><strong>FogGradientTexture(texture)</strong></p>
+</li>
+<li><p><strong>FogStart(float)</strong></p>
+</li>
+<li><p><strong>FogTextureTransform(matrix)</strong></p>
+</li>
+<li><p><strong>GUIColour(float4)</strong></p>
+</li>
+<li><p><strong>LastViewProjection(float4x4)</strong></p>
+</li>
+<li><p><strong>InvView(float4x4)</strong></p>
+</li>
+<li><p><strong>InvViewProjection(float4x4)</strong></p>
+</li>
+<li><p><strong>MipFilter(int)</strong></p>
+</li>
+<li><p><strong>MinMagFilter(int)</strong></p>
+</li>
+<li><p><strong>MaxAnisotropy(int)</strong></p>
+</li>
+<li><p><strong>NearPlane(float)</strong></p>
+</li>
+<li><p><strong>NormalisationMap(texture)</strong></p>
+</li>
+<li><p><strong>ObjectID(float)</strong></p>
+</li>
+<li><p><strong>PenumbraSize(float)</strong></p>
+</li>
+<li><p><strong>PointLightCount(int)</strong></p>
+</li>
+<li><p><strong>PointLights(PointLights[4])</strong></p>
+</li>
+<li><p><strong>Screen(float4)</strong></p>
+</li>
+<li><p><strong>SkyBoxController(float4)</strong></p>
+</li>
+<li><p><strong>SpecularDirectionalLightCount(int)</strong></p>
+</li>
+<li><p><strong>SpecularDirectionalLights(DirectionLights[2])</strong></p>
+</li>
+<li><p><strong>SpecularDirectionalLightsObjectSpace(DirectionLights[2])</strong></p>
+</li>
+<li><p><strong>SpecularPointLightCount(int)</strong></p>
+</li>
+<li><p><strong>SpecularPointLights(PointLight[2])</strong></p>
+</li>
+<li><p><strong>SpecularPointLightsObjectSpace(PointLights[2])</strong></p>
+</li>
+<li><p><strong>SpotLightCount(int)</strong></p>
+</li>
+<li><p><strong>SpotLights(SpotLight[2])</strong></p>
+</li>
+<li><p><strong>SpotLightsObjectSpace(SpotLight[2])</strong></p>
+</li>
+<li><p><strong>StaticLighting(bool)</strong></p>
+</li>
+<li><p><strong>StippleMap(texture)</strong></p>
+</li>
+<li><p><strong>SunAngle(flaot)</strong></p>
+</li>
+<li><p><strong>TerrainTextureTransform(float4[2])</strong></p>
+</li>
+<li><p><strong>Time(float)</strong></p>
+</li>
+<li><p><strong>View(float4x4)</strong></p>
+</li>
+<li><p><strong>ViewProjection(float4x4)</strong></p>
+</li>
+<li><p><strong>WindAnimation(float4)</strong></p>
+</li>
+<li><p><strong>World(float4x4)</strong></p>
+</li>
+<li><p><strong>WorldPalette(float[17*3])</strong></p>
+</li>
+<li><p><strong>WorldView(flaot4x4)</strong></p>
+</li>
+<li><p><strong>WorldViewProjection(float4x4)</strong></p>
+</li>
+</ul>
+<h4 id="22-5-3-Artist-editable-x2F-tweakable-variables"><a href="#22-5-3-Artist-editable-x2F-tweakable-variables" class="headerlink" title="22.5.3. Artist-editable&#x2F;tweakable variables"></a><strong>22.5.3. Artist-editable&#x2F;tweakable variables</strong></h4><p>Artist-editable变量是被设计为在每个材质的基础上重写的变量。这些变量可以在世界编辑器和模型编辑器中编辑，允许您在可视化的同时实时更改模型的外观</p>
+<p>通过将属性artist_Editable或worldBuilderEditable设置为true，可以将Artist-editable变量暴露给引擎。</p>
+<p>将artistEditable设置为true将变量暴露给模型编辑器的材料设置面板，而将worldBuilderEditable设置为true将它暴露给模型编辑器，如果bigworld&#x2F;tools&#x2F; worlddeditor &#x2F;options.xml文件中objects&#x2F;materialOverrideMode标签设置为1，则暴露给世界编辑器的属性面板。</p>
+<p>以下是FX文件中这些变量的表示法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt; &lt;variableName&gt;</span><br><span class="line">&lt;</span><br><span class="line"> bool [artistEditable|worldBuilderEditable] = true;</span><br><span class="line"> ... 1</span><br><span class="line">&gt; = &lt;defaultValue&gt;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>&lt;type&gt;</strong> — 对象的类型</li>
+<li><strong>&lt;variableName&gt;</strong> —效果文件中的变量名称</li>
+<li>**&lt;defaultValue&gt;**—该变量的默认值。</li>
+</ul>
+<p>目前，受支持的artist-editable变量的类型有：</p>
+<ul>
+<li><strong>bool</strong></li>
+<li><strong>float</strong></li>
+<li><strong>float4</strong></li>
+<li><strong>float4x4</strong></li>
+<li><strong>int</strong></li>
+<li><strong>texture</strong></li>
+</ul>
+<p>在任意一个工具中暴露变量的条件如下:</p>
+<ul>
+<li><p>如果artistEditable在FX文件中设置为true</p>
+<p><strong>Exposed in Model Editor?</strong>: Yes</p>
+<p><strong>Exposed in World Editor?</strong>: No</p>
+</li>
+<li><p>如果worldBuilderEditable在FX文件中设置为true</p>
+<ul>
+<li><p>如果在bigworld&#x2F;tools&#x2F; worlddeditor &#x2F;options.xml中materialOverrideMode设置为1</p>
+<p><strong>Exposed in Model Editor?</strong>: No</p>
+<p><strong>Exposed in World Editor?</strong>: No</p>
+</li>
+<li><p>如果在bigworld&#x2F;tools&#x2F; worlddeditor &#x2F;options.xml中materialOverrideMode设置为0</p>
+<p><strong>Exposed in Model Editor?</strong>: No</p>
+<p><strong>Exposed in World Editor?</strong>: Yes</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="22-5-4-Multiple-layered-effects-per-material"><a href="#22-5-4-Multiple-layered-effects-per-material" class="headerlink" title="22.5.4. Multiple-layered effects per material"></a><strong>22.5.4. Multiple-layered effects per material</strong></h4><p>Moo::EffectMaterial类支持每个材质拥有多层D3DXEffects。</p>
+<p>这对于需要使用标准顶点着色器的材质是有用的，但只对效果的像素着色器组件有轻微的改变。这些材质通常只会由资产转换器创建，因为Model Editor不支持为每个材质添加多个效果。</p>
+<h4 id="22-5-5-Recording-material-states"><a href="#22-5-5-Recording-material-states" class="headerlink" title="22.5.5. Recording material states"></a><strong>22.5.5. Recording material states</strong></h4><p>材质状态可以通过类Moo::EffectMaterial通过在材质的begin()和end()对之间调用recordPass()来记录。</p>
+<p>这个方法返回一个Moo::StateRecorder，用于存储当前渲染状态以延迟渲染。此对象只在当前渲染循环结束前有效，并且在此之后将不再可用。</p>
+<h4 id="22-5-6-Using-BigWorld-fx-files-with-3ds-Max"><a href="#22-5-6-Using-BigWorld-fx-files-with-3ds-Max" class="headerlink" title="22.5.6. Using BigWorld .fx files with 3ds Max"></a><strong>22.5.6. Using BigWorld</strong> <strong>.fx</strong> <strong>files with 3ds Max</strong></h4><p>BigWorld .fx文件和3ds Max .fx文件不幸的是不是100%兼容的。然而，可以创建一个可以在两个应用程序中使用的.fx文件。</p>
+<p>为了暴露可编辑参数，BigWorld着色器使用下面的注释:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> artistEditable = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<p>而3ds Max需要下面的注释字符串:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UIName = &quot;name&quot;</span><br></pre></td></tr></table></figure>
+
+<p>示例效果文件bigworld&#x2F;res&#x2F;shaders&#x2F;std_effects&#x2F;normalmap.fx将其参数正确地暴露给BigWorld和3ds Max。输出器也输出3ds Max材质面板中输入的值。</p>
+<p>文件normalmap.Fx还使用了一个单独的技术，称为max_preview，以及额外的顶点和像素着色器。</p>
+<p>这是由于两个原因:</p>
+<ul>
+<li>在BigWorld引擎和3ds Max中应用照明没有统一的方法。</li>
+<li>3ds Max使用右手坐标系，而BigWorld使用左手坐标系。</li>
+</ul>
+<p>这本身不是一个大问题，但这意味着如果你想在3ds Max中预览你的着色器，就需要额外的着色器工作。</p>
+<p>如果你还没有应用servicepack 1for 3ds Max 7，一个问题是它的材质面板在处理效果文件中的#include指令时非常糟糕。发生的情况是，如果你保存一个应用了法线贴图效果的材质，那么它并不总是会在3ds Max中被正确加载，这可能会给美工带来额外的困惑。这个问题已经在Service Pack 1中修复了，所以如果你想在3ds Max中使用.fx文件，应用它是很重要的。</p>
+<p>在你决定让你的.fx文件与3dsMax兼容之前，注意这些问题是很重要的。</p>
+<h3 id="22-6-Visual-channels"><a href="#22-6-Visual-channels" class="headerlink" title="22.6. Visual channels"></a><strong>22.6. Visual channels</strong></h3><p>视觉通道在Moo中实现了延迟渲染管道。</p>
+<p>现在推行的标准渠道有五个:</p>
+<ul>
+<li>Sorted channel（排序通道）</li>
+<li>Internal sorted channel（内部排序通道）</li>
+<li>Shimmer channel（微光通道）</li>
+<li>Sorted shimmer channel（排序微光通道）</li>
+<li>Distortion channel（失真通道）</li>
+</ul>
+<p>通过覆盖Moo::VisualChannel接口并实现VisualChannel::addItem，应用程序可以创建任意数量的通道。</p>
+<p>下面的小节描述了这些通道。</p>
+<h4 id="22-6-1-Sorted-channel"><a href="#22-6-1-Sorted-channel" class="headerlink" title="22.6.1. Sorted channel"></a><strong>22.6.1. Sorted channel</strong></h4><p>排序通道用于需要以back-to-front顺序呈现的对象。</p>
+<p>当可视性对象中的原语组添加到此通道时，其三角形不会在内部排序。</p>
+<p>该通道主要用于添加对象，即目标混合为1的对象。</p>
+<h4 id="22-6-2-Internal-sorted-channel"><a href="#22-6-2-Internal-sorted-channel" class="headerlink" title="22.6.2. Internal sorted channel"></a><strong>22.6.2. Internal sorted channel</strong></h4><p>内部排序通道用于需要back-to-front顺序呈现的对象，同时也需要back-to-front顺序呈现其三角形。</p>
+<p>添加到此通道的对象也将根据已排序通道中的对象进行排序。</p>
+<p>此通道对于alpha混合对象和任何没有目标混合对象的透明对象非常有用</p>
+<h4 id="22-6-3-Shimmer-channel"><a href="#22-6-3-Shimmer-channel" class="headerlink" title="22.6.3. Shimmer channel"></a><strong>22.6.3. Shimmer channel</strong></h4><p>微光通道用于需要热微光的物体。</p>
+<p>添加到此通道的任何对象都应该只写入帧缓冲区的alpha通道。</p>
+<h4 id="22-6-4-Sorted-shimmer-channel"><a href="#22-6-4-Sorted-shimmer-channel" class="headerlink" title="22.6.4. Sorted shimmer channel"></a><strong>22.6.4. Sorted shimmer channel</strong></h4><p>排序的微光通道用于需要热微光的物体，也需要绘制颜色信息。添加到此通道的任何对象都应同时写入帧缓冲区的alpha通道（对于闪烁量）和颜色通道。</p>
+<h4 id="22-6-5-Distortion-channel"><a href="#22-6-5-Distortion-channel" class="headerlink" title="22.6.5. Distortion channel"></a><strong>22.6.5. Distortion channel</strong></h4><p>失真通道用于那些想要直接进入最终场景作为纹理的对象。这可以用来实现折射效果(例如，水)。</p>
+<h3 id="22-7-Textures"><a href="#22-7-Textures" class="headerlink" title="22.7. Textures"></a><strong>22.7. Textures</strong></h3><h4 id="22-7-1-Texture-detail-levels-x2F-compression"><a href="#22-7-1-Texture-detail-levels-x2F-compression" class="headerlink" title="22.7.1. Texture detail levels&#x2F;compression"></a><strong>22.7.1. Texture detail levels&#x2F;compression</strong></h4><p>纹理根据它们的文件名自动加载和压缩，文件名控制大小、格式转换和压缩级别。</p>
+<p>关于该文件语法的详细信息，请参阅 File Grammar Guide’s section <em>.texformat</em>.</p>
+<p>系统是通过类Moo::TextureDetailLevel实现的。纹理管理器存储一个纹理细节级别列表，并使用它们根据它们的文件名来调整和压缩纹理。仍然支持legacy .texformat系统。</p>
+<p>TextureDetailLevel的属性分为两组:</p>
+<ul>
+<li>文件名匹配准则。</li>
+<li>转换规则。</li>
+</ul>
+<p>属性的文件名匹配准则定义了用于检查当前TextureDetailLevel是否应用于正在检查的纹理的条件。它们的说明如下:</p>
+<ul>
+<li><p><strong>contains_</strong></p>
+<p>匹配纹理文件名中包含的字符串。</p>
+</li>
+<li><p><strong>postFixes_</strong></p>
+<p>匹配纹理文件名后缀的字符串。</p>
+</li>
+<li><p><strong>preFixes_</strong></p>
+<p>匹配纹理文件名前缀的字符串。</p>
+</li>
+</ul>
+<p>每个字符串列表中只有一个字符串必须与纹理名称匹配，以便TextureDetailLevel认为它是匹配的。如果其中一个列表中没有字符串，也将被视为匹配。</p>
+<p>属性的转换规则集定义了如何转换匹配的纹理。它们的说明如下:</p>
+<ul>
+<li><p><strong>compressedFormat_</strong></p>
+<p>纹理转换的格式(当启用纹理压缩时)</p>
+</li>
+<li><p><strong>format_</strong></p>
+<p>纹理转换为的格式。</p>
+</li>
+<li><p><strong>lodMode_</strong></p>
+<p>定义纹理如何响应纹理质量设置。</p>
+<p>纹理质量通过TEXTURE_QUALITY图形设置设置。</p>
+</li>
+<li><p><strong>maxDim_</strong></p>
+<p>纹理的 最大宽度&#x2F;高度 尺寸。</p>
+</li>
+<li><p><strong>minDim_</strong></p>
+<p>纹理的 最小宽度&#x2F;高度 尺寸。</p>
+</li>
+<li><p><strong>noResize_</strong></p>
+<p>确定纹理不会被缩放为2的幂次，并且不会有mipmapping、compression或一个.dds版本。</p>
+</li>
+<li><p><strong>reduceDim_</strong></p>
+<p>禁用压缩时将纹理维度减半的次数。</p>
+</li>
+</ul>
+<p>纹理细节级别可以从数据中读取，如下面的例子所示:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">prefix</span>&gt;</span> objects/ <span class="tag">&lt;/<span class="name">prefix</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">postfix</span>&gt;</span> tga <span class="tag">&lt;/<span class="name">postfix</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">postfix</span>&gt;</span> bmp <span class="tag">&lt;/<span class="name">postfix</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">contains</span>&gt;</span> norms <span class="tag">&lt;/<span class="name">contains</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">contains</span>&gt;</span> normals <span class="tag">&lt;/<span class="name">contains</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">maxDim</span>&gt;</span> 512 <span class="tag">&lt;/<span class="name">maxDim</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">minDim</span>&gt;</span> 128 <span class="tag">&lt;/<span class="name">minDim</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">reduceDim</span>&gt;</span> 1 <span class="tag">&lt;/<span class="name">reduceDim</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">format</span>&gt;</span> A8R8G8B8 <span class="tag">&lt;/<span class="name">format</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的例子产生了从文件夹objects&#x2F;的子树中加载的任何纹理，扩展名为.tga或.bmp，它包含字符串规范或法线，只要最小维度不低于128，它的维度就会减半。如果格式不同，它将被更改为带有alpha的32位颜色。</p>
+<p>默认的详细级别是:</p>
+<ul>
+<li><p>文件名以规范结尾的任何文件。tga或norms.bmp将被转换为A8R8G8B8纹理</p>
+<p>(这样就不会压缩BigWorld的法线贴图)</p>
+</li>
+<li><p>其他任何.tga文件都被转换为DXT3格式。</p>
+</li>
+<li><p>其他任何.bmp文件都被转换为DXT1格式。</p>
+</li>
+</ul>
+<p>默认情况下，如果它们的尺寸大于2048，纹理才会被缩小。</p>
+<h4 id="22-7-2-Animated-textures"><a href="#22-7-2-Animated-textures" class="headerlink" title="22.7.2. Animated textures"></a><strong>22.7.2. Animated textures</strong></h4><p>Moo通过纹理交换支持简单的动画纹理。</p>
+<p>当纹理管理器加载一个纹理时，它将查找与加载的文件同名，但扩展名为.texanim的文件。如果找到这样的文件，那么它将作为一个动画纹理加载。</p>
+<p>.texanim文件是一个简单的XML文件，它引用了许多纹理，包含一个动画字符串和每秒帧数。</p>
+<p>.texanim文件的格式如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> &lt;frames&gt; string &lt;/frames&gt;</span><br><span class="line"> &lt;fps&gt; .f &lt;/fps&gt;</span><br><span class="line">+&lt;texture&gt; TEXTURE_RESOURCE &lt;/texture&gt;</span><br></pre></td></tr></table></figure>
+
+<p>下面是一个.texanim文件的示例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;frames&gt; abcdefgh &lt;/frames&gt;</span><br><span class="line">&lt;fps&gt; 10.0 &lt;/fps&gt;</span><br><span class="line">&lt;texture&gt; maps/fx/fx_dirt01.tga &lt;/texture&gt;</span><br><span class="line">&lt;texture&gt; maps/fx/fx_dirt02.tga &lt;/texture&gt;</span><br><span class="line">&lt;texture&gt; maps/fx/fx_dirt03.tga &lt;/texture&gt;</span><br><span class="line">&lt;texture&gt; maps/fx/fx_dirt04.tga &lt;/texture&gt;</span><br><span class="line">&lt;texture&gt; maps/fx/fx_dirt05.tga &lt;/texture&gt;</span><br><span class="line">&lt;texture&gt; maps/fx/fx_dirt06.tga &lt;/texture&gt;</span><br><span class="line">&lt;texture&gt; maps/fx/fx_dirt07.tga &lt;/texture&gt;</span><br><span class="line">&lt;texture&gt; maps/fx/fx_dirt08.tga &lt;/texture&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下，动画纹理将以每秒10帧的速度按顺序播放fx_dirt纹理。</p>
+<p>您可以通过更改frames标签来更改帧回放的顺序。标签值中的a指的是XML文件中存储的第一个纹理，b指的是存储的第二个纹理，以此类推。</p>
+<h4 id="22-7-3-Applying-a-code-generated-texture-to-a-character"><a href="#22-7-3-Applying-a-code-generated-texture-to-a-character" class="headerlink" title="22.7.3. Applying a code-generated texture to a character"></a><strong>22.7.3. Applying a code-generated texture to a character</strong></h4><p>要将代码生成的纹理应用到模型中，请遵循以下步骤:</p>
+<ol>
+<li>创建一个自动的.fx变量(例如customTexture)。</li>
+<li>更新角色的着色器，以便使用新的.fx变量进行渲染，而不是使用diffuseMap属性。</li>
+<li>你将需要一个单独的TextureSetter，它是一个Moo::EffectConstantValue。这提供了“current custom texture”到.fx文件。</li>
+<li>在绘制PyModel的实例时，编写一个PyFashion来设置“current custom texture”。</li>
+<li>创建一个包含自定义纹理创建过程的Moo::BaseTexture。</li>
+</ol>
+<h5 id="22-7-3-1-Loading-textures-from-disk"><a href="#22-7-3-1-Loading-textures-from-disk" class="headerlink" title="22.7.3.1. Loading textures from disk"></a><strong>22.7.3.1. Loading textures from disk</strong></h5><p>当从磁盘加载纹理时，建议让加载线程在后台运行，这样它就不会中断渲染线程。</p>
+<p>下面的例子演示了一个使用BackgroundTask和BGTaskManager类的纹理加载器。注意，代码提供了两个特性—线程纹理加载，以及将纹理提供给.fx文件系统。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;pch.hpp&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;cstdmf/bgtask_manager.hpp&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;cstdmf/concurrency.hpp&quot;</span></span></span><br><span class="line"><span class="built_in">DECLARE_DEBUG_COMPONENT2</span>( <span class="string">&quot;romp&quot;</span>, <span class="number">0</span> );</span><br><span class="line"><span class="comment">// -------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// Section: Texture Setter</span></span><br><span class="line"><span class="comment">// -----------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This class sets textures on the device. It is also multi-threaded.</span></span><br><span class="line"><span class="comment"> * When it is told to use a new texture, it uses the background loading</span></span><br><span class="line"><span class="comment"> thread</span></span><br><span class="line"><span class="comment"> * to do so. While it is doing this, the textureName refers to the new</span></span><br><span class="line"><span class="comment"> * texture, but isLoading() will return true. And in this state, it will be</span></span><br><span class="line"><span class="comment"> * sneakily using the pre-existing texture until the new one is ready.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ThreadedTextureSetter</span> : <span class="keyword">public</span> Moo::EffectConstantValue</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">ThreadedTextureSetter</span>():</span><br><span class="line">    <span class="built_in">pTexture_</span>( <span class="literal">NULL</span> ),</span><br><span class="line">    <span class="built_in">bgLoader_</span>( <span class="literal">NULL</span> ),</span><br><span class="line">    <span class="built_in">textureName_</span>( <span class="string">&quot;&quot;</span> )</span><br><span class="line">    &#123; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This method is called by the effect system when a material needs</span></span><br><span class="line"><span class="comment"> * to draw using a texture with the given automatic semantic.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(ID3DXEffect* pEffect, D3DXHANDLE constantHandle)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="function">SimpleMutexHolder <span class="title">holder</span><span class="params">( mutex_ )</span></span>;</span><br><span class="line">        <span class="keyword">if</span> (pTexture_ &amp;&amp; pTexture_-&gt;<span class="built_in">pTexture</span>())</span><br><span class="line">            pEffect-&gt;<span class="built_in">SetTexture</span>(constantHandle, pTexture_-&gt;<span class="built_in">pTexture</span>());</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            pEffect-&gt;<span class="built_in">SetTexture</span>(constantHandle, <span class="literal">NULL</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This method sets our texture. If the texture is different then</span></span><br><span class="line"><span class="comment"> * the existing one, we schedule the new one for loading, and set</span></span><br><span class="line"><span class="comment"> * the textureName and the isLoading() flag. In an unspecified amount</span></span><br><span class="line"><span class="comment"> * of time, the new texture will be loaded and used.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">texture</span><span class="params">( <span class="type">const</span> std::string&amp; texName )</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (textureName_ == texName)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;<span class="built_in">isLoading</span>())</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        textureName_ = texName;</span><br><span class="line">        bgLoader_ = <span class="keyword">new</span> <span class="built_in">BackgroundTask</span>(</span><br><span class="line">            &amp;ThreadedTextureSetter::loadTexture, <span class="keyword">this</span>,</span><br><span class="line">            &amp;ThreadedTextureSetter::onLoadComplete, <span class="keyword">this</span> );</span><br><span class="line">        <span class="meta">#<span class="keyword">ifndef</span> EDITOR_ENABLED</span></span><br><span class="line">        BgTaskManager::<span class="built_in">instance</span>()-&gt;<span class="built_in">addTask</span>( *bgLoader_ );</span><br><span class="line">        <span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">        ThreadedTextureSetter::<span class="built_in">loadTexture</span>( <span class="keyword">this</span> );</span><br><span class="line">        ThreadedTextureSetter::<span class="built_in">onLoadComplete</span>( <span class="keyword">this</span> );</span><br><span class="line">        <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This class-static method is called by the background loading thread</span></span><br><span class="line"><span class="comment"> * and allows us to load the texture resource in a blocking manner.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">loadTexture</span><span class="params">( <span class="type">void</span>* s )</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        ThreadedTextureSetter* setter = <span class="built_in">static_cast</span>&lt;ThreadedTextureSetter*&gt;(s);</span><br><span class="line">        Moo::BaseTexturePtr pTex = </span><br><span class="line">            Moo::TextureManager::<span class="built_in">instance</span>()-&gt;<span class="built_in">get</span>( setter-&gt;<span class="built_in">textureName</span>() );</span><br><span class="line">        setter-&gt;<span class="built_in">pTexture</span>(pTex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This class-static method is called when the background loading thread</span></span><br><span class="line"><span class="comment"> * has finished.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">onLoadComplete</span><span class="params">( <span class="type">void</span>* s )</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        ThreadedTextureSetter* setter = <span class="built_in">static_cast</span>&lt;ThreadedTextureSetter*&gt;(s);</span><br><span class="line">        setter-&gt;<span class="built_in">onBgLoadComplete</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This method returns the name of the texture we are currently</span></span><br><span class="line"><span class="comment"> * drawing with. If isLoading() is true, then the textureName</span></span><br><span class="line"><span class="comment"> * refers to the texture we would like to draw with (however we</span></span><br><span class="line"><span class="comment"> * will be actually drawing with the previous texture ptr).</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">    <span class="function"><span class="type">const</span> std::string&amp; <span class="title">textureName</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> textureName_;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This method returns true if we are currently waiting for the</span></span><br><span class="line"><span class="comment"> * background loading thread to load our texture.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isLoading</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="function">SimpleMutexHolder <span class="title">holder</span><span class="params">( mutex_ )</span></span>;</span><br><span class="line">        <span class="keyword">return</span> (bgLoader_ != <span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">//only called by the background loading thread</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">pTexture</span><span class="params">( Moo::BaseTexturePtr pTex )</span></span></span><br><span class="line"><span class="function">    </span>&#123; </span><br><span class="line">        <span class="function">SimpleMutexHolder <span class="title">holder</span><span class="params">( mutex_ )</span></span>;</span><br><span class="line">        pTexture_ = pTex; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//only called by the background loading thread</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">onBgLoadComplete</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="function">SimpleMutexHolder <span class="title">holder</span><span class="params">( mutex_ )</span></span>;</span><br><span class="line">        <span class="keyword">delete</span> bgLoader_;</span><br><span class="line">        bgLoader_ = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Moo::BaseTexturePtr pTexture_;</span><br><span class="line">    std::string textureName_; <span class="comment">//store a copy for use while loading.</span></span><br><span class="line">    BackgroundTask* bgLoader_; </span><br><span class="line">    SimpleMutex mutex_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><em>纹理加载器的例子</em></p>
+<h5 id="22-7-3-2-Manipulate-individual-pixels-within-a-texture"><a href="#22-7-3-2-Manipulate-individual-pixels-within-a-texture" class="headerlink" title="22.7.3.2. Manipulate individual pixels within a texture"></a><strong>22.7.3.2. Manipulate individual pixels within a texture</strong></h5><ol>
+<li><p>在托管池中创建纹理</p>
+<p>这样就会有一个系统内存副本和一个显存副本。然后你可以锁定纹理并根据需要操作它- DirectX将更新视频内存的更改。</p>
+<p>这个选项的唯一缺点是，在某些硬件配置上，系统内存纹理可能是swizzled存储的，这意味着锁操作必须在进行更改之前解除它的swizzled——这是一个潜在的昂贵的锁操作。</p>
+<p>注意，要使用纹理，你需要mipmaps可用，所以当执行锁时，你必须:</p>
+<ul>
+<li><p>单独更新纹理的每个表面。</p>
+<p>or</p>
+</li>
+<li><p>使用拉伸矩形从上表面提供mipmap链。</p>
+</li>
+</ul>
+</li>
+<li><p>在显存中创建纹理作为渲染目标</p>
+<p>你将不得不使用着色器来写你的改变到纹理。</p>
+<p>这种方法的缺点是，如果设备被重置，那么您的更改将丢失。如果发生这种情况，您将不得不处理CreateUnmanagedObjects回调(来自DeviceCallback接口)并重新创建自定义纹理。</p>
+<p>不幸的是，您不能只是将数据复制到系统内存，因为CTRL+ALT+DEL将失去设备，而没有给您机会先保存显存数据。</p>
+<p>再次注意，要使用纹理，需要有mipmaps可用。因此，也许在这个实例中，您可以在显存中创建一个单独的mipmap纹理，并使用stretch rect从源渲染目标提供mipmap链。源渲染目标可能是用于构建所有自定义角色纹理的“草稿板”。</p>
+</li>
+</ol>
+<h5 id="22-7-3-3-Using-a-shader-to-build-a-custom-texture"><a href="#22-7-3-3-Using-a-shader-to-build-a-custom-texture" class="headerlink" title="22.7.3.3. Using a shader to build a custom texture"></a><strong>22.7.3.3. Using a shader to build a custom texture</strong></h5><p>关于如何实现这一点，最接近的例子是植物灯光贴图，它使用地形着色器的变化来渲染一个渲染目标的照明信息。详情请参见bigworld&#x2F;src&#x2F;lib&#x2F;romp&#x2F; flora_light_map.cpp</p>
+<p>注意，要使用着色器，你将需要一个显存&#x2F;渲染目标表面，如上节所述。</p>
+<h5 id="22-7-3-4-Dealing-with-the-texture-cache"><a href="#22-7-3-4-Dealing-with-the-texture-cache" class="headerlink" title="22.7.3.4. Dealing with the texture cache"></a><strong>22.7.3.4. Dealing with the texture cache</strong></h5><p>自定义纹理需要实现Moo::BaseTexture接口，以便它可以将自己添加到纹理管理器。然而，根据下面的步骤(将自定义纹理应用到模型)，你甚至可能不需要使用TextureManager，因为它只是提供了一个”通过名称检索纹理”访问纹理。</p>
+<p>如果你正在为角色创建一些自定义纹理，那么你可能有一个内部(隐藏)命名方案，这将导致使用纹理缓存的最小好处。简单地使用智能指针来处理缓存就足够了。</p>
+<h5 id="22-7-3-5-Assigning-custom-textures-to-a-model"><a href="#22-7-3-5-Assigning-custom-textures-to-a-model" class="headerlink" title="22.7.3.5. Assigning custom textures to a model"></a><strong>22.7.3.5. Assigning custom textures to a model</strong></h5><p>假设您有一个模型，希望多次显示，每个模型都有一个独特的自定义纹理，那么您必须实现一个派生自PyFashion类的类。</p>
+<p>这样的类从Python创建，赋值给PyModel实例，并有机会改变共享模型的呈现方式(即，在模型上设置自定义纹理)。PyFashion类将成为脚本的主接口，因此在Python中，你可以用你想要组合的纹理的名称来构造PyFashion实例，然后通过简单地将fashion设置为其PyModel上的任何命名属性来将其分配给一个播放器的模型(PyModel::pySetAttribute自动检测当时尚被设置时，并将其合并到其渲染链中)。</p>
+<p>要在模型上实际设置自定义纹理，我们建议创建一个派生自Moo::EffectConstantValue的类，它按名称为.fx文件提供自定义纹理。在.fx文件中，使用自动变量语义(例如Texture diffuseMap:customCharacterTexture)，而不是现有的artistEditable属性。</p>
+<p>关于创建纹理设置器的示例代码，请参见 “Loading textures from disk” 。</p>
+<h3 id="22-8-Vertex-declaration"><a href="#22-8-Vertex-declaration" class="headerlink" title="22.8. Vertex declaration"></a><strong>22.8. Vertex declaration</strong></h3><p>顶点声明被Direct3D用来将顶点流数据映射到顶点着色器。</p>
+<p>Moo使用VertexDeclaration类来简化Direct3D使用顶点声明的处理。顶点声明以XML格式存储在磁盘上，并根据需要加载。存储在磁盘上的顶点声明可以通过调用VertexDeclaration::get()方法来检索。</p>
+<p>默认情况下，顶点声明存储在bigworld&#x2F;res&#x2F;shaders&#x2F; format文件夹下。</p>
+<p>两个声明可以使用VertexDeclaration::combine()组合在一起，只要两个声明的元素互斥。</p>
+<h4 id="22-8-1-File-format"><a href="#22-8-1-File-format" class="headerlink" title="22.8.1. File format"></a><strong>22.8.1. File format</strong></h4><p>顶点声明文件的格式如下:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span></span><br><span class="line">    +<span class="tag">&lt;<span class="name">USAGE</span>&gt;</span> (usage index, optional defaults to 0)</span><br><span class="line">        ?<span class="tag">&lt;<span class="name">stream</span>&gt;</span> (strm #, opt, dflt is strm used by the prev elmnt) <span class="tag">&lt;/<span class="name">stream</span>&gt;</span></span><br><span class="line">        ?<span class="tag">&lt;<span class="name">offset</span>&gt;</span> (ofst into strm, opt, dflt is nxt ofst aft prev elmnt) <span class="tag">&lt;/<span class="name">offset</span>&gt;</span></span><br><span class="line">        ?<span class="tag">&lt;<span class="name">type</span>&gt;</span> (data type, opt, defaults to FLOAT3) <span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">USAGE</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>USAGE标签映射到枚举类型D3DDECLUSAGE，其可能的值如下所示:</p>
+<p>• <strong>POSITION</strong></p>
+<p>• <strong>BLENDWEIGHT</strong></p>
+<p>• <strong>BLENDINDICES</strong></p>
+<p>• <strong>NORMAL</strong></p>
+<p>• <strong>PSIZE</strong></p>
+<p>• <strong>TEXCOORD</strong></p>
+<p>• <strong>TANGENT</strong></p>
+<p>• <strong>BINORMAL</strong></p>
+<p>• <strong>TESSFACTOR</strong></p>
+<p>• <strong>POSITIONT</strong></p>
+<p>• <strong>COLOR</strong></p>
+<p>• <strong>FOG</strong></p>
+<p>• <strong>DEPTH</strong></p>
+<p>• <strong>SAMPLE</strong></p>
+<p>在类型标记中输入的数据类型映射到枚举类型D3DDECLTYPE，其可能的值如下所示:</p>
+<p>• <strong>D3DCOLOR</strong></p>
+<p>• <strong>DEC3N</strong></p>
+<p>• <strong>FLOAT1</strong></p>
+<p>• <strong>FLOAT16_2</strong></p>
+<p>• <strong>FLOAT16_4</strong></p>
+<p>• <strong>FLOAT2</strong></p>
+<p>• <strong>FLOAT3</strong></p>
+<p>• <strong>FLOAT4</strong></p>
+<p>• <strong>SHORT2</strong></p>
+<p>• <strong>SHORT2N</strong></p>
+<p>• <strong>SHORT4</strong></p>
+<p>• <strong>SHORT4N</strong></p>
+<p>• <strong>UBYTE4</strong></p>
+<p>• <strong>UBYTE4N</strong></p>
+<p>• <strong>UDEC3</strong></p>
+<p>• <strong>USHORT2N</strong></p>
+<p>• <strong>USHORT4N</strong></p>
+<p>例如，xyznuv_d顶点格式的定义如下</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xyznuv_d.xml</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">POSITION</span>/&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">NORMAL</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TEXCOORD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">type</span>&gt;</span> FLOAT2 <span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">TEXCOORD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">COLOR</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">stream</span>&gt;</span> 1 <span class="tag">&lt;/<span class="name">stream</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">offset</span>&gt;</span> 0 <span class="tag">&lt;/<span class="name">offset</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">type</span>&gt;</span> D3DCOLOR <span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">COLOR</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xyznuv_d.xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="22-9-Graphics-settings"><a href="#22-9-Graphics-settings" class="headerlink" title="22.9. Graphics settings"></a><strong>22.9. Graphics settings</strong></h3><p>为了让游戏客户端在最广泛的系统中尽可能平稳地运行，BigWorld的3D引擎暴露了几个参数。玩家可以根据自己特定的硬件配置调整这些内容，以实现视觉质量和游戏响应之间的最佳平衡。</p>
+<p>这些参数被称为图形设置，如下所示:</p>
+<ul>
+<li><p><strong>FAR_PLANE</strong></p>
+<p>可选:FAR、MEDIUM、NEAR”</p>
+<p>修改观看距离。可视距离按空间定义，此图形选项将可视距离修改为一个因子。这些因素和选项可以在bigworld&#x2F;res&#x2F; system&#x2F;data&#x2F;graphics_settings.xml文件中配置</p>
+</li>
+<li><p><strong>FLORA_DENSITY</strong></p>
+<p>可选:HIGH、MEDIUM、LOW”</p>
+<p>将植物群详细信息对象的密度设置为一个因子。这些因素和选项可以在bigworld&#x2F;res&#x2F;system&#x2F;data&#x2F;graphics_settings.xml文件中配置。</p>
+</li>
+<li><p><strong>FOOT_PRINTS</strong></p>
+<p>可选：ON,OFF</p>
+<p>开关脚印，开和关</p>
+</li>
+<li><p><strong>OBJECT_LOD</strong></p>
+<p>可选：HIGH,MEDIUM,LOW</p>
+<p>对LOD转换的相对距离做一个调整。</p>
+</li>
+<li><p><strong>SHADER_VERSION_CAP</strong></p>
+<p>可选：SHADER_MODEL_3,SHADER_MODEL_2,SHADER_MODEL_1,SHADER_MODEL_0</p>
+<p>设置引擎可用的最大着色器模型版本。</p>
+<p>如果客户端运行的图形卡只支持Shader Model 1，SHADER_MODEL_0是禁用的。</p>
+<p>SHADER_MODEL_0需要具备顶点着色器2.0的能力，无论是软件还是硬件的顶点处理。SM1显卡，如nVidia TI4400，支持硬件顶点处理，但只支持顶点着色器1.1，所以SHADER_MODEL_0选项不能应用。</p>
+</li>
+<li><p><strong>SHADOWS_COUNT</strong></p>
+<p>可用选项:从1到maxCount(定义在shadows.xml）</p>
+<p>设置同时可见的动态实体阴影的数量。</p>
+</li>
+<li><p><strong>SHADOWS_QUALITY</strong></p>
+<p>可选：HIGH,MEDIUM,LOW,OFF</p>
+<p>设置实体阴影质量。HIGH使用12点滤镜来过滤阴影，MEDIUM使用4点滤镜来过滤阴影，LOW使用1点滤镜来过滤阴影，OFF将阴影关闭。</p>
+</li>
+<li><p><strong>SKY_LIGHT_MAP</strong></p>
+<p>可选：ON,OFF</p>
+<p>开启和关闭云阴影。</p>
+</li>
+<li><p><strong>TERRAIN_SPECULAR</strong></p>
+<p>可选：ON,OFF</p>
+<p>切换地形反射照明的开关</p>
+</li>
+<li><p><strong>TERRAIN_LOD</strong></p>
+<p>可选：FAR,MEDIUM,NEAR</p>
+<p>通过一个因子修改地形地理变形距离。这些因素和选项可以在bigworld&#x2F;res&#x2F;system&#x2F;data&#x2F;terrain2.xml文件中配置。</p>
+</li>
+<li><p><strong>TERRAIN_MESH_RESOLUTION</strong></p>
+<p>可选：HIGH,MEDIUM,LOW</p>
+<p>选择要使用的地形分辨率。HIGH使用最高的可用分辨率，MEDIUM使用可用分辨率的一半，LOW使用可用分辨率的四分之一。</p>
+</li>
+<li><p><strong>TEXTURE_COMPRESSION</strong></p>
+<p>可选：ON,OFF</p>
+<p>切换纹理压缩开关</p>
+</li>
+<li><p><strong>TEXTURE_FILTERING</strong></p>
+<p>可选：ANISOTROPIC_16X,ANISOTROPIC_8X,ANISOTROPIC_4X,ANISOTROPIC_2X,TRILINEAR,BILINEAR,LINEAR,POINT</p>
+<p>选择纹理过滤。通过使用自动变量MinMagFilter, MipFilter和MaxAnisotropy来设置MINFILTER, MAGFILTER, MipFilter和MaxAnisotropy的采样状态，着色器可以利用这个设置来修改。详情请参见bigworld&#x2F;res&#x2F;shaders&#x2F;speedtree&#x2F; speedtree.fx。</p>
+</li>
+<li><p><strong>TEXTURE_QUALITY</strong></p>
+<p>可选：HIGH,MEDIUM,LOW</p>
+<p>设置纹理质量等级</p>
+</li>
+<li><p><strong>SPEEDTREE_QUALITY</strong></p>
+<p>可选：VERYHIGH,HIGH,MEDIUM,LOW,LOWEST</p>
+<p>设置速度树(speed tree)渲染的质量。VERYHIGH在所有树的部分上启用每像素照明(法线映射)，HIGH只在树的分支上启用每像素照明(法线映射)，MEDIUM Trees使用简单的照明，LOW Trees使用简单的动画和照明，使用固定的功能管道。</p>
+</li>
+<li><p><strong>WATER_QUALITY</strong></p>
+<p>可选：HIGH,MEDIUM,LOW,LOWEST</p>
+<p>设置水反射渲染的质量。HIGH表示允许绘制所有对象类型，MEDIUM表示不允许绘制动态对象，LOW表示不允许绘制动态对象，将渲染目标分辨率减半。LOWEST只呈现镜面反射。</p>
+</li>
+<li><p><strong>WATER_SIMULATION</strong></p>
+<p>可选：HIGH,MEDIUM,OFF</p>
+<p>设置水模拟的质量。HIGH表示细胞间水分模拟，MEDIUM表示细胞间水分模拟，OFF表示关闭水分模拟。</p>
+</li>
+<li><p><strong>POST_PROCESSING</strong></p>
+<p>可选：HIGH,MEDIUM,LOW,OFF</p>
+<p>设置默认的后处理链。这些是从chains文件夹中选择的，例如:bigworld&#x2F;res&#x2F;system&#x2F;post_processing&#x2F;chains&#x2F;high_graphics_setting.xml。如果您想编辑默认的后处理，那么就在那里编辑三个链文件。每个链有两个版本，一个有FXAA，一个没有，请参阅下面的FXAA_PROCESSING</p>
+</li>
+<li><p><strong>FXAA_PROCESSING</strong></p>
+<p>可选：ON,OFF</p>
+<p>设置FXAA（快速近似抗混叠）是否在后处理链中</p>
+</li>
+<li><p><strong>MRT_DEPTH</strong></p>
+<p>可选：ON,OFF</p>
+<p>允许创建深度纹理(通过DepthTex语义向.fx文件公开)。这可以实现各种高级的后期处理效果，如景深和深度淡出，以及基于深度的水着色。</p>
+</li>
+</ul>
+<h4 id="22-9-1-Customising-options"><a href="#22-9-1-Customising-options" class="headerlink" title="22.9.1. Customising options"></a><strong>22.9.1. Customising options</strong></h4><p>尽管大多数这些设置都在引擎中确定了它们的选项，但有些设置可以通过配置文件定制它们的选项。</p>
+<p>这些设置及其自定义将在以下主题中讨论。</p>
+<h5 id="22-9-1-1-TEXTURE-QUALITY-and-TEXTURE-COMPRESSION"><a href="#22-9-1-1-TEXTURE-QUALITY-and-TEXTURE-COMPRESSION" class="headerlink" title="22.9.1.1. TEXTURE_QUALITY and TEXTURE_COMPRESSION"></a><strong>22.9.1.1.</strong> <strong>TEXTURE_QUALITY</strong> <strong>and</strong> <strong>TEXTURE_COMPRESSION</strong></h5><p>TEXTURE_QUALITY和TEXURE_COMPRESSION的设置都是通过纹理格式(.texformat)和细节级别(texture_detail_level.xml)文件来定制的(关于该文件的语法，请参阅 File Grammar Guide’s section <em>.texformat</em>)。</p>
+<p>降低纹理质量和使用压缩格式有助于通过减少存储纹理所需的内存数量来提高引擎性能。这意味着每帧需要发送到显卡的数据更少，最终提高了帧速率。</p>
+<p>TEXURE_QUALITY通过阻止它的最高mipmap级别被加载来调整纹理的分辨率。这意味着，在最高的质量水平上，纹理将具有与原始纹理贴图相同的分辨率。在中等水平，它的规模将只有原来的一半，质量将是最低水平的四分之一。</p>
+<p>在每个纹理的每个质量级别中跳过多少mipmap级别可以由纹理的detailLevel部分中的lodMode标记控制。</p>
+<p>下表列出了lodMode可以假设的值，在每个纹理质量设置级别跳过mipmaps的数量旁边:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+<th>High quality</th>
+<th>Medium quality</th>
+<th>Low quality</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Normal</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Low bias</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>High bias</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p><em>每个质量设 <strong>setting level</strong>&#x2F; <strong>LOD level</strong> 跳过mipmap的数量</em></p>
+<p>TEXURE_COMPRESSION影响在内存中存储纹理贴图的格式。当纹理压缩被禁用时，所有的纹理都使用纹理detailLevel部分的format标签定义的格式存储。当启用纹理压缩时，将使用formatCompressed定义的格式。如果没有为纹理定义formatCompressed，则使用format，无论压缩设置是什么。</p>
+<p>注意，对于format和formatCompressed使用的纹理格式没有限制，但是为了使纹理压缩设置产生显著的性能结果，formatCompressed应该定义一个比非压缩格式占用更少纹理内存的纹理格式。</p>
+<p>关于如何设置纹理的细节级别的详细信息，请参阅Texture detail levels&#x2F;compression 关于配置文件语法的详细信息，请参见 File Grammar Guide’s section <em>.texfor.mat</em>.。</p>
+<h5 id="22-9-1-2-SHADOWS-COUNT"><a href="#22-9-1-2-SHADOWS-COUNT" class="headerlink" title="22.9.1.2. SHADOWS_COUNT"></a><strong>22.9.1.2.</strong> <strong>SHADOWS_COUNT</strong></h5><p>SHADOWS_COUNT定义了场景中同时动态实体阴影投射的最大数量。</p>
+<p>使用阴影缓冲区渲染阴影，因此消耗纹理内存。在每一帧填充缓冲区需要为每个阴影投射者重新渲染场景。减少同时动态阴影投射器的数量可以减少内存需求和用于更新每帧缓冲区的处理量。</p>
+<p>取值范围从1到shadows.xml文件中指定的值maxCount ，通过两个步骤(定义在shadows.xml中-关于该文件语法的详细信息，请参阅File Grammar Guide’s section <em>shadows.xml</em>).。</p>
+<h5 id="22-9-1-3-FLORA-DENSITY"><a href="#22-9-1-3-FLORA-DENSITY" class="headerlink" title="22.9.1.3. FLORA_DENSITY"></a><strong>22.9.1.3.</strong> <strong>FLORA_DENSITY</strong></h5><p>FLORA_DENSITY定义了用于渲染flora详细信息对象的顶点缓冲区的大小。</p>
+<p>因为植物群绘制到相机的距离是固定的，定义顶点缓冲区的大小也决定了植物群的密度。因为它使用alpha混合，绘制植物群会对帧渲染时间产生负面影响，特别是在填充率性能有限的硬件上。在任何时候减少渲染的植物群数量可以帮助提高帧率。</p>
+<p>Flora密度选项在<graphics_settings>.xml中定义(关于这个文件的语法细节，请参阅File Grammar Guide’s section “*<graphics_settings><em>.xml”) 作为顶点缓冲区的乘数，它的实际大小是在&lt; Flora &gt;.xml中每个空间定义的(关于这个文件的语法细节，请参阅File Grammar Guide’s section “</em>&lt;flora&gt;*.xml”).。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">graphics_settings.xml</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">flora</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span> HIGH <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span> 1.0 <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span> LOW <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span> 0.5 <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span> OFF <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span> 0 <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">flora</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">graphics_settings.xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><em>Example <graphics_settings>.xml — Configuring flora density</em></p>
+<h5 id="22-9-1-4-FAR-PLANE"><a href="#22-9-1-4-FAR-PLANE" class="headerlink" title="22.9.1.4. FAR_PLANE"></a><strong>22.9.1.4.</strong> <strong>FAR_PLANE</strong></h5><p>FAR_PLANE定义了渲染3D世界时的最大观看距离。</p>
+<p>减少观看距离会减少发送到渲染管道的几何图形数量，从而产生更高的帧率。</p>
+<p>因为远平面距离可以在每个空间的基础上定义， FAR_PLANE实际上是乘以空间的特定远平面值，然后应用到相机上。</p>
+<p>在<graphics_settings>.xml中指定(关于该文件语法的详细信息，请参阅File Grammar Guide’s section “*<graphics_settings>*.xml”),，远平面可以配置如下示例:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">graphics_settings.xml</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">farPlane</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span> 1.0 <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span> FAR <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span> 0.75 <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span> MEDIUM <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span> 0.5 <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span> NEAR <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">farPlane</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">graphics_settings.xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><em>Example <graphics_settings>.xml — Configuring far plane</em></p>
+<h5 id="22-9-1-5-OBJECT-LOD"><a href="#22-9-1-5-OBJECT-LOD" class="headerlink" title="22.9.1.5. OBJECT_LOD"></a><strong>22.9.1.5.</strong> <strong>OBJECT_LOD</strong></h5><p>OBJECT_LOD定义在LOD转换发生之前到摄像机的相对距离。</p>
+<p>对于标准的BigWorld模型，LOD距离是使用模型编辑器定义的。粒子编辑器用于设置粒子系统的LOD距离(系统仍然可见的最大距离)。SpeedTree的LOD级别和转换距离在SpeedTreeCAD中定义(尽管它们可以被SpeedTree的XML配置文件覆盖，该配置文件在resources.xml文件的speedTreeXML标记中指定。有关该文件的详细信息，请参阅resources.xml)。</p>
+<p>OBJECT_LOD设置指定将在运行时修改这些距离的乘数，允许用户用一些视觉质量换取更好的性能。</p>
+<p>LOD乘数在<graphics_settings>.xml中定义(关于该文件语法的详细信息，请参阅File Grammar Guide’s section “*<graphics_settings>*.xml”):</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">graphics_settings.xml</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">objectLOD</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span> 1.0 <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span> HIGH <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span> 0.66 <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span> MEDIUM <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">option</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span> 0.33 <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">label</span>&gt;</span> LOW <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">objectLOD</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">graphics_settings.xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><em>Example <graphics_settings>.xml — Configuring object LOD</em></p>
+<h4 id="22-9-2-Using-settings"><a href="#22-9-2-Using-settings" class="headerlink" title="22.9.2. Using settings"></a><strong>22.9.2. Using settings</strong></h4><p>在启动时，客户端自动尝试从磁盘加载图形设置。所有图形设置都存储在resources.xml的engineConfigXML标记中指定的文件的preferences标记中指定的文件的graphicsPreferences部分(详细信息，请参阅“file &lt;preferences&gt;.xml”)。应用程序第一次运行时，当显卡或其驱动程序发生变化时，图形设置将尝试自动检测最适合设备的设置。</p>
+<p>另一方面，保存不是自动执行的;必须从脚本控制，使用BigWorld.savePreferences 方法，它将保存图形设置和视频和脚本的首选项。</p>
+<p>游戏脚本可以使用函数BigWorld.graphicsSettings 和 BigWorld.setGraphicsSettings 去查询和更改设置的当前状态(通常通过图形用户界面)。</p>
+<h5 id="22-9-2-1-Auto-detecting-settings"><a href="#22-9-2-1-Auto-detecting-settings" class="headerlink" title="22.9.2.1. Auto-detecting settings"></a><strong>22.9.2.1. Auto-detecting settings</strong></h5><p>通过resources.xml中的标记graphicsSettingsPresets指定的xml配置文件，支持设置的自动检测。这个文件定义了匹配条件，试图将一组设置与特定的设备(显卡)匹配。有三种不同的方式将一组设置与设备匹配。所有的匹配都是针对D3DADAPTER_IDENTIFIER9结构完成的。自动检测本身在方法Moo::GraphicsSetting::init中执行</p>
+<ul>
+<li><p>GUID</p>
+<p>将特定的设备类型和驱动程序版本匹配到一个设置组，当某个驱动程序&#x2F;设备对存在已知问题时，这是有用的，你可以相应地调整你的图形设置。</p>
+</li>
+<li><p>VendorID&#x2F;DeviceID pair</p>
+<p>将特定的设备类型匹配到设置，当你知道特定设备的供应商和设备id时，这是有用的。</p>
+</li>
+<li><p>Device description string</p>
+<p>将字符串匹配到设备描述，所有的字符串都需要匹配到要选择的设置</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">graphicsPreferences</span>&gt;</span> HIGH </span><br><span class="line">    <span class="tag">&lt;<span class="name">entry</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span> CLASSIC_TERRAIN_QUALITY <span class="tag">&lt;/<span class="name">label</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">activeOption</span>&gt;</span> 0 <span class="tag">&lt;/<span class="name">activeOption</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">entry</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">GUIDMatch</span>&gt;</span> 01234567.89abcdef.01234567.89abcdef <span class="tag">&lt;/<span class="name">GUIDMatch</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">VendorDeviceIDMatch</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">VendorID</span>&gt;</span> 4318 <span class="tag">&lt;/<span class="name">VendorID</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">DeviceID</span>&gt;</span> 1554 <span class="tag">&lt;/<span class="name">DeviceID</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">VendorDeviceIDMatch</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">DeviceDescriptionMatch</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span> nvidia <span class="tag">&lt;/<span class="name">string</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span> 6800 <span class="tag">&lt;/<span class="name">string</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">DeviceDescriptionMatch</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">defaultSetting</span>&gt;</span> true <span class="tag">&lt;/<span class="name">defaultSetting</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">graphicsPreferences</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="22-9-2-2-GraphicsPresets-class"><a href="#22-9-2-2-GraphicsPresets-class" class="headerlink" title="22.9.2.2. GraphicsPresets class"></a><strong>22.9.2.2.</strong> <strong>GraphicsPresets</strong> <strong>class</strong></h5><p>还提供了一个简单的python图形预设类。该类有助于将多个图形设置分组在一起，以便您可以为特定硬件或性能级别的多个图形选项提供预定义设置。GraphicsPresets类可以在bigworld&#x2F;res&#x2F; scripts&#x2F;GraphicsPresets.py文件夹中找到。</p>
+<h5 id="22-9-2-3-Delayed-settings"><a href="#22-9-2-3-Delayed-settings" class="headerlink" title="22.9.2.3. Delayed settings"></a><strong>22.9.2.3. Delayed settings</strong></h5><p>大多数设置在调用BigWorld.setGraphicsSettings后立即生效。但有些只是标记为延迟。这意味着在被设置之后，它们会被添加到待处理设置的列表中，并且只有当该列表被提交时，它们才会生效。</p>
+<p>这样设计是为了让界面程序员有机会警告用户，在客户端应用程序阻塞几秒钟之前，处理新设置可能需要一段时间才能完成(目前，不支持在处理设置时显示进度条)。</p>
+<p>以下函数允许脚本管理挂起的设置列表:</p>
+<ul>
+<li><strong>BigWorld.hasPendingGraphicsSettings</strong></li>
+<li><strong>BigWorld.commitPendingGraphicsSettings</strong></li>
+<li><strong>BigWorld.rollBackPendingGraphicsSettings</strong></li>
+</ul>
+<h5 id="22-9-2-4-Settings-that-require-restarting-the-client"><a href="#22-9-2-4-Settings-that-require-restarting-the-client" class="headerlink" title="22.9.2.4. Settings that require restarting the client"></a><strong>22.9.2.4. Settings that require restarting the client</strong></h5><p>某些设置只有在重新启动客户端应用程序后才会被应用。当客户端需要重新启动最近更改的设置以生效时，函数BigWorld.graphicsSettingsNeedRestart将返回true。</p>
+<h3 id="22-10-Taking-Screenshots"><a href="#22-10-Taking-Screenshots" class="headerlink" title="22.10. Taking Screenshots"></a><strong>22.10. Taking Screenshots</strong></h3><p>BigWorld客户端能够截屏并将其保存为多种不同的格式。它通过在调用截图操作时检索后台缓冲区的当前内容来实现这一点。要在游戏中截图，请按下PrtScn按钮，或使用 BigWorld.screenShot(<em>extension</em>, <em>name</em>)Python API函数。</p>
+<p>默认的图像类型、文件名前缀和输出位置都在engine_config.xml中配置(参见” <engine_config>.xml”)。&lt;screenShot&gt;标签的模式是:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">engine_config.xml</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="tag">&lt;<span class="name">screenShot</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">path</span>&gt;</span> relativePath</span><br><span class="line">            <span class="tag">&lt;<span class="name">pathBase</span>&gt;</span> basePathName <span class="tag">&lt;/<span class="name">pathBase</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">path</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span> prefixName <span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">extension</span>&gt;</span> extension <span class="tag">&lt;/<span class="name">extension</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">screenShot</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">engine_config.xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>relativePath</strong></p>
+<p>这是相对于basePath的输出路径(概述如下)。例如，如果relativePath是MY_DOCS，你可以设置它为“ “My Company&#x2F;Game Name&#x2F;Screenshots”。留空或指定”.&#x2F;“直接放置在basePathName中(这是默认行为)。</p>
+</li>
+<li><p><strong>basePathName</strong></p>
+<ul>
+<li><p>EXE_PATH </p>
+<p>相对于客户端可执行文件位置的截图。如果没有提供，这是默认位置。</p>
+</li>
+<li><p>CWD</p>
+<p>截图将相对于当前工作目录存储。注意，如果工作目录在运行时发生更改，它将保存在新的工作目录中。</p>
+</li>
+<li><p>ROAMING_APP_DATA</p>
+<p>截图将相对于当前用户的roaming AppData目录存储。换句话说，如果用户在域上，当用户登录和退出Windows时，数据将与域控制器同步。</p>
+</li>
+<li><p>LOCAL_APP_DATA</p>
+<p>截图将相对于当前用户的local AppData目录存储。</p>
+</li>
+<li><p>APP_DATA</p>
+<p>这与ROAMING_APP_DATA相同。</p>
+</li>
+<li><p>MY_DOCS</p>
+<p>截图将相对于当前用户的My Documents目录存储。</p>
+</li>
+<li><p>MY_PICTURES</p>
+<p>截图将相对于当前用户的“我的图片”目录存储。</p>
+</li>
+<li><p>RES_TREE</p>
+<p>截图将相对于paths.xml中找到的第一个资源路径存储。</p>
+</li>
+</ul>
+<p>默认值为“EXE_PATH”。</p>
+</li>
+<li><p><strong>prefixName</strong></p>
+<p>指定生成有编号的屏幕截图时使用的前缀。系统默认值为shot。</p>
+</li>
+<li><p><strong>extension</strong></p>
+<p>指定保存屏幕截图时使用的文件格式。这可以是bmp，“jpg”、“tga”、“png”或“dds”。默认值为“bmp”。</p>
+</li>
+</ul>
+<p>因此，生成的截图的完整路径将是basePathName&#x2F;relativePath&#x2F;prefixName_&lt;sequence&gt;。扩展，其中&lt;sequence&gt;是一个四位数非负整数，用前导零填充(例如，shot_0012.bmp)。屏幕捕获机制不会覆盖现有的文件。</p>
+<h4 id="22-10-1-High-Resolution-Screenshots"><a href="#22-10-1-High-Resolution-Screenshots" class="headerlink" title="22.10.1. High Resolution Screenshots"></a><strong>22.10.1. High Resolution Screenshots</strong></h4><p>通常情况下，在全屏模式下，后台缓冲区的大小与窗口或屏幕分辨率相同。然而，当在窗口模式下运行时，有可能有一个比窗口本身更大的后缓冲区，从而增加屏幕截图的大小。</p>
+<h3 id="22-11-Dynamic-Entity-Shadows"><a href="#22-11-Dynamic-Entity-Shadows" class="headerlink" title="22.11. Dynamic Entity Shadows"></a><strong>22.11. Dynamic Entity Shadows</strong></h3><p>客户端支持两种不同的方式来允许实体模型将阴影投射到场景中。您选择使用的方法取决于目标硬件，因为它们的成本差别很大。</p>
+<p><strong>22.11.1. Splodges</strong></p>
+<p>这个系统的工作原理是在实体模型脚下的几何图形上绘制一个特殊的“污渍”纹理，投影在太阳的方向(它们只有在外部块是可见的)。这是一个很好的低端解决方案，因为它们绘制起来很便宜，但是它们只会提供一个粗略的阴影近似值。</p>
+<p>通过使用PySplodge API，可以将插件添加到实体模型中。PySplodge类是一种连接类型，连接到实体模型的脚(每脚一个)。例如:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lsplodge = BigWorld.Splodge()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>rsplodge = BigWorld.Splodge()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>model.node( <span class="string">&quot;biped L Toe0&quot;</span> ).attach( lsplodge )</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>model.node( <span class="string">&quot;biped R Toe0&quot;</span> ).attach( rsplodge )</span><br></pre></td></tr></table></figure>
+
+<p>虽然所有的splodge都使用相同的材质来绘制(这可以通过修改resources.xml中的environment&#x2F;splodgeMaterial部分来配置)，每个PySplodge实例可以修改以下参数:</p>
+<ul>
+<li>距离相机的最大LOD距离，在此之后它们被剔除。默认为50米。</li>
+<li>单个污迹的大小。</li>
+</ul>
+<p><em><strong>由于碰撞场景被用来确定在哪里绘制污损，只有固体物体会接收污损阴影。</strong></em></p>
+<h4 id="22-11-2-Shadow-maps"><a href="#22-11-2-Shadow-maps" class="headerlink" title="22.11.2. Shadow maps"></a><strong>22.11.2. Shadow maps</strong></h4><p>实体模型可以被配置，这样它们就可以根据太阳光线的方向，利用动态阴影地图，将阴影投射到场景中。每一帧引擎将选择一组最接近相机的阴影投射实体，其数量通过SHADOWS_COUNT图形设置配置。对于每个阴影投射器，它会根据光线的方向将投射器渲染成纹理，然后通过重新渲染每个与阴影相交的物体将这个纹理投射到场景中(使用阴影贴图作为输入)。</p>
+<p>为了投射阴影，实体必须显式地添加到实体阴影管理器中。提供了两个Python API:</p>
+<ul>
+<li><p>BigWorld.addShadowEntity </p>
+<p>这通常从onEnterWorld实体回调调用</p>
+</li>
+<li><p>BigWorld.delShadowEntity</p>
+<p>这通常从onLeaveWorld实体回调调用。</p>
+</li>
+</ul>
+<p>全局阴影设置(如阴影贴图分辨率、强度和着色器)在阴影中配置</p>
+<p>XML文件(定义在shadows.xml中)-关于该文件语法的详细信息，请参阅(File GrammarGuide’s section <em>shadows.xml</em>).</p>
+<p>用户可控制的图形设置是SHADOWS_COUNT和SHADOWS_QUALITY。详情请参阅“Graphics settings”。</p>
+<p><em><strong>阴影将投射到地形、实体模型和植物上。排序三角形(即半透明物体)将不会投射或接收阴影。</strong></em></p>
+<p><em><strong>请记住，使用实体阴影的费用会随着渲染阴影实体的数量增加而增加，所以建议保持将SHADOWS_COUNT设置得尽可能低以保持性能。因此，这并不是一个通用的全场景阴影系统。</strong></em></p>
+<h2 id="23-Post-Processing"><a href="#23-Post-Processing" class="headerlink" title="23. Post Processing"></a>23. <strong>Post Processing</strong></h2><p>后期处理效果广泛应用于所有现代游戏，并有许多应用-从HDR色调映射和颜色校正到卡通效果，可能性几乎是无限的。</p>
+<p>BigWorld Technology支持后期处理链的完整用户定制，支持艺术家通过内置编辑工具，支持程序员通过提供对python中的每个参数的完全控制，并以DirectX&#x2F;HLSL效果文件的方式提供插入着色器。</p>
+<p>然而，在你开始创建自己的新的时髦效果之前，你需要考虑一下。效果应该很好地结合在一起，它们应该在可能的情况下重用呈现目标，并且您需要监视性能。</p>
+<h3 id="23-1-Pipeline-Overview"><a href="#23-1-Pipeline-Overview" class="headerlink" title="23.1. Pipeline Overview"></a><strong>23.1. Pipeline Overview</strong></h3><p>在不透明场景、半透明和镜头效果之后，在GUI绘制之前,PostProcessing::Manager绘制其当前链。链包含按顺序绘制的效果列表。在内部，每个效果都包含一个按顺序绘制的阶段列表。一个阶段通常使用效果文件将一个全屏四边形绘制到屏幕上，尽管也有其他转移网格可用。</p>
+<p>后处理的实现分为三个部分。核心是用c++编写的，在bigworld&#x2F;src&#x2F; lib&#x2F;post_processing库中。所有的特性都通过_PostProcessing模块向python公开。</p>
+<p>在Python中，PostProcessing模块存在于bigworld&#x2F;res&#x2F;scripts&#x2F;client&#x2F;PostProcessing中，并从PostProcessing导入所有的方法。这允许您重写或包装任何c++方法。因此，所有的python调用都应该指向PostProcessing，而不是PostProcessing。</p>
+<p>默认情况下，PostProcessing模块注册3个图形设置。如果用户选择高&#x2F;中&#x2F;低，则加载适当的后处理链。这些在bigworld&#x2F;res&#x2F;system&#x2F;post_processing&#x2F; chains&#x2F;和**”High Graphics Setting.ppchain”, “Medium Graphics Setting.ppchain” and “Low Graphics Setting.ppchain”**因此，通过在World Editor中创建新链并保存在这些文件的顶部，开发人员可以很容易地重新定义默认的后处理链。</p>
+<p> 一般来说，我们都希望游戏能够结合使用默认的后期处理链文件，并动态地将其与游戏玩法相关的效果混合在一起。为了实现这一点，请遵循PostProcessing模块中的示例。另外，看看PyMaterial的Python API，因为它将演示如何平稳地淡入&#x2F;淡出动态后期处理效果。</p>
+<p>最后在世界编辑器，后期处理选项卡是一个功能齐全的编辑器和预览工具链。它加载并保存.ppchain文件。</p>
+<h3 id="23-2-Creating-a-Custom-Post-Processing-Effect"><a href="#23-2-Creating-a-Custom-Post-Processing-Effect" class="headerlink" title="23.2. Creating a Custom Post-Processing Effect"></a><strong>23.2. Creating a Custom Post-Processing Effect</strong></h3><p>虽然《BigWorld》带有一套基本的后期处理着色器，阶段和效果，但你可能会发现自己需要执行一种独特的游戏效果。</p>
+<p>对于这个例子，我们将创建一个后期处理，将反转屏幕上的所有颜色。</p>
+<p>我们将创作一个后期处理效果，可以添加作为客户的整体后期处理链的一部分，我们将写一个自定义着色器，执行实际的颜色倒置。</p>
+<h4 id="23-2-1-Creating-the-Custom-Pixel-Shader"><a href="#23-2-1-Creating-the-Custom-Pixel-Shader" class="headerlink" title="23.2.1. Creating the Custom Pixel Shader"></a><strong>23.2.1. Creating the Custom Pixel Shader</strong></h4><p>那么我们如何让GPU反转屏幕上所有的颜色呢?</p>
+<p>因为BigWorld客户端支持插入DirectX Effect文件(.fx)，所以这一步相对简单。我们所需要做的就是编写一个.fx文件，它接受一个输入纹理，转换颜色，然后输出该值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">float4 <span class="title">ps_invert</span><span class="params">(PS_INPUT input)</span> : COLOR0</span></span><br><span class="line"><span class="function">&#123;</span></span><br><span class="line"> float4 map = <span class="built_in">tex2D</span>(inputTextureSampler, input.tc0);</span><br><span class="line"> float4 invMap = <span class="built_in">float4</span>(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>) - map;</span><br><span class="line"> invMap.w = <span class="number">1</span>;</span><br><span class="line"> <span class="keyword">return</span> invMap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>好了，这是简单的部分。这个像素着色器假设了一些事情，即顶点着色器通过一组纹理坐标，有一个读取正确纹理映射的采样器，有一个定义好的PS_INPUT结构。</p>
+<p>幸运的是，通过包括文件post_processing.fxh的效果，所有这些都得到了处理。(bigworld&#x2F;res&#x2F;shaders&#x2F;post_processing&#x2F;post_processing.fxh)</p>
+<p>使用像素着色器的完整效果是相当直接的，看起来像这样:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;post_processing.fxh&quot;</span></span></span><br><span class="line"><span class="built_in">DECLARE_EDITABLE_TEXTURE</span>( inputTexture, inputSampler, CLAMP, CLAMP, LINEAR,<span class="string">&quot;Input texture/render target&quot;</span> )</span><br><span class="line"><span class="function">float4 <span class="title">ps_invert</span><span class="params">(PS_INPUT input)</span> : COLOR0</span></span><br><span class="line"><span class="function">&#123;</span></span><br><span class="line">    float4 map = <span class="built_in">tex2D</span>(inputSampler, input.tc0);</span><br><span class="line">    float4 invMap = <span class="built_in">float4</span>(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>) - map;</span><br><span class="line">    invMap.w = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> invMap;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">STANDARD_PP_TECHNIQUE</span>(compile vs_2_0 <span class="built_in">vs_pp_default</span>(), compile <span class="built_in">ps_2_0ps_invert</span>())</span><br></pre></td></tr></table></figure>
+
+<p>着色器也可以在FX Composer中通过添加以下内容来编辑:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> FX_COMPOSER 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;post_processing.fxh&quot;</span></span></span><br><span class="line"><span class="function">FX_COMPOSER_STANDARD_VARS</span></span><br><span class="line"><span class="function"><span class="title">DECLARE_EDITABLE_TEXTURE</span><span class="params">( inputTexture, inputSampler, CLAMP, CLAMP, LINEAR,<span class="string">&quot;Input texture/render target&quot;</span> )</span></span></span><br><span class="line"><span class="function">float4 <span class="title">ps_invert</span><span class="params">(PS_INPUT input)</span> : COLOR0</span></span><br><span class="line"><span class="function">&#123;</span></span><br><span class="line"> float4 map = <span class="built_in">tex2D</span>(inputSampler, input.tc0);</span><br><span class="line"> float4 invMap = <span class="built_in">float4</span>(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>) - map;</span><br><span class="line"> invMap.w = <span class="number">1</span>;</span><br><span class="line"> <span class="keyword">return</span> invMap;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">STANDARD_PP_TECHNIQUE</span>(compile vs_2_0 <span class="built_in">vs_pp_default</span>(), compile <span class="built_in">ps_2_0ps_invert</span>())</span><br><span class="line"><span class="built_in">STANDARD_FX_COMPOSER_TECHNIQUE</span>(compile vs_2_0 <span class="built_in">vs_pp_default</span>(), compile <span class="built_in">ps_2_0ps_invert</span>(), <span class="string">&quot;RenderColorTarget0=inputTexture;&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在FX Composer设置中，添加post_processing的路径。FXH和其他后期处理头到您的包括路径。注释#define FX_COMPOSER 1在客户端或世界编辑器中使用着色器。</p>
+<h4 id="23-2-2-Previewing-the-Results"><a href="#23-2-2-Previewing-the-Results" class="headerlink" title="23.2.2. Previewing the Results"></a><strong>23.2.2. Previewing the Results</strong></h4><p>由于后处理链包含许多阶段，这些阶段通常写入中间的、不可见的呈现目标，因此通常希望看到后处理效果或链的中间结果。有两个方法可用于此目的，PostProcessing.debug()和World Editor的预览功能。</p>
+<p>在客户端中，您可以用_PostProcessing模块注册一个任意大小的呈现目标，并让它记录所有中间步骤。然后可以通过在GUI中显示来查看这个呈现目标。一个辅助类，ChainView，在PostProcessing模块中可用，这将在屏幕上实时显示整个链。</p>
+<p>在World Editor中，后处理编辑器中有一个预览按钮，它显示编辑图中每个阶段节点内的中间结果。</p>
+<h4 id="23-2-3-Writing-a-Custom-Pixel-Shader-for-Previewing-the-Results"><a href="#23-2-3-Writing-a-Custom-Pixel-Shader-for-Previewing-the-Results" class="headerlink" title="23.2.3. Writing a Custom Pixel Shader for Previewing the Results"></a><strong>23.2.3. Writing a Custom Pixel Shader for Previewing the Results</strong></h4><p>有时候，这种简单的预览并不合适。默认情况下，预览直接显示每个阶段的像素着色器的输出。然而，通常中间步骤的输出被写入一个不直接映射到可见颜色范围的浮点呈现目标，其他时候以特定的方式编码的信息不是直接可见的。</p>
+<p>以景深镜头模拟为例。一种可能的实现可能是解码深度缓冲，并将场景分为7个单独的区域，3级模糊在焦距前，对焦内和3级模糊后。该信息可以写入单组件浮点呈现目标，并包含-3到+3之间的值。</p>
+<p>当一个像素着色器的输出不直接可见时，你可以创建另一个用于预览功能的像素着色器。要做到这一点，你需要为你的效果添加一种新技术。这种技术必须称为“预览”，如果可用，将在预览后处理链时代替主要技术。这种技术输出的数据在普通R8G8B8A8渲染目标上和在屏幕上查看时都是可见的。</p>
+<p>在上面的例子中，您可以编写一个预览技术，在焦点范围前的模糊区域显示3个深浅的红色，在所有焦点区域显示全绿色，在焦点范围后的所有模糊区域显示3个深浅的蓝色。</p>
+<h4 id="23-2-4-Authoring-a-Post-Processing-Effect-in-Python"><a href="#23-2-4-Authoring-a-Post-Processing-Effect-in-Python" class="headerlink" title="23.2.4. Authoring a Post-Processing Effect in Python"></a><strong>23.2.4. Authoring a Post-Processing Effect in Python</strong></h4><p>那么现在我们如何获得在后期处理时操纵屏幕的新效果呢?我们必须编写一个PostProcessing::Effect。大多数情况下，这将通过世界编辑器中的后期处理编辑器完成。世界编辑器保存.ppchain文件，这些文件包含效果和阶段链，可以简单地加载并设置为当前的后期处理链。然而，知道如何使用Python API也很有用，因为你确实可以访问整个链，通常你会想要将后期处理效果直接绑定到游戏逻辑。这也有助于理解发生了什么。</p>
+<p>对于这个示例效果，我们必须用反向缓冲区中任何颜色的倒数来写入反向缓冲区中的每一个像素。</p>
+<p>PC硬件无法读取正在写入的同一个纹理，所以我们需要首先抓取一个回缓冲区的副本，并将其存储在另一个纹理中。</p>
+<p>这段python代码创建了一个CopyBackBuffer阶段，创建了一个与返回缓冲区大小相同的渲染目标，并将两者挂钩起来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PostProcessing</span><br><span class="line">phase1 = PostProcessing.CopyBackBuffer()</span><br><span class="line">bbcRT = BigWorld.RenderTarget(<span class="string">&quot;backBufferCopy&quot;</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">phase1.renderTarget = bbcRT</span><br></pre></td></tr></table></figure>
+
+<p>在世界编辑器中，我们可以简单地将“BackBufferCopy”阶段放入效果中，然后就完成了。</p>
+<p>注意，在这种情况下，我们创建了一个新的渲染目标，但通常你想要在效果和阶段之间共享渲染目标，特别是像上面这样的全屏渲染目标。所以我们可以像这样使用RenderTargets模块，而不是创建一个渲染目标:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bbcRT = PostProcessing.RenderTargets.rt(<span class="string">&quot;backBufferCopy&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们有了一个后缓冲的副本，我们可以读取它作为纹理，现在是时候做我们的颜色反转了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">phase2 = PostProcessing.Phase()</span><br><span class="line">phase2.material = BigWorld.Material(<span class="string">&quot;shaders/post_processing/colour_invert.fx&quot;</span>)</span><br><span class="line">phase2.material.inputTexture = phase1.renderTarget.texture</span><br><span class="line">phase2.renderTarget = <span class="literal">None</span></span><br><span class="line">phase2.filterQuad = PostProcessing.TransferQuad()</span><br></pre></td></tr></table></figure>
+
+<p>这个代码示例创建了一个新阶段，这次是一个通用的PyPhase对象。PyPhase对象有一个PyMaterial和一个FilterQuad。它使用这些来写入一个RenderTarget。</p>
+<p>我们已经从“colour_invert.fx”创建了一个新的PyMaterial”，我们之前编写的着色器。</p>
+<p>效果文件使用了一个名为“inputTexture”的纹理变量。因为我们在效果中将这个变量标记为’editable’，它会在python字典中显示。因此，我们可以将它直接设置为返回缓冲区复制渲染目标保存的纹理。</p>
+<p>我们已经将这个阶段的renderTarget属性设置为None。具体来说，这意味着“不要设置渲染目标”，在实践中这意味着我们想要直接写入主场景的后台缓冲区，而不是屏幕外的渲染目标。</p>
+<p>注意，每当我们写回缓冲区，我们改变它的内容，并且下一个后处理效果或阶段必须使用一个包含这些改变的新副本。BackBufferCopy阶段在内部检测自获取最后一个副本以来，back缓冲区是否被修改。因此，一直使用BackBufferCopy阶段是可以的，如果那个时候实际上不需要那个阶段，也不会有性能损失。</p>
+<p>最后阶段使用一个FilterQuad来绘制;它们通常使用n组滤镜，在这种情况下，我们只想从源纹理中读取单个像素，对于输出渲染目标中的每个像素。因此，我们已经创建了一个PyTransferQuad，它只有一个样本点，并且没有偏移。如果我们想做一些纹理过滤，我们可以使用PyFilterQuad代替，并指定n个采样点-每个采样点表示(u-偏移texels, v-偏移texels，权重，未使用)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">colourInvert = PostProcessing.Effect()</span><br><span class="line">colourInvert.phases = [phase1, phase2]</span><br><span class="line">colourInvert.name = <span class="string">&quot;Invert Colours&quot;</span></span><br><span class="line">PostProcessing.chain([colourInvert])</span><br></pre></td></tr></table></figure>
+
+<p>最后的代码示例将我们的两个阶段打包成一个Effect，并将Effect注册为后处理链。从这里开始，屏幕上的颜色将会颠倒。</p>
+<h3 id="23-3-Render-Targets"><a href="#23-3-Render-Targets" class="headerlink" title="23.3. Render Targets"></a><strong>23.3. Render Targets</strong></h3><p>后处理链使用的主要资源之一是渲染目标。它们往往是后台缓冲区大小的倍数，并具有不同的表面格式和用途。BigWorld客户端公开了PyRenderTarget类，可用于按需创建自定义渲染目标。请参阅<em>Python Client API</em> 关于如何使用PyRenderTarget的详细说明。</p>
+<p>注意，你可以创建尽可能多的渲染目标，因为实际的表面内存只在渲染目标首次用于绘制时分配(通过RenderTarget.push)。因此，您可以定义实际未使用的渲染目标，开销可以忽略不计。但是对于正在使用的渲染目标来说，视频内存会迅速增加，所以在设计后期处理链时需要格外小心。任何特定链使用的总内存可以在世界编辑器中查看，或者通过调用函数PostProcessing.RenderTargets.reportMemoryUsage()。</p>
+<p> 在Python中，PostProcessing模块有自己的RenderTargets模块，位于bigworld&#x2F;res&#x2F;scripts&#x2F;client&#x2F;PostProcessing&#x2F;RenderTargets中。如果您想添加更多的呈现目标供后处理链使用，那么请将它们添加到这里的呈现目标列表中。这样做是必要的，因为这是World Editor获取可用后处理呈现目标列表的地方。</p>
+<h3 id="23-4-Performance"><a href="#23-4-Performance" class="headerlink" title="23.4. Performance"></a><strong>23.4. Performance</strong></h3><p>在创建后处理链时，需要注意两个主要的性能指标。这些是:内存使用(主要是由渲染目标);以及花在GPU上的时间。渲染目标及其相关的内存使用在前一章中有描述。与往常一样，动态创建的PostProcessing资源应该在后台线程中加载，以避免渲染线程停止。</p>
+<h4 id="23-4-1-Measuring-the-Time-Spent-on-the-GPU"><a href="#23-4-1-Measuring-the-Time-Spent-on-the-GPU" class="headerlink" title="23.4.1. Measuring the Time Spent on the GPU"></a><strong>23.4.1. Measuring the Time Spent on the GPU</strong></h4><p>后处理链往往具有较低的CPU成本——包括通过效果和阶段进行的简单迭代和简单的几何设置——但GPU成本较高，使用复杂的像素着色器执行全屏传递和每个像素获取许多纹理。因此，主要的开销通常是GPU带宽:填充率和纹理读取。</p>
+<p>BigWorld客户端有一个python API函数，PostProcessing.profile(迭代)，用来测量GPU所花费的时间。参数迭代通常应该在10左右，以确保测量到一个准确的值。由于主要的成本是填充率和纹理获取，这个值取决于屏幕的分辨率，所以需要在不同的gpu和不同的分辨率下进行profile。注意，World Editor在后处理面板上还附带了一个工具栏按钮，该按钮也对链进行了概要分析。</p>
+<h4 id="23-4-2-Background-Loading"><a href="#23-4-2-Background-Loading" class="headerlink" title="23.4.2. Background Loading"></a><strong>23.4.2. Background Loading</strong></h4><p>没有直接支持在后台创建.ppchain文件，因为库使用了许多只能在主线程中创建的PyObject指针。相反，可以通过postprocessing .prerequisites()方法来实现对.ppchain文件后台加载的支持。这将从XML文件中提取适当的资源(主要是效果材料)，并返回所需资源的列表，然后可以直接将这些资源传递给BigWorld.loadResourceListBG()。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">filename = <span class="string">&quot;system/post_processing/chains/underwater.ppchain&quot;</span></span><br><span class="line">BigWorld.loadResourceListBG(PostProcessing.prerequisites(filename), onLoadBG)</span><br></pre></td></tr></table></figure>
+
+<p>通过SFX系统加载的后处理链会在后台自动加载。</p>
+<p>因为收集PostProcessing先决条件依赖于已经加载的.ppchain文件数据部分，所以建议预先加载所有.ppchain XML文件。</p>
+<h2 id="24-Job-System"><a href="#24-Job-System" class="headerlink" title="24. Job System"></a><strong>24. Job System</strong></h2><p><strong>24.1. Overview</strong></p>
+<p>Job System允许多核系统中的额外核心执行代码并计算数据，以便及时呈现。它还将D3D命令的问题移动到自己的核心上，而主线程就可以简单地记录它们，以便在下一帧中执行。</p>
+<p>一帧的渲染被分成几个块。块按顺序呈现。每个块只有在前一个块完成后才开始。</p>
+<p>每个块包含任何D3D渲染命令和相关的顶点和索引缓冲区，纹理，着色常量或任何其他数据。该块可以结合来自主线程的传统D3D渲染和在分配给运行作业的核心上并行运行的作业的输出来生成。</p>
+<p>任何数量的jobs都可以产生一个块的输入。由于一次只渲染一个块，并且作业是并行执行的，你应该使用至少与核心数量相同的job，否则会有空闲的核心。一个块中的jobs可以以任何顺序完成，但在所有job完成之前，块不会被呈现。当job执行时，D3D执行前一个块。因此，job核心和D3D核心一直在工作，而同时主线程正在准备另一帧的块和它们对应的job。</p>
+<h3 id="24-2-Under-the-Hood"><a href="#24-2-Under-the-Hood" class="headerlink" title="24.2. Under the Hood"></a><strong>24.2. Under the Hood</strong></h3><p>所有渲染命令和jobs都存储在命令缓冲区中。这是通过包装D3D来完成的。所有D3D函数调用都转到包装器，包装器记录下它们在下一帧执行，而与此同时，上一帧的命令在D3D核心的另一个线程中执行。</p>
+<p>当刷新时，D3D核心首先会停止读取第一个区块的job结果。与此同时，job集群中的每个核心开始从区块中抢夺job。没有中央分派机制。核心获取任务，并在写完结果后自动为该块减少一个计数器。请注意，job是按顺序获取的，但不一定是按顺序完成的。例如，如果第一个任务需要很长时间，那么第二个任务可能会先完成，这个核心可以开始另一个任务。这意味着在最后一个job完成并将计数器减为零之前，不能保证输出是连续的。</p>
+<p>只有这样，D3D核心才能开始处理第一个块的结果，而集群开始操作第二个块，将结果输出到另一个缓冲区。</p>
+<p>如果D3D内核先完成，它就会退出缓冲区并暂停，直到下一个缓冲区准备好。如果集群先完成，它就会暂停，直到D3D内核回收它正在消耗的缓冲区，以便接收来自集群的输出。</p>
+<h3 id="24-3-Wrapper-API"><a href="#24-3-Wrapper-API" class="headerlink" title="24.3. Wrapper API"></a><strong>24.3. Wrapper API</strong></h3><p>除了包装D3D，包装器还有一个小的API来控制它的行为。</p>
+<p>DX::newBlock():启动一个新块。所有来自前一个块(block)的渲染将在这个块开始之前完成，所有用于渲染前一个块的job输出将不再可访问。这意味着所有为这个块产生输出的job必须在下一次调用DX::newBlock()之前分配。</p>
+<p>DX::setWrapperFlags()和DX::getWrapperFlags():这些函数获取和设置控制包装器行为的标志。</p>
+<p>IMMEDIATE_LOCK:刷新命令缓冲区，然后在主线程中执行锁。如果您不打算填充整个锁定区域，则这是必需的。这是一种非常昂贵的锁定方式，应该尽可能避免。</p>
+<p>DEFERRED_LOCK:该标志用于锁定将被作业填充的缓冲区。锁返回的指针只能用于存储到作业中，然后在作业执行时访问。实际的锁在作业执行的下一帧发生。</p>
+<h3 id="24-4-Job-System-API"><a href="#24-4-Job-System-API" class="headerlink" title="24.4. Job System API"></a><strong>24.4. Job System API</strong></h3><p>这个Job System API 是通过 JobSystem 单例来访问的. 它通过withJobSystem::instance()获得.</p>
+<p>allocJob():该方法将job放入当前块的job列表中，并返回从job派生的用户实现类。它有一个名为execute()的虚函数，实际执行任务。派生类存储job执行所需的任何东西。注意，块中的job不会按顺序执行。</p>
+<p>allocOutput():这个job需要产生输出，这是通过allocOutput()预先分配的。它从主线程调用，其结果放置在Job对象中。此时并没有实际分配用于输出的内存，但是在下一帧执行job时，内存就已经准备好了。</p>
+<p>在一个块中，可以使用job和输出分配的任意组合。例如，您可以分配一个输出，并将其分配给多个job，反之亦然，或者您喜欢的任何组合。唯一的规则是输出和job必须都来自同一个块。</p>
+<h3 id="24-5-An-Example"><a href="#24-5-An-Example" class="headerlink" title="24.5. An Example"></a><strong>24.5. An Example</strong></h3><p>让我们想象一下，我们正在更新和渲染一个简单的粒子系统。这将在一个块内完成。粒子系统由4096个点组成，每个点将被更新并生成一个顶点到顶点缓存中用于渲染。</p>
+<p>我们的区块将包括设置一个顶点缓冲区并在其上调用DrawPrimitive。顶点缓冲区将使用job填充。顶点缓冲区将被分为8个部分，每个部分包含512个顶点。每个部分将填写一个job。</p>
+<p>主线程：</p>
+<ul>
+<li>新建Block</li>
+<li>使用DEFERRED_LOCK标志锁定4096个点的顶点缓冲区</li>
+<li>设置8个job，每个job填写512顶点</li>
+<li>设置渲染状态</li>
+<li>绘制</li>
+<li>重置包装标志</li>
+</ul>
+<p>以上所有步骤都不是立即执行的，而是在下一帧执行时被记录下来。</p>
+<p>Jobs和D3D核心:</p>
+<p>在下一帧中，默认块呈现，直到到达粒子的新块。同时执行填充顶点缓冲区的8个job。当到达新的区块和工作完成时，粒子被渲染。与此同时，执行下一个块的job。</p>
+<h3 id="24-6-Implementing-it"><a href="#24-6-Implementing-it" class="headerlink" title="24.6. Implementing it"></a><strong>24.6. Implementing it</strong></h3><p>既然我们理解了这个示例的工作原理，那么我们就可以完成实现它的步骤了。</p>
+<p>首先，我们需要实现我们的job对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PointSpriteParticleJob</span> : <span class="keyword">public</span> Job</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">set</span><span class="params">( Particle* particles, Moo::VertexXYZDP* pVertex, uint nPoints )</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">execute</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">    Particle* particles_;</span><br><span class="line">    Moo::VertexXYZDP* pVertex_;</span><br><span class="line">    uint nPoints_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>job对象继承了虚拟execute()方法，该方法在下一帧被调用，就在D3D内核需要使用作业输出之前。</p>
+<p>我们还实现了一个set()方法，该方法从主线程调用并存储execute()中所需的所有信息。</p>
+<p>execute()方法将做两件事。它将更新粒子的位置，并将新位置输出到顶点缓冲区。每个给定的任务对象只会对粒子系统和顶点缓冲区的一部分执行此操作，这样整个任务就可以被分成几个任务，并在几个核心上并行执行。</p>
+<p>现在我们可以在呈现代码中使用job类了。</p>
+<p>我们从一个新的区块开始。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DX::<span class="built_in">newBlock</span>();</span><br></pre></td></tr></table></figure>
+
+<p>现在我们已经准备好对呈现命令进行排队了。</p>
+<p>首先，我们需要锁定一个延迟的顶点缓冲区，为此，我们需要在锁定之前设置适当的包装器标志。</p>
+<p>通常在锁定时，你会得到一个指针，可以立即使用它来写入顶点数据。然而，我们的顶点数据将在下一帧由job计算，所以锁实际上必须在那个时候发生。因此，我们使用延迟锁，它现在返回一个指针，但直到需要时才执行锁。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">uint32 oldFlags = DX::<span class="built_in">getWrapperFlags</span>();</span><br><span class="line">DX::<span class="built_in">setWrapperFlags</span>( DX::WRAPPER_FLAG_DEFERRED_LOCK );</span><br><span class="line">Moo::DynamicVertexBufferBase2&lt;Moo::VertexXYZDP&gt;&amp; vb =</span><br><span class="line">    Moo::DynamicVertexBufferBase2&lt;Moo::VertexXYZDP&gt;::<span class="built_in">instance</span>();</span><br><span class="line">Moo::VertexXYZDP* pVertex = vb.<span class="built_in">lock2</span>( <span class="number">4096</span> );</span><br></pre></td></tr></table></figure>
+
+<p>现在我们准备分配和设置我们的工作。锁中的指针用于设置作业。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> ( uint i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++ )</span><br><span class="line">&#123;</span><br><span class="line"> job = jobSystem.<span class="built_in">allocJob</span>&lt;UpdateParticlesJob&gt;();</span><br><span class="line"> job.<span class="built_in">set</span>( particles + i*<span class="number">512</span>, vertices + i*<span class="number">512</span>, <span class="number">512</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后，我们可以解锁缓冲区，重置包装标志和渲染。</p>
+<p>此时，我们可以将分配和设置的job渲染为完成的状态，因为在此之前不会执行以下呈现命令。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vb.<span class="built_in">unlock</span>();</span><br><span class="line">uint32 lockIndex = vb.<span class="built_in">lockIndex</span>();</span><br><span class="line">DX::<span class="built_in">setWrapperFlags</span>( oldFlags );</span><br><span class="line">vb.<span class="built_in">set</span>( <span class="number">0</span> );</span><br><span class="line">Moo::<span class="built_in">rc</span>().<span class="built_in">drawPrimitive</span>( D3DPT_POINTLIST, lockIndex, nPoints );</span><br></pre></td></tr></table></figure>
+
+<h2 id="25-Debugging"><a href="#25-Debugging" class="headerlink" title="25. Debugging"></a><strong>25. Debugging</strong></h2><p>本节介绍BigWorld客户端的一些调试特性。</p>
+<p>调试是任何开发过程的重要组成部分，客户端有许多功能，有助于及早发现bug、游戏内调试、远程调试，以及无需重新启动即可立即应用更改。</p>
+<p>许多调试功能都是通过一个特殊定义的调试键访问的。默认情况下，调试映射到键盘上的grave (~)键，但是可以通过编辑引擎configuration.XML文件来重新配置。</p>
+<h3 id="25-1-Build-configuration-—-conditional-feature-inclusion"><a href="#25-1-Build-configuration-—-conditional-feature-inclusion" class="headerlink" title="25.1. Build configuration — conditional feature inclusion"></a><strong>25.1. Build configuration — conditional feature inclusion</strong></h3><p>BigWorld提供了许多有助于运行时调试的特性，例如调试菜单和telnet Python服务。</p>
+<p>要从客户端的最终版本中删除这些特性，需要存在许多编译保护。它们由src&#x2F;lib&#x2F;cstdmf&#x2F;config.hpp中的以下定义共同控制。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> CONSUMER_CLIENT_BUILD 0</span></span><br></pre></td></tr></table></figure>
+
+<p>如果CONSUMER_CLIENT_BUILD为0，那么将编译开发特性。</p>
+<p>各个特性被封装在各自的编译保护中，可以使用上面的定义进行切换。也可以通过将相应的强制启用定义设置为非零值来启用单个特性。</p>
+<p>下面的例子说明了这一点:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> CONSUMER_CLIENT_BUILD 0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FORCE_ENABLE_DEBUG_KEY_HANDLER 0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ENABLE_DEBUG_KEY_HANDLER (!CONSUMER_CLIENT_BUILD \</span></span><br><span class="line"><span class="meta"> || FORCE_ENABLE_DEBUG_KEY_HANDLER)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="25-2-Watchers"><a href="#25-2-Watchers" class="headerlink" title="25.2. Watchers"></a><strong>25.2. Watchers</strong></h3><p>监视器是一个对象，它将变量或函数结果包装到程序中，并将其转换为字符串。</p>
+<p>监视器可以是读写或只读的，可以以各种方式查看。它们的层次结构通常是由功能组织的。还有一些观察器可以动态匹配不断变化的数据，例如序列或映射的内容。</p>
+<h4 id="25-2-1-Watcher-types"><a href="#25-2-1-Watcher-types" class="headerlink" title="25.2.1. Watcher types"></a><strong>25.2.1. Watcher types</strong></h4><p>最简单的监视器类型是DirectoryWatcher，它允许创建其他监视器(包括DirectoryWatcher)的目录。这是建立层次结构的一种方式。例如，在BigWorld客户端中由降雨系统绘制的降雨量的一个浮点值被指定在’ Client Settings&#x2F;Rain&#x2F; amount’.它使用三个DirectoryWatchers:根目录、Client Settings目录和Rain目录。</p>
+<p>对于任何可以流到std::stream对象上的数据类型，也有模板化的监视器。它们有两种类型，一种是变量的DataWatchers，另一种是类成员函数的结果(或唯一参数)的MemberWatchers。</p>
+<p>DataWatchers和MemberWatchers也可以接受一个’base object’参数，它们所指向的数据被认为是该参数的成员。当与更复杂类型的观察者(如SequenceWatcher)结合使用时，这是非常有用的。</p>
+<p>SequenceWatcher和MapWatcher看起来与DirectoryWatcher相同，但是它们监视任何支持STL序列或映射方法的类。它们只有一个客户端监视器，但是它们呈现的子容器的数量与包装容器的元素数量相同。调用子观察器时，将其“基对象”设置为容器的元素。为了处理这些容器中的指针，还有BaseDereferenceWatcher，它不提供额外的层次结构，而是解除对其基对象的引用，并使用该值调用唯一的子watcher。子进程可以通过静态列表来命名，也可以通过在子进程监视器中请求某个值(例如name)来命名。</p>
+<h4 id="25-2-2-Using-watchers"><a href="#25-2-2-Using-watchers" class="headerlink" title="25.2.2. Using watchers"></a><strong>25.2.2. Using watchers</strong></h4><p>从上面的类型可以看出，可以设置一个监视器层次结构，既可以公开简单的设置，也可以跟踪复杂的结构。</p>
+<p>制作监视器的最简单方法是使用MF_WATCH宏。这个宏接受监视器的路径名，以及一个变量或成员函数来获取&#x2F;设置它的值。它扩展为添加适当的监视器的代码。</p>
+<p>要更改值(作为字符串)的解析或显示，不需要编写新的监视程序。相反，可以使用成员函数以字符串的形式获取和设置值。这就是’Client Settings&#x2F;Time of day’值的工作原理-有简单的访问器timeOfDayAsString，格式化一天的时间为’小时:分钟’，并从相同的格式解析回来。设置一个观察者也可以用来触发一个命令—例如，只要设置了一天中的时间，服务器就会收到通知(仅用于调试目的)。</p>
+<p>要跟踪复杂的结构，必须直接创建适当的监视器，并将其插入到监视器层次结构中。参与这种安排的类通常会实现一个getWatcher()静态方法，该方法返回一个监视对象，当“基对象”被设置为该类的一个实例时，该监视对象就会工作。同一个监视器可以被类的所有实例共享，并且通常是DataWatchers和MemberWatchers的DirectoryWatcher类型。</p>
+<p>这是在客户端使用实体管理器维护的实体映射完成的。实体由它们的ID命名。</p>
+<p>客户机的大部分c++状态也可以通过显式添加的监视程序获得，因为调试的某些阶段已经需要它们了。</p>
+<h4 id="25-2-3-Watcher-Console"><a href="#25-2-3-Watcher-Console" class="headerlink" title="25.2.3. Watcher Console"></a><strong>25.2.3. Watcher Console</strong></h4><p>观看者控制台提供了从游戏内部进入观看者系统的权限。它可以在任何时候打开，并将游戏屏幕覆盖为当前观察者目录的列表。</p>
+<p>可以在后面跟着目录类条目，可以通过选择任何可写监视器，按Enter，然后输入一个新值来设置它的值。</p>
+<p>还有一些键可以通过1、10、100或1000来调整数值。</p>
+<h4 id="25-2-4-Remote-watcher-access"><a href="#25-2-4-Remote-watcher-access" class="headerlink" title="25.2.4. Remote watcher access"></a><strong>25.2.4. Remote watcher access</strong></h4><p>watcher系统使用一个非常简单的基于udp的watcher消息协议从客户端导出。服务器为了自己的调试需要广泛地使用这个协议。</p>
+<p>这与Mercury无关，尽管它可以(目前是)连接到它的输入回路。当客户端启动时，它广播一个watcher nub通知包，通告它的watcher nub正在监听的端口(当它干净地关闭时，它发送一个类似的消息)。</p>
+<p>要访问watcher值，可以使用许多工具，但到目前为止最有用的是UNIX守护进程“watcher”。这个守护进程监听任何广播监视器数据包，并从内部列表中添加或删除它们。</p>
+<p>守护进程的另一端向它所知道的所有监视节点提供一个HTTP接口。它将观察者节点的名称(包含在注册消息中，例如’client of John’， ‘cell14’等……)插入到观察者超级层次结构的顶层。它将每个观察器树表示为这个顶级目录的分支。请求URL中的路径被转换为监视器值请求路径。该接口可以获取和设置值。</p>
+<p>因此，通过使用任何web浏览器连接到这个守护进程，就可以看到本地网络上所有正在运行的客户机，然后调查或操作它们，甚至可以更改实体中Python变量的值。Python变量可以设置为任意Python，在客户端执行该变量以查找其值。如果需要的话，客户端还可以将其watcher nub通知发送给另一个外部地址，因此即使是远程客户端也可以通过这种方式访问。</p>
+<p><strong>25.3. Memory tracking</strong></p>
+<p>内存跟踪系统可以用来确定分配给类或模块的内存数量。ResourceCounters类是用于执行跟踪的主要类。</p>
+<h3 id="25-4-Scripts"><a href="#25-4-Scripts" class="headerlink" title="25.4. Scripts"></a><strong>25.4. Scripts</strong></h3><p>使用BigWorld客户端实现游戏可能涉及许多脚本。这些脚本将相互作用，并具有实时的需求和依赖性，因为它们是网络游戏的一部分——在某些情况下，游戏不能简单地停止并逐步通过，而不影响正在调试的客户端的行为。</p>
+<p>因此，编写脚本必须以与任何其他编码相同的方式进行，而不是作为c++编码的糟糕替代品。必须正确地设计脚本，并且必须考虑适当地使用类层次结构和其他语言概念。</p>
+<h4 id="25-4-1-Python-Console"><a href="#25-4-1-Python-Console" class="headerlink" title="25.4.1. Python Console"></a><strong>25.4.1. Python Console</strong></h4><p>Python控制台可以在游戏期间的任何时候启动。</p>
+<p>这是一个看起来和操作都完全像Python解释器的控制台，因此可以在其中输入任意Python。所有的c++模块都可以被访问，因此环境与脚本执行的环境是相同的。</p>
+<p>脚本本身没有捕捉到的Python错误和异常(在它们到达c++调用点之前)会输出到控制台，因此是输入到Python控制台本身的命令产生的错误。当游戏中出现错误时，控制台是第一个访问的地方。</p>
+<p>Python控制台支持多行命令的方式与标准Python解释器相同，它还支持像UNIX shell一样的宏。宏调用以美元符号($)开始，它们的扩展包含在人格文件中的字典中(参见fantasydemo人格脚本中的示例)。它实现了BWPersonality.expandMacros()回调函数。</p>
+<p>该控制台还提供了自动代码完成的功能。按Tab，它试图将当前单词与引用上下文定义的属性匹配，从而自动完成当前单词。如果找到唯一匹配，则在插入点之后添加到它。如果存在多个匹配，则按Tab键循环所有匹配。</p>
+<h4 id="25-4-2-Remote-Python-Console"><a href="#25-4-2-Remote-Python-Console" class="headerlink" title="25.4.2. Remote Python Console"></a><strong>25.4.2. Remote Python Console</strong></h4><p>Python控制台提供的服务也可以通过网络远程使用。</p>
+<p>客户端在TCP端口50001上接受使用telnet协议的连接。支持许多telnet选项，例如模拟行编辑。</p>
+<h4 id="25-4-3-Script-reloading"><a href="#25-4-3-Script-reloading" class="headerlink" title="25.4.3. Script reloading"></a><strong>25.4.3. Script reloading</strong></h4><p>所有的脚本可以重新加载按Caps Lock+F11。</p>
+<p>现有的实体类实例将被更新，以便它们是新类的实例，而不会丢失它们的字典。实体脚本类可以提供一个reload方法来重新获取在重新加载后更改的存储函数引用。例如，player脚本中的reload函数重新计算其键绑定，否则将继续引用旧版本的类中的函数。</p>
+<p>当服务器向脚本发送更新时，只有该脚本被重新加载，只有它的实例被更新。</p>
+<h4 id="25-4-4-Common-errors"><a href="#25-4-4-Common-errors" class="headerlink" title="25.4.4. Common errors"></a><strong>25.4.4. Common errors</strong></h4><p>下面列出了一些常见的脚本错误:</p>
+<ul>
+<li><p>找不到类&lt;entity&gt;</p>
+<p>在&lt;res&gt;&#x2F;scripts&#x2F;client&#x2F;&lt;entity&gt;.py文件中有一个Python错误。检查当前工作文件夹中的python.log文件。</p>
+</li>
+<li><p>app::init: BigWorldClientScript: init()失败</p>
+<p>Python脚本与&lt;res&gt;&#x2F;scripts&#x2F;entity_defs&#x2F;&lt;entity&gt;.def之间不匹配。</p>
+</li>
+<li><p>EntityType:: init: EntityDescriptionMap:解析失败</p>
+<p>在文件&lt;res&gt;&#x2F;scripts&#x2F;entity_defs&#x2F;&lt;entity&gt;.def或&lt; res &gt; &#x2F;scripts&#x2F; entity_defs &#x2F; alias.xml文件中使用了未定义的数据类型。</p>
+</li>
+</ul>
+<p>关于实体定义和Python脚本文件的详细信息，请参见 Server Programming Guide’s sections <em>Directory Structure for Entity Scripting</em> → “The Entity Definition File” and <em>Directory Structure for Entity</em> <em>Scripting</em> → “The Entity Script Files。</p>
+<h3 id="25-5-Script-interactive-debugging"><a href="#25-5-Script-interactive-debugging" class="headerlink" title="25.5. Script interactive debugging"></a><strong>25.5. Script interactive debugging</strong></h3><p>您可以将BigWorld Client作为Python扩展模块运行，而不是作为可执行文件运行。这将允许你使用第三方交互式调试器(如Wing IDE和Komodo)，或Python的内置调试模块(pdb)来调试你的游戏脚本。</p>
+<h3 id="25-6-Client-Access-Tool-CAT"><a href="#25-6-Client-Access-Tool-CAT" class="headerlink" title="25.6. Client Access Tool (CAT)"></a><strong>25.6. Client Access Tool (CAT)</strong></h3><p>CAT提供了一个图形界面，可以在远程或本地客户机上更改监视器值并运行Python控制台命令。它通过客户端提供的远程Python Console服务来实现</p>
+<h4 id="25-6-1-Connecting-to-the-client"><a href="#25-6-1-Connecting-to-the-client" class="headerlink" title="25.6.1. Connecting to the client"></a><strong>25.6.1. Connecting to the client</strong></h4><p>为了连接到客户端，你必须提供它运行的计算机名和&#x2F;或IP地址。</p>
+<p>如果您同时提供计算机名和IP地址，CAT首先尝试使用计算机名连接，如果连接失败，则使用IP地址。指定本地主机为IP地址中的计算机名或127.0.0.1，以连接到本地客户端。</p>
+<p>CAT在启动时自动重新连接到最后一个客户机。</p>
+<h4 id="25-6-2-CAT-Scripts"><a href="#25-6-2-CAT-Scripts" class="headerlink" title="25.6.2. CAT Scripts"></a><strong>25.6.2. CAT Scripts</strong></h4><p>CAT在文件夹&lt;res&gt;&#x2F;..&#x2F;tools&#x2F;cat&#x2F;scripts，其中&lt;res&gt;是资源文件夹列表中的一个条目。</p>
+<p>例如，如果&lt;res&gt;中的一个条目是C:&#x2F;mf&#x2F;fantasydemo&#x2F;res，那么CAT将在C:&#x2F;mf&#x2F;fantasydemo&#x2F;tools&#x2F; CAT &#x2F;scripts文件夹下寻找脚本。然后，它将呈现脚本的树形视图。</p>
+<p>CAT脚本允许查看和操作客户机监视器值，并允许在客户机的Python控制台中执行命令。有关如何创建自己的脚本的信息，请参阅文件夹fantasydemo&#x2F;tools&#x2F;cat&#x2F; scripts中提供的示例。</p>
+<p><strong>25.7. Timing</strong></p>
+<p>BigWorld库提供了许多用于分析游戏性能的计时工具。其中最重要的一个就是DogWatch计时器类。</p>
+<p>当创建DogWatch时，它被注册在一个全局列表中。无论何时启动计时器，它都会根据启动时正在运行的其他计时器自动进入计时统计层次结构。如果同一个计时器在不同的上下文中运行多次，那么它在层次结构中可以有多个实例。</p>
+<p>根计时器被称为帧，并且总是在每一帧的整个帧时间内运行。所有其他计时器实例都是这个计时器实例的子实例。在框架边界处要小心，以确保没有时间不知去向。计时器甚至可以跨帧边界运行。如果是这种情况，它们将暂时停止，然后在下一帧的时间切片中重新开始。</p>
+<p>调试控制台中显示了DogWatch计时器层次结构的视图，其中显示了</p>
+<p>调试控制台中显示了DogWatch计时器层次结构的视图，其中显示了过去一秒DogWatch时间的平均值。用户可以在层次结构中导航和下钻，该层次结构在单个控制台页面上使用缩进显示。任何计时器实例也可以被绘制成图形，并且可以根据需要同时显示尽可能多的图形。缺省情况下，客户端保留120帧DogWatch计时器历史记录。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BigWorld/" rel="tag"># BigWorld</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/11/08/0_BW/bigworld_05_02/" rel="prev" title="BIGWORLD 客户端编程指南02">
+                  <i class="fa fa-chevron-left"></i> BIGWORLD 客户端编程指南02
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/04/10/8-15_UE4/10_UE4%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96GPU%E7%AF%87/" rel="next" title="UE性能优化GPU篇章">
+                  UE性能优化GPU篇章 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">138k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">7:40</span>
+  </span>
+</div>
+  <div class="powered-by">
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

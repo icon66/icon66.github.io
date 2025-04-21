@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="FString ,FName,FText转换FString ,FName,FText转换    From to     FName FString TestHUDString &#x3D; TestHUDName.ToString();   FName FText TestHUDText &#x3D; FText::FromName(TestHUDName);FName -&gt; FText 在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FString ,FName,FText转换">
+<meta property="og:url" content="http://example.com/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/FName_FString_FText%E4%BA%92%E8%BD%AC/index.html">
+<meta property="og:site_name" content="H&#39;s Blogs">
+<meta property="og:description" content="FString ,FName,FText转换FString ,FName,FText转换    From to     FName FString TestHUDString &#x3D; TestHUDName.ToString();   FName FText TestHUDText &#x3D; FText::FromName(TestHUDName);FName -&gt; FText 在">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-20T07:21:55.911Z">
+<meta property="article:modified_time" content="2025-04-21T03:07:29.446Z">
+<meta property="article:author" content="华">
+<meta property="article:tag" content="UE,字符串,tips">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/FName_FString_FText%E4%BA%92%E8%BD%AC/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/FName_FString_FText%E4%BA%92%E8%BD%AC/","path":"2025/04/20/4_小笔记/FName_FString_FText互转/","title":"FString ,FName,FText转换"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>FString ,FName,FText转换 | H's Blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FString-FName-FText%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.</span> <span class="nav-text">FString ,FName,FText转换</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="华"
+      src="/images/Avatar.png">
+  <p class="site-author-name" itemprop="name">华</p>
+  <div class="site-description" itemprop="description">个人博客记录</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HBlogs" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HBlogs" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2575861939@qq.com" title="E-Mail → 2575861939@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/FName_FString_FText%E4%BA%92%E8%BD%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="FString ,FName,FText转换 | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FString ,FName,FText转换
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-20 15:21:55" itemprop="dateCreated datePublished" datetime="2025-04-20T15:21:55+08:00">2025-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:07:29" itemprop="dateModified" datetime="2025-04-21T11:07:29+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/UE/" itemprop="url" rel="index"><span itemprop="name">UE</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>356</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="FString-FName-FText转换"><a href="#FString-FName-FText转换" class="headerlink" title="FString ,FName,FText转换"></a>FString ,FName,FText转换</h1><p>FString ,FName,FText转换</p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>to</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FName</td>
+<td>FString</td>
+<td>TestHUDString &#x3D; TestHUDName.ToString();</td>
+</tr>
+<tr>
+<td>FName</td>
+<td>FText</td>
+<td>TestHUDText &#x3D; FText::FromName(TestHUDName);<br />FName -&gt; FText 在一些情况下有效，但需注意 — FNames 内容不会从 FText 的”自动本地化”中受益。</td>
+</tr>
+<tr>
+<td>FString</td>
+<td>FName</td>
+<td>TestHUDName &#x3D; FName(*TestHUDString);<br /><strong>FString -&gt; FName 不可靠</strong>。因为 FName 不区分大小写，所以转换存在损耗。</td>
+</tr>
+<tr>
+<td>FString</td>
+<td>FText</td>
+<td>TestHUDText &#x3D; FText::FromString(TestHUDString);<br />FString -&gt; FText 在一些情况下有效，但需注意 — FString 内容不会从 FText 的”自动本地化”中受益。</td>
+</tr>
+<tr>
+<td>FText</td>
+<td>FString</td>
+<td>TestHUDString &#x3D; TestHUDText.ToString();<br /><strong>FText -&gt; FString 不可靠。它在一些语言的转换中存在潜在损耗</strong></td>
+</tr>
+<tr>
+<td>FText</td>
+<td>FName</td>
+<td><strong>FText 到 FName 的转换不存在</strong>。但可先转换到 FString，再转换到 FName。<br />FText -&gt; FString -&gt; FName 不可靠。因为 FName 不区分大小写，所以转换存在损耗。</td>
+</tr>
+<tr>
+<td>FString</td>
+<td>int32</td>
+<td>int32 TestInt &#x3D; FCString::Atoi(*MyFString);</td>
+</tr>
+<tr>
+<td>FString</td>
+<td>float</td>
+<td>float TestFloat &#x3D; FCString::Atof(*MyFString);</td>
+</tr>
+<tr>
+<td>int32</td>
+<td>FString</td>
+<td>FString TestString &#x3D; FString::FromInt(MyInt);</td>
+</tr>
+<tr>
+<td>float</td>
+<td>FString</td>
+<td>FString TestString &#x3D; FString::SanitizeFloat(MyFloat);</td>
+</tr>
+</tbody></table>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FName name = <span class="built_in">FName</span>(<span class="string">&quot;this is a name&quot;</span>);</span><br><span class="line">FText::<span class="built_in">FromName</span>(name);</span><br><span class="line">name.<span class="built_in">ToString</span>();</span><br><span class="line"></span><br><span class="line">FString str = <span class="built_in">FString</span>(<span class="string">&quot;this is a string&quot;</span>);</span><br><span class="line">FName name2 = <span class="built_in">FName</span>(*str);</span><br><span class="line">FText::<span class="built_in">FromString</span>(str);</span><br><span class="line"></span><br><span class="line">FText text = FText::<span class="built_in">FromString</span>(<span class="string">&quot;this is a text&quot;</span>);</span><br><span class="line">text.<span class="built_in">ToString</span>();</span><br><span class="line"><span class="built_in">FName</span>(*text.<span class="built_in">ToString</span>());</span><br></pre></td></tr></table></figure>
+
+<p>总体而言，设置字符串变量文字时应使用 <strong>TEXT()</strong> 宏。如未指定 TEXT() 宏，将使用 ANSI 对文字进行编码，会导致支持字符高度受限。 传入 FString 的 ANSI 文字需要完成到 TCHAR 的转换（本地万国码编码），以便更高效地使用 TEXT()。</p>
+<p><a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/string-handling-in-unreal-engine?application_version=5.4">虚幻引擎中的字符串处理 | 虚幻引擎 5.4 文档 | Epic Developer Community</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/UE-%E5%AD%97%E7%AC%A6%E4%B8%B2-tips/" rel="tag"># UE,字符串,tips</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E8%BE%93%E5%87%BA/" rel="prev" title="UE的几种输出方式">
+                  <i class="fa fa-chevron-left"></i> UE的几种输出方式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/04/20/1_%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/104_%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E6%B7%B1%E5%BA%A6/" rel="next" title="104_二叉树的最大深度">
+                  104_二叉树的最大深度 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">138k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">7:40</span>
+  </span>
+</div>
+  <div class="powered-by">
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

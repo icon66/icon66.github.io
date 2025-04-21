@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="BIGWORLD_05_Client Programming Guide_011. 概述本文档是3d引擎技术的客户端引擎的技术设计概述。它是描述整个系统的一组更大的文档的一部分。为了提供上下文，它只包含对BigWorld服务器的引用。只对BigWorld客户端工作感兴趣的读者可能会忽略服务器信息。 有关API的信息，请参阅在线文档。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BIG WORLD 客户端编程指南01">
+<meta property="og:url" content="http://example.com/2024/11/08/0_BW/bigworld_05_01/index.html">
+<meta property="og:site_name" content="H&#39;s Blogs">
+<meta property="og:description" content="BIGWORLD_05_Client Programming Guide_011. 概述本文档是3d引擎技术的客户端引擎的技术设计概述。它是描述整个系统的一组更大的文档的一部分。为了提供上下文，它只包含对BigWorld服务器的引用。只对BigWorld客户端工作感兴趣的读者可能会忽略服务器信息。 有关API的信息，请参阅在线文档。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_01.png">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_02.png">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_03.png">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_04.png">
+<meta property="og:image" content="http://example.com/image%5Cbigworld%5C05_05.png">
+<meta property="article:published_time" content="2024-11-08T09:24:52.300Z">
+<meta property="article:modified_time" content="2025-04-21T03:26:07.029Z">
+<meta property="article:author" content="华">
+<meta property="article:tag" content="BigWorld">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/image%5Cbigworld%5C05_01.png">
+
+
+<link rel="canonical" href="http://example.com/2024/11/08/0_BW/bigworld_05_01/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/11/08/0_BW/bigworld_05_01/","path":"2024/11/08/0_BW/bigworld_05_01/","title":"BIG WORLD 客户端编程指南01"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BIG WORLD 客户端编程指南01 | H's Blogs</title>
+  
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BIGWORLD-05-Client-Programming-Guide-01"><span class="nav-number">1.</span> <span class="nav-text">BIGWORLD_05_Client Programming Guide_01</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">1. 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Client-in-context"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1. Client in context</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Outline"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2. Outline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Resource-search-paths"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3. Resource search paths</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-paths-xml"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">1.3.1. paths.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-Command-line-switch"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">1.3.2. Command line switch</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Configuration-files"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.4. Configuration files</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-File-resources-xml"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">1.4.1. File resources.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-File-xml"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">1.4.2. File .xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-3-File-xml"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">1.4.3. File .xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-4-File-lt-preferences-gt-xml"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">1.4.4. File   &lt;preferences&gt;.xml</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Coordinate-System"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.5. Coordinate System</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-User-Input"><span class="nav-number">1.2.</span> <span class="nav-text">2. User Input</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Key-events"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1. Key events</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-Character-events"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">2.1.1. Character events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-Auto-repeat"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2.1.2. Auto-repeat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-3-Sequence-of-events"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">2.1.3. Sequence of events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-4-Sinking-events"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">2.1.4. Sinking events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-5-Mouse-cursor-position"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">2.1.5. Mouse cursor position</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Mouse"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2. Mouse</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-Movement"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">2.2.1. Movement</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-Buttons"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2.2.2. Buttons</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Joystick"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3. Joystick</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-Axis-events"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">2.3.1. Axis events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-Buttons"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">2.3.2. Buttons</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-Controlling-player-direction"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">2.3.3. Controlling player direction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-Avatar-movement"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">2.3.4. Avatar movement</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Cameras"><span class="nav-number">1.3.</span> <span class="nav-text">3. Cameras</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-The-Cursor-Camera"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1. The Cursor Camera</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-The-Free-Camera"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">3.2. The Free Camera</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-The-FlexiCam"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">3.3. The FlexiCam</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Terrain"><span class="nav-number">1.4.</span> <span class="nav-text">4. Terrain</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-Advanced-Terrain"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1. Advanced Terrain</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-1-Overview"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">4.1.1. Overview</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-2-Key-Features"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">4.1.2. Key Features</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-3-Texturing"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">4.1.3. Texturing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-4-Lighting"><span class="nav-number">1.4.1.4.</span> <span class="nav-text">4.1.4. Lighting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-5-Shadows"><span class="nav-number">1.4.1.5.</span> <span class="nav-text">4.1.5. Shadows</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-6-LOD"><span class="nav-number">1.4.1.6.</span> <span class="nav-text">4.1.6. LOD</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-6-1-Geometry"><span class="nav-number">1.4.1.6.1.</span> <span class="nav-text">4.1.6.1. Geometry</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-6-2-Collision-Geometry"><span class="nav-number">1.4.1.6.2.</span> <span class="nav-text">4.1.6.2. Collision Geometry</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-6-3-Texture"><span class="nav-number">1.4.1.6.3.</span> <span class="nav-text">4.1.6.3. Texture</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-6-4-Normal-maps"><span class="nav-number">1.4.1.6.4.</span> <span class="nav-text">4.1.6.4. Normal maps</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-7-Memory-footprint"><span class="nav-number">1.4.1.7.</span> <span class="nav-text">4.1.7. Memory footprint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-8-terrain2-resources"><span class="nav-number">1.4.1.8.</span> <span class="nav-text">4.1.8. terrain2 resources</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-8-1-heights-sections"><span class="nav-number">1.4.1.8.1.</span> <span class="nav-text">4.1.8.1. heights sections</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-8-2-layer-sections"><span class="nav-number">1.4.1.8.2.</span> <span class="nav-text">4.1.8.2. layer sections</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-8-3-normals-amp-lodNormals-sections"><span class="nav-number">1.4.1.8.3.</span> <span class="nav-text">4.1.8.3. normals &amp; lodNormals sections</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-8-4-holes-section"><span class="nav-number">1.4.1.8.4.</span> <span class="nav-text">4.1.8.4. holes section</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-8-5-horizonShadows-section"><span class="nav-number">1.4.1.8.5.</span> <span class="nav-text">4.1.8.5. horizonShadows section</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-8-6-lodTexture-dds-section"><span class="nav-number">1.4.1.8.6.</span> <span class="nav-text">4.1.8.6. lodTexture.dds section</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-8-7-dominantTextures-section"><span class="nav-number">1.4.1.8.7.</span> <span class="nav-text">4.1.8.7. dominantTextures section</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-9-terrain-section-in-space-settings"><span class="nav-number">1.4.1.8.8.</span> <span class="nav-text">4.1.9. terrain section in space.settings</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-Simple-Terrain"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2. Simple Terrain</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-1-Key-features"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">4.2.1. Key features</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-2-Overview"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">4.2.2. Overview</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-3-Chunking"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">4.2.3. Chunking</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-4-Disk-footprint"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">4.2.4. Disk footprint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-5-Memory-footprint"><span class="nav-number">1.4.2.5.</span> <span class="nav-text">4.2.5. Memory footprint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-6-Texture-spacing"><span class="nav-number">1.4.2.6.</span> <span class="nav-text">4.2.6. Texture spacing</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-Terrain-specular-lighting"><span class="nav-number">1.4.3.</span> <span class="nav-text">4.3. Terrain specular lighting</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Cloud-shadows"><span class="nav-number">1.5.</span> <span class="nav-text">5. Cloud shadows</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-Requirements"><span class="nav-number">1.5.1.</span> <span class="nav-text">5.1. Requirements</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-Implementation"><span class="nav-number">1.5.2.</span> <span class="nav-text">5.2. Implementation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-Effect-File-Implementation"><span class="nav-number">1.5.3.</span> <span class="nav-text">5.3. Effect File Implementation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-Tweaking"><span class="nav-number">1.5.4.</span> <span class="nav-text">5.4. Tweaking</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Chunks"><span class="nav-number">1.6.</span> <span class="nav-text">6. Chunks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-Definitions"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">6.1. Definitions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-Implementation-files"><span class="nav-number">1.6.0.2.</span> <span class="nav-text">6.2. Implementation files</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-Details-and-notes"><span class="nav-number">1.6.1.</span> <span class="nav-text">6.3. Details and notes</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-1-Includes"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">6.3.1. Includes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-2-Models"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">6.3.2. Models</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-3-Entities"><span class="nav-number">1.6.1.3.</span> <span class="nav-text">6.3.3. Entities</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-4-Boundaries-and-portals"><span class="nav-number">1.6.1.4.</span> <span class="nav-text">6.3.4. Boundaries and portals</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-5-Transforms"><span class="nav-number">1.6.1.5.</span> <span class="nav-text">6.3.5. Transforms</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-6-Other-items"><span class="nav-number">1.6.1.6.</span> <span class="nav-text">6.3.6. Other items</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-4-Loading-and-ejecting"><span class="nav-number">1.6.1.7.</span> <span class="nav-text">6.4. Loading and ejecting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-Focus-grid"><span class="nav-number">1.6.2.</span> <span class="nav-text">6.5. Focus grid</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-5-1-Hull-tree"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">6.5.1. Hull tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-5-2-Quad-tree"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">6.5.2. Quad tree</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-6-Collisions"><span class="nav-number">1.6.3.</span> <span class="nav-text">6.6. Collisions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-7-Sway-items"><span class="nav-number">1.6.4.</span> <span class="nav-text">6.7. Sway items</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Entities"><span class="nav-number">1.7.</span> <span class="nav-text">7. Entities</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-Entity-Manager"><span class="nav-number">1.7.1.</span> <span class="nav-text">7.1. Entity Manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-Entity-scripts"><span class="nav-number">1.7.2.</span> <span class="nav-text">7.2. Entity scripts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-Entity-resources"><span class="nav-number">1.7.3.</span> <span class="nav-text">7.3. Entity resources</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-1-Preloads"><span class="nav-number">1.7.3.1.</span> <span class="nav-text">7.3.1. Preloads</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-2-Prerequisites"><span class="nav-number">1.7.3.2.</span> <span class="nav-text">7.3.2. Prerequisites</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-User-Data-Objects"><span class="nav-number">1.8.</span> <span class="nav-text">8. User Data Objects</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-User-Data-Objects-are-Python-script-objects"><span class="nav-number">1.8.1.</span> <span class="nav-text">8.1. User Data Objects are Python script objects</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-Accessing-from-the-Client"><span class="nav-number">1.8.2.</span> <span class="nav-text">8.1. Accessing from the Client</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Scripting"><span class="nav-number">1.9.</span> <span class="nav-text">9. Scripting</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-Functional-components"><span class="nav-number">1.9.1.</span> <span class="nav-text">9.1. Functional components</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-1-Entity-Skeleton%EF%BC%88%E5%AE%9E%E4%BD%93%E6%A1%86%E6%9E%B6%EF%BC%89"><span class="nav-number">1.9.1.1.</span> <span class="nav-text">9.1.1 Entity Skeleton（实体框架）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-2-Python-script-object"><span class="nav-number">1.9.1.2.</span> <span class="nav-text">9.1.2. Python script object</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-3-Model-management"><span class="nav-number">1.9.1.3.</span> <span class="nav-text">9.1.3. Model management</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-4-Filters"><span class="nav-number">1.9.1.4.</span> <span class="nav-text">9.1.4. Filters</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-5-Navigation"><span class="nav-number">1.9.1.5.</span> <span class="nav-text">9.1.5. Navigation</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#9-1-5-1-Configuring-a-Space-to-Use-Navigation"><span class="nav-number">1.9.1.5.1.</span> <span class="nav-text">9.1.5.1. Configuring a Space to Use Navigation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-1-5-2-Distributing-Navigation-Meshes-with-the-Client"><span class="nav-number">1.9.1.5.2.</span> <span class="nav-text">9.1.5.2. Distributing Navigation Meshes with the Client</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-1-5-3-BigWorld-navigatePathPoints"><span class="nav-number">1.9.1.5.3.</span> <span class="nav-text">9.1.5.3. BigWorld.navigatePathPoints()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-1-5-4-BigWorld-findRandomNeighbourPoint"><span class="nav-number">1.9.1.5.4.</span> <span class="nav-text">9.1.5.4. BigWorld.findRandomNeighbourPoint()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-1-5-5-BigWorld-findRandomNeighbourPointWithRange"><span class="nav-number">1.9.1.5.5.</span> <span class="nav-text">9.1.5.5. BigWorld.findRandomNeighbourPointWithRange()</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-6-Action-Queue"><span class="nav-number">1.9.1.6.</span> <span class="nav-text">9.1.6. Action Queue</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#9-1-6-1-Debugging-animations"><span class="nav-number">1.9.1.6.1.</span> <span class="nav-text">9.1.6.1. Debugging animations</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-7-Action-Matcher"><span class="nav-number">1.9.1.7.</span> <span class="nav-text">9.1.7. Action Matcher</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#9-1-7-1-Using-the-Action-Matcher"><span class="nav-number">1.9.1.7.1.</span> <span class="nav-text">9.1.7.1. Using the Action Matcher</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-8-Trackers"><span class="nav-number">1.9.1.8.</span> <span class="nav-text">9.1.8. Trackers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-9-Timers-and-Traps"><span class="nav-number">1.9.1.9.</span> <span class="nav-text">9.1.9. Timers and Traps</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#9-1-9-1-Pot"><span class="nav-number">1.9.1.9.1.</span> <span class="nav-text">9.1.9.1. Pot</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-1-9-2-Mat"><span class="nav-number">1.9.1.9.2.</span> <span class="nav-text">9.1.9.2. Mat</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-Personality-script"><span class="nav-number">1.9.2.</span> <span class="nav-text">9.2. Personality script</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-1-init"><span class="nav-number">1.9.2.1.</span> <span class="nav-text">9.2.1. init</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-2-fini"><span class="nav-number">1.9.2.2.</span> <span class="nav-text">9.2.2. fini</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-3-handleKeyEvent"><span class="nav-number">1.9.2.3.</span> <span class="nav-text">9.2.3. handleKeyEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-4-handleMouseEvent"><span class="nav-number">1.9.2.4.</span> <span class="nav-text">9.2.4. handleMouseEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-5-handleAxisEvent"><span class="nav-number">1.9.2.5.</span> <span class="nav-text">9.2.5. handleAxisEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-6-handleIMEEvent"><span class="nav-number">1.9.2.6.</span> <span class="nav-text">9.2.6. handleIMEEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-7-handleLangChangeEvent"><span class="nav-number">1.9.2.7.</span> <span class="nav-text">9.2.7. handleLangChangeEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-8-onChangeEnvironments"><span class="nav-number">1.9.2.8.</span> <span class="nav-text">9.2.8. onChangeEnvironments</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-9-onGeometryMapped"><span class="nav-number">1.9.2.9.</span> <span class="nav-text">9.2.9. onGeometryMapped</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-10-onRecreateDevice"><span class="nav-number">1.9.2.10.</span> <span class="nav-text">9.2.10. onRecreateDevice</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-11-onTimeOfDayLocalChange"><span class="nav-number">1.9.2.11.</span> <span class="nav-text">9.2.11. onTimeOfDayLocalChange</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-12-start"><span class="nav-number">1.9.2.12.</span> <span class="nav-text">9.2.12. start</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Models"><span class="nav-number">1.10.</span> <span class="nav-text">10. Models</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-Performance"><span class="nav-number">1.10.1.</span> <span class="nav-text">10.1. Performance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-Hard-Points"><span class="nav-number">1.10.2.</span> <span class="nav-text">10.2. Hard Points</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#10-2-2-How-it-works"><span class="nav-number">1.10.2.1.</span> <span class="nav-text">10.2.2. How it works</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-2-3-Syntax"><span class="nav-number">1.10.2.2.</span> <span class="nav-text">10.2.3. Syntax</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-2-4-Data"><span class="nav-number">1.10.2.3.</span> <span class="nav-text">10.2.4. Data</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-SuperModel"><span class="nav-number">1.10.3.</span> <span class="nav-text">10.3. SuperModel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#10-3-1-Design"><span class="nav-number">1.10.3.1.</span> <span class="nav-text">10.3.1. Design</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-3-2-SuperModel-classes"><span class="nav-number">1.10.3.2.</span> <span class="nav-text">10.3.2. SuperModel classes</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#10-3-2-1-ChunkModel"><span class="nav-number">1.10.3.2.1.</span> <span class="nav-text">10.3.2.1. ChunkModel</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10-3-2-2-PyModel"><span class="nav-number">1.10.3.2.2.</span> <span class="nav-text">10.3.2.2. PyModel</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="华"
+      src="/images/Avatar.png">
+  <p class="site-author-name" itemprop="name">华</p>
+  <div class="site-description" itemprop="description">个人博客记录</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HBlogs" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HBlogs" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2575861939@qq.com" title="E-Mail → 2575861939@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/0_BW/bigworld_05_01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="BIG WORLD 客户端编程指南01 | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BIG WORLD 客户端编程指南01
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-11-08 17:24:52" itemprop="dateCreated datePublished" datetime="2024-11-08T17:24:52+08:00">2024-11-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:26:07" itemprop="dateModified" datetime="2025-04-21T11:26:07+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/BigWorld/" itemprop="url" rel="index"><span itemprop="name">BigWorld</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>23k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1:18</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="BIGWORLD-05-Client-Programming-Guide-01"><a href="#BIGWORLD-05-Client-Programming-Guide-01" class="headerlink" title="BIGWORLD_05_Client Programming Guide_01"></a>BIGWORLD_05_Client Programming Guide_01</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a><strong>1. 概述</strong></h2><p>本文档是3d引擎技术的客户端引擎的技术设计概述。它是描述整个系统的一组更大的文档的一部分。为了提供上下文，它只包含对BigWorld服务器的引用。只对BigWorld客户端工作感兴趣的读者可能会忽略服务器信息。</p>
+<p>有关API的信息，请参阅在线文档。</p>
+<span id="more"></span>
+
+<h3 id="1-1-Client-in-context"><a href="#1-1-Client-in-context" class="headerlink" title="1.1. Client in context"></a><strong>1.1. Client in context</strong></h3><p>BigWorld客户端提供了 客户端&#x2F;服务端架构的最终用户体验。在BigWorld客户端&#x2F;服务器实现中，客户端通过Internet使用UDP&#x2F;IP连接到服务器。</p>
+<p>BigWorld客户端为用户提供逼真的沉浸式3D环境。该环境的内容是存储在客户机中的静态数据和从服务器发送的动态数据的组合。</p>
+<p>用户通过自己控制的角色与世界进行互动。角色的移动和动作被传递给服务器。由其他连接用户控制的虚拟化身是服务器发送的动态数据的一部分。</p>
+<p><img src="/image%5Cbigworld%5C05_01.png" alt="图片"></p>
+<p>开发人员可能会选择将客户端与他们自己的服务器技术集成，但如果他们这样做，他们将不得不解决BigWorld架构已经解决的问题，比如:</p>
+<ul>
+<li>统一的碰撞场景(客户端和服务端端使用)。</li>
+<li>统一的客户机&#x2F;服务器脚本(用于客户端和服务端)。</li>
+<li>生成服务器和客户端内容的工具。</li>
+<li>优化的低带宽通信协议。</li>
+</ul>
+<h3 id="1-2-Outline"><a href="#1-2-Outline" class="headerlink" title="1.2. Outline"></a><strong>1.2. Outline</strong></h3><p>客户端初始化自己，连接到服务器，然后在它的主线程中运行一个标准的游戏循环(每一次迭代被称为一个帧):</p>
+<ul>
+<li>接受输入</li>
+<li>更新世界</li>
+<li>绘制世界</li>
+</ul>
+<p>框架的每一步(frame)描述如下:</p>
+<p>​	• <strong>Input</strong></p>
+<p>​		使用DirectInput从附加的输入设备接收输入。在BigWorld客户端&#x2F;服务器实现中，使用WinSock 2通过网络接收来自服务器的输入。</p>
+<p>​	• <strong>Update</strong></p>
+<p>​		更新世界以说明自上次更新以来所经过的时间。</p>
+<p>​	• <strong>Draw</strong></p>
+<p>​		游戏世界是使用3D引擎Moo绘制的，它使用的是Direct3D(版本9c)。具体操作请参见3D引擎。</p>
+<p>许多其他对象也属于世界的“更新然后绘制”系统。其中包括十几种与天气和大气影响(雨、星星、雾、云等)有关的脚本辅助系统(瞄准、战斗)、水池、脚印和阴影。</p>
+<p>还有其他线程用于后台场景加载和其他异步任务。</p>
+<h3 id="1-3-Resource-search-paths"><a href="#1-3-Resource-search-paths" class="headerlink" title="1.3. Resource search paths"></a><strong>1.3. Resource search paths</strong></h3><p>BigWorld客户端是一个通用的可执行文件，可以通过游戏特定的资源进行完全配置。这些资源的位置必须提供给客户端，这样它才能正确初始化。</p>
+<p>通常，至少需要指定两个资源路径-你的项目特定的资源路径和BigWorld资源路径(提供公共资源，如标准着色器，字体，脚本等)。例如，如果你的游戏位于“my_game”中，你将定义的两个资源路径是:</p>
+<ul>
+<li>my_game&#x2F;res</li>
+<li>bigworld&#x2F;res</li>
+</ul>
+<p>当引擎试图访问一个资源时，它将按照资源树被赋予引擎的顺序查找每个资源树。例如，如果客户端脚本请求名为sets&#x2F;models&#x2F;foo的资源。模型它尝试以下位置:</p>
+<ul>
+<li><p>my_game&#x2F;res&#x2F;sets&#x2F;models&#x2F;foo.model</p>
+</li>
+<li><p>bigworld&#x2F;res&#x2F;sets&#x2F;models&#x2F;foo.model</p>
+</li>
+</ul>
+<p>搜索将在找到第一个有效文件时停止。因此，可以通过将bigworld&#x2F;res中指定的资源放置在my_game&#x2F;res中的相同位置来覆盖它。</p>
+<p>有两种方式可以指定搜索路径:</p>
+<h4 id="1-3-1-paths-xml"><a href="#1-3-1-paths-xml" class="headerlink" title="1.3.1. paths.xml"></a><strong>1.3.1. paths.xml</strong></h4><p>paths.xml是一个XML文件，引擎将在启动时查找它，它包含一个资源路径列表。客户机将首先尝试打开当前工作目录中的paths.xml。如果在当前目录中找不到它，那么它将尝试在与客户端可执行文件相同的文件夹中打开paths.xml。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Paths</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Path</span>&gt;</span>../../my_game/res<span class="tag">&lt;/<span class="name">Path</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Path</span>&gt;</span>../../bigworld/res<span class="tag">&lt;/<span class="name">Path</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Paths</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>路径是相对于paths .xml的位置定义的。</p>
+<h4 id="1-3-2-Command-line-switch"><a href="#1-3-2-Command-line-switch" class="headerlink" title="1.3.2. Command line switch"></a><strong>1.3.2. Command line switch</strong></h4><p>默认情况下，客户端将查找上面演示的paths.xml。然而，这可以通过命令行使用——res开关来重写。多条路径以分号分隔。例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;bwclient.exe&quot; --res ../../../my_game/res;../../../bigworld/res</span><br></pre></td></tr></table></figure>
+
+<p>这些路径必须相对于可执行位置而不是当前工作目录来定义。</p>
+<h3 id="1-4-Configuration-files"><a href="#1-4-Configuration-files" class="headerlink" title="1.4. Configuration files"></a><strong>1.4. Configuration files</strong></h3><p>配置文件是相对于资源文件夹列表中的一个条目(或&lt;res&gt;)定义的。</p>
+<h4 id="1-4-1-File-resources-xml"><a href="#1-4-1-File-resources-xml" class="headerlink" title="1.4.1. File resources.xml"></a><strong>1.4.1. File</strong> <strong>resources.xml</strong></h4><p>这个文件定义了客户端引擎运行所需要的游戏特定资源。</p>
+<p>xml中的条目按照列出的顺序从资源文件夹列表(或&lt;res&gt;)中的各种条目中读取。只有缺失的条目才会在后续的文件夹中读取它们的值。</p>
+<p>在bigworld&#x2F;res文件夹下存在一个默认文件，它的任何资源都可以通过创建自己的文件&lt;res&gt;&#x2F;resources.xml来覆盖。</p>
+<p>下面的例子说明了这种机制:</p>
+<p><img src="/image%5Cbigworld%5C05_02.png" alt="05_02"></p>
+<h4 id="1-4-2-File-xml"><a href="#1-4-2-File-xml" class="headerlink" title="1.4.2. File .xml"></a><strong>1.4.2. File <engine_config>.xml</strong></h4><p>文件<engine_config>. XML列出了几个引擎配置选项。</p>
+<p>这个文件的实际名称和位置是由resources.xml的&lt;engineConfigXML&gt;标记定义的。</p>
+<p>xml文件的位置始终是相对于资源目录列表(或&lt;res&gt;)中的一个条目定义的，将按照它们列出的顺序对其进行搜索。</p>
+<p>例如：</p>
+<p><img src="/image%5Cbigworld%5C05_03.png"></p>
+<p>在XML文件的主要部分下，必须包含一个个性标签，命名要使用的个性脚本。</p>
+<p>这个文件中包含的数据作为init方法的<strong>第二个参数</strong>传递给个性脚本（详情参照init），以DataSection对象的形式。</p>
+<h4 id="1-4-3-File-xml"><a href="#1-4-3-File-xml" class="headerlink" title="1.4.3. File .xml"></a><strong>1.4.3. File <scripts_config>.xml</strong></h4><p>XML文件<scripts_config>. XML可以用来配置游戏脚本。它没有固定的语法，它的形式可以由脚本程序员自由定义。</p>
+<p>这个文件的实际名称和位置是由resources.xml的scriptsConfigXML标记定义的（参照<engine_config>.xml）。</p>
+<p>这个文件中包含的数据作为init方法的<strong>第一个参数</strong>传递给个性脚本。</p>
+<h4 id="1-4-4-File-lt-preferences-gt-xml"><a href="#1-4-4-File-lt-preferences-gt-xml" class="headerlink" title="1.4.4. File   &lt;preferences&gt;.xml"></a><strong>1.4.4. File   &lt;preferences&gt;.xml</strong></h4><p>文件&lt;preferences&gt;. XML用于保存视频和图形设置的用户首选项，具有预定义的语法。</p>
+<p>该文件还嵌入了一个数据部分(称为scriptsPreference)，脚本可以使用它来保持游戏首选项——这个部分没有固定的语法。</p>
+<p>该文件的实际名称和位置在resources.xml的engineConfigXML标记指定的文件中定义，在preferences项标记中。</p>
+<p><img src="/image%5Cbigworld%5C05_04.png" alt="05_04"></p>
+<p>默认情况下，perferences XML文件是相对于客户端可执行位置的，但这可以通过指定pathBase子标记更改为许多其他基本路劲（例如，它可以被定义为相对于用户的My Documents目录）。基本路径可以为首选项标记的可选子标记。preferences.xml的可用路径基础是：</p>
+<ul>
+<li>EXE_PAHT——preferences XML文件将相对于客户端可执行文件的位置进行存储。如果没有提供，这是默认位置。</li>
+<li>CWD——preferencesXML文件将相对于当前工作目录存储。注意，如果工作目录在运行时发生更改，它将保存在新的工作目录中。</li>
+<li>ROAMING_APP_DATA——preferences XML文件将相对于当前用户的漫游AppData目录存储（Roaming）。换句话说，如果用户在域上，当用户登录和退出Windows时，数据将与域控制器同步。</li>
+<li>LOCAL_APP_DATA——preferences XML将相对于当前用户的本地AppData目录进行存储。</li>
+<li>APP_DATA——这与ROAMING_APP_DATA相同。</li>
+<li>MY_DOCS——preferences XML将相对于当前用户的My Documents目录进行存储。</li>
+<li>MY_PICTURES——preferences XML将相对于当前用户的My Pictures目录进行存储</li>
+<li>RES_TREE——preferences XML将相对于paths.xml中找到的第一个资源路径进行存储。</li>
+<li>该文件的scriptsPreference中包含的数据以DataSection对象的形式，作为init方法的<strong>第三个参数</strong>传递给个性脚本。</li>
+</ul>
+<h3 id="1-5-Coordinate-System"><a href="#1-5-Coordinate-System" class="headerlink" title="1.5. Coordinate System"></a><strong>1.5. Coordinate System</strong></h3><p>左手坐标系，大拇指是y轴正方向，四指方向为x正半轴，手心方向为z正半轴。</p>
+<ul>
+<li>yaw——y轴的旋转，正是右边，负数是左边。</li>
+<li>pitch——x轴的旋转，正是向下，负是向上。</li>
+<li>roll——z轴的旋转，正是左边，负数是右边。</li>
+</ul>
+<h2 id="2-User-Input"><a href="#2-User-Input" class="headerlink" title="2. User Input"></a><strong>2. User Input</strong></h2><p>BigWorld客户端结合使用Windows消息和用于键盘和鼠标输入的Windows原始输入API。它读取键盘上的上键、下键和字符按下事件，以及鼠标上的高分辨率移动事件。它使用DirectInput API从操纵杆读取按钮和轴的移动事件。</p>
+<h3 id="2-1-Key-events"><a href="#2-1-Key-events" class="headerlink" title="2.1. Key events"></a><strong>2.1. Key events</strong></h3><p>Key事件，由KeyEvent对象(BigWorld。(Python中的KeyEvent)，由具有键或按钮的设备生成。这包括键盘、鼠标按钮和操纵杆按钮。</p>
+<p>键事件的两种基本类型是key-down和key-up。</p>
+<h4 id="2-1-1-Character-events"><a href="#2-1-1-Character-events" class="headerlink" title="2.1.1. Character events"></a><strong>2.1.1. Character events</strong></h4><p>如果一个KeyEvent是由键盘生成的，它可能会附加一个字符。由特定键生成的字符由操作系统中当前设置的区域设置和输入语言决定，并由KeyEvent表示。字符成员(Unicode字符串)。</p>
+<h4 id="2-1-2-Auto-repeat"><a href="#2-1-2-Auto-repeat" class="headerlink" title="2.1.2. Auto-repeat"></a><strong>2.1.2. Auto-repeat</strong></h4><p>根据用户的操作系统设置(例如重复延迟)，当按键被按下时，键盘将自动生成重复事件。鼠标和操纵杆不会产生自动重复事件。</p>
+<p>自动重复事件作为额外的按下键事件发送，但是不希望处理重复事件的脚本可以调用KeyEvent。isRepeatedEvent方法来确定它是否是一个自动重复事件。</p>
+<h4 id="2-1-3-Sequence-of-events"><a href="#2-1-3-Sequence-of-events" class="headerlink" title="2.1.3. Sequence of events"></a><strong>2.1.3. Sequence of events</strong></h4><p>当用户按下一个按钮(键盘、鼠标或操纵杆)时，事件序列如下:</p>
+<ul>
+<li>第一个是key-down事件。</li>
+<li>如果保持按下该键，则由于自动重复(仅键盘)而引发多个按下键事件。</li>
+<li>当用户释放按钮时，会触发一个key-up事件。</li>
+</ul>
+<p>用户输入模块的输出由许多其他模块处理，这些模块依次检查事件并使用或忽略它们。如果一个事件没有被任何模块使用，那么它将被丢弃。在事件中轮到的模块的顺序如下:</p>
+<ul>
+<li>Debug —— 特殊的keys、控制台等</li>
+<li>Personality script —— 全局的keys</li>
+<li>Application —— 硬编码的键，如QUIT。</li>
+<li>Player script —— 剩下的，是处理的主要部分。</li>
+</ul>
+<p>注意，GUI系统不会自动接收输入，而是由脚本编写来选择何时接收输入。这可以是在个性脚本中，也可以是在玩家脚本中。最明显的地方是在个性脚本回调中，例如在个性脚本的handleKeyEvent中，您应该调用GUI.handleKeyEvent()并检查返回值。</p>
+<p>类似地，活动摄像头也不会自动接收输入事件。由Python脚本决定相机何时何地接收用户输入。</p>
+<h4 id="2-1-4-Sinking-events"><a href="#2-1-4-Sinking-events" class="headerlink" title="2.1.4. Sinking events"></a><strong>2.1.4. Sinking events</strong></h4><p>BigWorld客户端执行事件匹配以确保模块行为的一致性。如果一个按下键事件被一个模块使用，那么该模块的标识符将被记录为事件键号的接收器。当相应的自动重复和key-up事件到达时，它将直接交付到该模块。例如，如果聊天控制台在玩家运行时弹出(并插入到列表中)，用户随后释放了运行键，那么玩家脚本仍然会获得该键的key-up事件，并能够停止运行操作。</p>
+<p>在某些情况下，可能希望暂时阻止将某些关键事件传递到脚本中。GUI脚本可以通过删除当前GUI屏幕并用新的GUI屏幕替换它来处理按下键事件。默认情况下，因为当handleKeyEvent返回时，新的GUI屏幕已经成为活动屏幕，旧的GUI任何相关的自动重复和键上事件将被发布到新的GUI屏幕，创建可能不想要的行为。</p>
+<p> BigWorld.sinkKeyEvents函数可以可用于停止给定键代码的所有键事件到达脚本，直到(包括)下一个键上。</p>
+<h4 id="2-1-5-Mouse-cursor-position"><a href="#2-1-5-Mouse-cursor-position" class="headerlink" title="2.1.5. Mouse cursor position"></a><strong>2.1.5. Mouse cursor position</strong></h4><p>当一个关键事件发生时，通常需要知道鼠标在哪里(即，而不是处理事件时鼠标在哪里)，特别是在处理鼠标按钮事件时。因此，鼠标光标的位置可以通过KeyEvent.cursorPosition属性获得，应该尽可能用来代替GUI.mcursor().position。</p>
+<h3 id="2-2-Mouse"><a href="#2-2-Mouse" class="headerlink" title="2.2. Mouse"></a><strong>2.2. Mouse</strong></h3><h4 id="2-2-1-Movement"><a href="#2-2-1-Movement" class="headerlink" title="2.2.1. Movement"></a><strong>2.2.1. Movement</strong></h4><p>高分辨率的鼠标移动事件作为MouseEvent发送到脚本。该对象提供了三个方向增量。</p>
+<ul>
+<li>dx和dy成员是有符号整数，表示鼠标在X和Y方向的移动。</li>
+<li>dz成员表示鼠标滚轮的移动。</li>
+</ul>
+<p><strong>如果在一帧内从驱动程序到达多个鼠标增量，它们会累积到一个MouseEvent中。</strong></p>
+<p>与KeyEvent对象类似，事件发生时的鼠标光标位置可以作为MouseEvent对象的成员使用。</p>
+<h4 id="2-2-2-Buttons"><a href="#2-2-2-Buttons" class="headerlink" title="2.2.2. Buttons"></a><strong>2.2.2. Buttons</strong></h4><p>鼠标按钮作为一个KeyEvent发送，但是它们不生成自动重复事件。</p>
+<h3 id="2-3-Joystick"><a href="#2-3-Joystick" class="headerlink" title="2.3. Joystick"></a><strong>2.3. Joystick</strong></h3><p>BigWorld客户端将自动检测连接到系统的第一个操纵杆设备，并被设计用于双操纵杆风格的操纵杆。</p>
+<h4 id="2-3-1-Axis-events"><a href="#2-3-1-Axis-events" class="headerlink" title="2.3.1. Axis events"></a><strong>2.3.1. Axis events</strong></h4><p>当轴事件发生时，它们将通过handleAxisEvent角色脚本函数作为AxisEvent对象发送到脚本。</p>
+<h4 id="2-3-2-Buttons"><a href="#2-3-2-Buttons" class="headerlink" title="2.3.2. Buttons"></a><strong>2.3.2. Buttons</strong></h4><p>操纵杆按钮作为一个KeyEvent发送，但是它们不生成自动重复事件。</p>
+<h4 id="2-3-3-Controlling-player-direction"><a href="#2-3-3-Controlling-player-direction" class="headerlink" title="2.3.3. Controlling player direction"></a><strong>2.3.3. Controlling player direction</strong></h4><p>c++引擎会自动将轴事件传递给活动光标，因此使用BigWorld.setCursor将方向光标设置为活动光标，就可以通过操纵杆控制方向光标。方向光标将处理由右轴生成的任何事件。</p>
+<h4 id="2-3-4-Avatar-movement"><a href="#2-3-4-Avatar-movement" class="headerlink" title="2.3.4. Avatar movement"></a><strong>2.3.4. Avatar movement</strong></h4><p>c++引擎也将给予物理子系统处理轴事件的机会。物理将轴输入作为一种特殊情况，并将根据用户向前推动操纵杆的距离来调整移动速度。</p>
+<p>为了使操纵杆支持运动物理，设置Physics.joystickEnabled属性为True，并确保将joystickFwdSpeed和joystickBackSpeed属性设置为适合你的游戏的值。</p>
+<h2 id="3-Cameras"><a href="#3-Cameras" class="headerlink" title="3. Cameras"></a><strong>3. Cameras</strong></h2><p>在一般的更新过程中，相机更新的位置是一个微妙的问题，因为相机依赖于一些组件已经在它之前更新，而其他组件依赖于相机在它们之前更新。</p>
+<p>从概念上讲，相机有四种类型:fixed camera、FlexiCam、cursor camera和free camera。前三个是客户端控制的视图，范围从最小的用户交互到最大的用户交互。最后一个镜头是完全由用户控制的，但并不是真正的游戏玩法的一部分。</p>
+<p>然而，只有三个相机类:FlexiCam、CursorCamera和FreeCamera。固定摄像机是用FlexiCam对象实现的。它们都派生自一个公共的BaseCamera类。</p>
+<p>每次只有一个活动摄像头。个性脚本通常处理摄像机管理，因为摄像机是全局的，但任何脚本也可以处理摄像机，而玩家脚本通常就是这样做的(虽然通常是间接地，通过个性脚本)。</p>
+<p>Python完全可以访问基类和所有派生类。任何摄像机都可以被创建并设置为脚本所希望的任何位置，包括另一个摄像机的位置。这在切换摄像机类型以删除任何不想要的“跳切”时特别有用。</p>
+<h3 id="3-1-The-Cursor-Camera"><a href="#3-1-The-Cursor-Camera" class="headerlink" title="3.1. The Cursor Camera"></a><strong>3.1. The Cursor Camera</strong></h3><p>cursor camera是在游戏世界中跟随角色的摄像机。它总是将自己定位在一个以角色头部为中心的球体上。它主要与方向光标一起工作，以便在角色头部的方向上面对摄像机。你可以使用任何MatrixProvider来代替方向光标，也可以使用任何MatrixProvider来代替玩家的头部。</p>
+<p>方向光标是一个输入处理程序，它将用户的设备输入转换为在一个看不见的球体上移动的假想光标的操作。这个光标由pitch和yaw来描述。它产生一个指向向量，从玩家角色在世界空间中的头部位置延伸到光标的pithc和yaw。方向光标是一个很有用的工具，它允许在不同的设备上进行瞄准。与其让每个设备影响摄像机和角色网格，不如让每个设备与方向光标对话，从而影响其在世界中的视觉向量。游标摄像机、目标跟踪器和动作匹配器然后读取方向游标，以获取关于需要做什么的信息。</p>
+<p>光标摄像机占据了方向光标在球体上的位置，将线延伸回角色的头部，并沿着这条线直到它与另一侧的球体相交。这个交点就是光标相机的位置。摄像机的方向总是方向光标的方向。</p>
+<p>游标摄像机是抽象概念InputCursor的一个实例。任何时候只能有一个活动的InputCursor, BigWorld会自动将键盘、操纵杆和鼠标事件转发给它。在启动时，光标摄像头默认是活动的InputCursor。您可以使用BigWorld.setCursor方法在任何时候更改活动的InputCursor。(例如将InputCursor改为鼠标指针)。</p>
+<h4 id="3-2-The-Free-Camera"><a href="#3-2-The-Free-Camera" class="headerlink" title="3.2. The Free Camera"></a><strong>3.2. The Free Camera</strong></h4><p>自由相机是一个自由漫游的相机，它既不局限于空间中的一个固定点，也不跟随玩家的角色。它由鼠标(控制方向)和键盘(控制移动)控制，并允许用户在世界各地飞行。自由相机具有惯性，以便在运动中提供平滑、渐进的过渡。它不是一个游戏镜头，但对游戏的调试、开发和演示很有用。</p>
+<h4 id="3-3-The-FlexiCam"><a href="#3-3-The-FlexiCam" class="headerlink" title="3.3. The FlexiCam"></a><strong>3.3. The FlexiCam</strong></h4><p>FlexiCam是一个灵活的摄像机，可以跟踪游戏世界中的角色。它总是将自己定位在一个特定的点上，相对于角色的方向，并且总是看着一个特定的方向，相对于角色的脚的方向。</p>
+<p>它被称为FlexiCam，因为它的移动有一定的弹性，可以直观地感受到速度。这使得它在追赶车辆时特别有用。</p>
+<h2 id="4-Terrain"><a href="#4-Terrain" class="headerlink" title="4. Terrain"></a><strong>4. Terrain</strong></h2><p>BigWorld客户端使用的地形系统与分块系统巧妙地集成在一起。它允许以艺术的方式创建各种各样的地形，并有效地管理。有两种不同的地形渲染器，针对不同的机器规格。它们被称为高级地形和简单地形。</p>
+<h3 id="4-1-Advanced-Terrain"><a href="#4-1-Advanced-Terrain" class="headerlink" title="4.1. Advanced Terrain"></a><strong>4.1. Advanced Terrain</strong></h3><h4 id="4-1-1-Overview"><a href="#4-1-1-Overview" class="headerlink" title="4.1.1. Overview"></a><strong>4.1.1. Overview</strong></h4><p>这种先进的地形引擎使用一种高度地图，将高度地图分成100米乘100米的区块。每个块由高度和纹理信息、法线、洞图和LOD信息组成。</p>
+<h4 id="4-1-2-Key-Features"><a href="#4-1-2-Key-Features" class="headerlink" title="4.1.2. Key Features"></a><strong>4.1.2. Key Features</strong></h4><ul>
+<li><p>可配置的高度映射分辨率</p>
+</li>
+<li><p>无限数量的纹理级别与可配置的混合分辨率和投影角度</p>
+</li>
+<li><p>可配置法线映射分辨率</p>
+</li>
+<li><p>可配置孔图分辨率</p>
+</li>
+<li><p>每像素照明</p>
+</li>
+<li><p>LOD系统</p>
+<ul>
+<li>地形多重贴图和几何图形</li>
+<li>法线贴图LOD</li>
+<li>纹理LOD</li>
+<li>高度图LOD</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-1-3-Texturing"><a href="#4-1-3-Texturing" class="headerlink" title="4.1.3. Texturing"></a><strong>4.1.3. Texturing</strong></h4><p>纹理是通过将多个纹理层混合在一起来完成的，每个纹理层都有自己的投影角度和混合值来与其他纹理层混合。混合值的分辨率可按空间进行配置，而层本身则按块存储。纹理被假定为rgba与alpha通道用于高光值。</p>
+<h4 id="4-1-4-Lighting"><a href="#4-1-4-Lighting" class="headerlink" title="4.1.4. Lighting"></a><strong>4.1.4. Lighting</strong></h4><p>高级地形的照明是按像素执行的。法线贴图存储在每个块上，用于照明计算，这与混合纹理结合输出最终的颜色。地形允许高达8漫射和6个镜面光每个块。关于如何计算高光照明的细节，请参照<em><strong>Terrain specular lighting</strong></em>。</p>
+<h4 id="4-1-5-Shadows"><a href="#4-1-5-Shadows" class="headerlink" title="4.1.5. Shadows"></a><strong>4.1.5. Shadows</strong></h4><p>地形使用了一个地平线阴影地图进行阴影遮盖，这个地图存储了两个角度(东和西)，在这两个角度之间有一个从地形上畅通无阻的天空视图。在地形着色器中，这些角度根据太阳角度进行检查，只有当太阳角度落在地平线角度之间时，太阳光线才会被应用。</p>
+<h4 id="4-1-6-LOD"><a href="#4-1-6-LOD" class="headerlink" title="4.1.6. LOD"></a><strong>4.1.6. LOD</strong></h4><p>LOD系统的目的是减少cpu和gpu渲染地形所花费的时间，地形LOD系统通过减少距离中的几何和纹理细节并根据需要加载&#x2F;卸载高分辨率资源来实现这一点。</p>
+<p>LODing被资源分割，这样纹理和几何细节就可以分别进行流处理。LOD距离在空间中可配置。配置文件请看 <em><strong>“terrain section in space.settings”</strong></em></p>
+<h5 id="4-1-6-1-Geometry"><a href="#4-1-6-1-Geometry" class="headerlink" title="4.1.6.1. Geometry"></a><strong>4.1.6.1. Geometry</strong></h5><p>几何LOD是通过geo-mipmaps和geo-morphing实现的。Geo-mipmaps是由地形块的高分辨率法线图生成的。根据距离摄像机的x&#x2F;z距离，显示较低分辨率的地形块。为了避免在不同分辨率的高度地图之间改变时弹出，我们使用了地理变形，这允许引擎在两个高度地图关卡之间平滑地插入。退化三角形被插入到不同大小的块之间，以避免闪光。</p>
+<h5 id="4-1-6-2-Collision-Geometry"><a href="#4-1-6-2-Collision-Geometry" class="headerlink" title="4.1.6.2. Collision Geometry"></a><strong>4.1.6.2. Collision Geometry</strong></h5><p>碰撞几何使用两个不同的分辨率进行流处理(streamed)。低分辨率的碰撞总是存在的，而高分辨率的碰撞则取决于它们与摄像机的x-z距离。</p>
+<h5 id="4-1-6-3-Texture"><a href="#4-1-6-3-Texture" class="headerlink" title="4.1.6.3. Texture"></a><strong>4.1.6.3. Texture</strong></h5><p>纹理LOD是通过将多层混合替换为一个自上而下的地形块图像来实现的。基于与相机的x-z距离平滑地融合LOD图像。自顶向下的图像是在World Editor中生成的。</p>
+<h5 id="4-1-6-4-Normal-maps"><a href="#4-1-6-4-Normal-maps" class="headerlink" title="4.1.6.4. Normal maps"></a><strong>4.1.6.4. Normal maps</strong></h5><p>法线贴图LOD是通过使用低分辨率和高分辨率贴图来实现的。低分辨率的法线贴图总是可用的，而高分辨率的贴图则是基于与相机的x-z距离进行混合。法线贴图是在World Editor中生成的。LOD法线贴图的大小是法线贴图分辨率的16倍或32x32，取较大的值。</p>
+<h4 id="4-1-7-Memory-footprint"><a href="#4-1-7-Memory-footprint" class="headerlink" title="4.1.7. Memory footprint"></a><strong>4.1.7. Memory footprint</strong></h4><p>由于高级地形允许许多配置选项，地形的内存占用取决于所选择的选项。</p>
+<p>在Fantasydemo的例子中，地形开销如下(这些信息是通过Fantasydemo客户端中的资源计数器获取的，图像设置为高，远平面设置为1500米):</p>
+<p>(这包括纹理层使用的纹理，也可能被其他资产使用)</p>
+<table>
+<thead>
+<tr>
+<th align="left">Component</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Conllison data</td>
+<td>42453517</td>
+</tr>
+<tr>
+<td align="left">Vertex buffers</td>
+<td>6169008</td>
+</tr>
+<tr>
+<td align="left">Index buffers</td>
+<td>536352</td>
+</tr>
+<tr>
+<td align="left">Texture layers</td>
+<td>57541905</td>
+</tr>
+<tr>
+<td align="left">Shaowmaps</td>
+<td>26361856</td>
+</tr>
+<tr>
+<td align="left">LOD textures</td>
+<td>35148605</td>
+</tr>
+<tr>
+<td align="left">Hole maps</td>
+<td>4096</td>
+</tr>
+<tr>
+<td align="left">Normal maps</td>
+<td>6572032</td>
+</tr>
+<tr>
+<td align="left"><strong>Total</strong></td>
+<td><strong>174787371</strong></td>
+</tr>
+</tbody></table>
+<p><em>地形的内存使用表</em></p>
+<h4 id="4-1-8-terrain2-resources"><a href="#4-1-8-terrain2-resources" class="headerlink" title="4.1.8. terrain2 resources"></a><strong>4.1.8.</strong> <strong>terrain2</strong> <strong>resources</strong></h4><p>一个terrain2部分包含在一个chunk的.cdata文件中。它包含块中地形的所有资源。不同类型的地形数据将在以BNF格式进行描述。</p>
+<h5 id="4-1-8-1-heights-sections"><a href="#4-1-8-1-heights-sections" class="headerlink" title="4.1.8.1. heights sections"></a><strong>4.1.8.1.</strong> <strong>heights</strong> <strong>sections</strong></h5><p>高度部分存储地形块的高度地图。在块中存储多个高度部分，每个LOD级别一个，每个高度部分以前一个分辨率的一半存储数据。高度部分被命名为“heights?” ?为具体高度。最高的分辨率高度图存储在名为heights的区域中，第二高的存储在名为heights1的区域中，一直到存储2x2高度的地图。这样，如果高度地图分辨率是128x128, 7个高度地图存储在文件中(heights, heights1，…heights6)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;heightMap&gt; ::= &lt;header&gt;&lt;heightData&gt;</span><br><span class="line">&lt;header&gt; ::= &lt;magic&gt;&lt;width&gt;&lt;height&gt;&lt;compression&gt;&lt;version&gt;&lt;minHeight&gt;&lt;maxHeight&gt;&lt;padding&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>&lt;magic&gt;</strong></p>
+<p>uint32 0x00706d68 (string “hmp\0”)</p>
+</li>
+<li><p><strong>&lt;width&gt;</strong></p>
+<p>包含宽度数据的Uint32</p>
+</li>
+<li><p><strong>&lt;height&gt;</strong></p>
+<p>包含高度数据的Uint32</p>
+</li>
+<li><p><strong>&lt;compression&gt;</strong></p>
+<p>(未使用)包含压缩类型的uint32</p>
+</li>
+<li><p><strong>&lt;version&gt;</strong></p>
+<p>包含数据版本的Uint32，当前为4</p>
+</li>
+<li><p><strong>&lt;minHeight&gt;</strong></p>
+<p>浮点数，包含此块的最小高度</p>
+</li>
+<li><p><strong>&lt;maxHeight&gt;</strong></p>
+<p>浮点数，包含此块的最大高度</p>
+</li>
+<li><p><strong>&lt;padding&gt;</strong></p>
+<p>4个字节的填充使头部16字节对齐</p>
+</li>
+<li><p><strong>&lt;heightData&gt;</strong></p>
+<p>PNG压缩块，长度为int32，存储高度，单位为毫米，尺寸&#x3D;宽度*高度</p>
+</li>
+</ul>
+<h5 id="4-1-8-2-layer-sections"><a href="#4-1-8-2-layer-sections" class="headerlink" title="4.1.8.2. layer sections"></a><strong>4.1.8.2.</strong> <strong>layer</strong> <strong>sections</strong></h5><p>层段存储地形块的纹理层。多个层段存储在地形块中。每个部分描述一个纹理层。</p>
+<p>图层部分命名为“layer ?”?被一个大于1的数字所代替。例如，如果块有3个层，那么3个层的section将被存储(“layer1”， “layer 2”， “layer 3”)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;textureLayer&gt; ::= &lt;header&gt;&lt;textureName&gt;&lt;blendData&gt;</span><br><span class="line">&lt;header&gt; ::=&lt;magic&gt;&lt;width&gt;&lt;height&gt;&lt;bpp&gt;&lt;uProjection&gt;&lt;vProjection&gt;&lt;version&gt;&lt;padding&gt;</span><br><span class="line">&lt;textureName&gt; ::= &lt;length&gt;&lt;string&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>&lt;magic&gt;</strong></p>
+<p>uint32 0x00646c62 (string bld&#x2F;0”)</p>
+</li>
+<li><p><strong>&lt;width&gt;</strong></p>
+<p>包含宽度数据的Uint32</p>
+</li>
+<li><p><strong>&lt;height&gt;</strong></p>
+<p>包含高度数据的Uint32</p>
+</li>
+<li><p><strong>&lt;bpp&gt;</strong></p>
+<p>(未使用)uint32，包含层数据中条目的大小</p>
+</li>
+<li><p><strong>&lt;uProjection&gt;</strong></p>
+<p>Vector4包含纹理层u坐标的投影</p>
+</li>
+<li><p><strong>&lt;vProjection&gt;</strong></p>
+<p>Vector4包含纹理层v坐标的投影</p>
+</li>
+<li><p><strong>&lt;version&gt;</strong></p>
+<p>包含数据版本的Uint32，当前为2</p>
+</li>
+<li><p><strong>&lt;padding&gt;</strong></p>
+<p>12个字节的填充使头部16字节对齐</p>
+</li>
+<li><p><strong>&lt;length&gt;</strong></p>
+<p>texturename字符串的长度</p>
+</li>
+<li><p><strong>&lt;string&gt;</strong></p>
+<p>此层使用的纹理的名称</p>
+</li>
+<li><p><strong>&lt;blendData&gt;</strong></p>
+<p>PNG压缩的uint8块定义了纹理层在每个x&#x2F;z位置的强度</p>
+</li>
+</ul>
+<h5 id="4-1-8-3-normals-amp-lodNormals-sections"><a href="#4-1-8-3-normals-amp-lodNormals-sections" class="headerlink" title="4.1.8.3. normals &amp; lodNormals sections"></a><strong>4.1.8.3.</strong> <strong>normals</strong> <strong>&amp;</strong> <strong>lodNormals</strong> <strong>sections</strong></h5><p>法线部分存储地形块的高分辨率法线贴图。lodNormals部分存储高度块的LOD法线，LOD法线通常是法线大小的1&#x2F;16。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;normals&gt; ::= &lt;header&gt;&lt;data&gt;</span><br><span class="line">&lt;header&gt; ::= &lt;magic&gt;&lt;version&gt;&lt;padding&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>&lt;magic&gt;</strong></p>
+<p>uint32 0x006d726e (string “nrm&#x2F;0”)</p>
+</li>
+<li><p><strong>&lt;version&gt;</strong></p>
+<p>包含数据版本的Uint32，当前为1</p>
+</li>
+<li><p><strong>&lt;padding&gt;</strong></p>
+<p>8个字节的填充使头部16字节对齐</p>
+</li>
+<li><p><strong>&lt;data&gt;</strong></p>
+<p>对于法线的x和z分量，PNG压缩块存储2个符号字节，y分量在着色器中计算</p>
+</li>
+</ul>
+<h5 id="4-1-8-4-holes-section"><a href="#4-1-8-4-holes-section" class="headerlink" title="4.1.8.4. holes section"></a><strong>4.1.8.4.</strong> <strong>holes</strong> <strong>section</strong></h5><p>洞部分存储地形块的全息图，只有当地形块中有洞时，这个部分才存储。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;holes&gt; ::= &lt;header&gt;&lt;data&gt;</span><br><span class="line">&lt;header&gt; ::= &lt;magic&gt;&lt;width&gt;&lt;height&gt;&lt;version&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>&lt;magic&gt;</strong></p>
+<p>uint32 0x006c6f68 (string “hol&#x2F;0”)</p>
+</li>
+<li><p><strong>&lt;width&gt;</strong></p>
+<p>包含数据宽度的Uint32</p>
+</li>
+<li><p><strong>&lt;height&gt;</strong></p>
+<p>包含数据高度的Uint32</p>
+</li>
+<li><p><strong>&lt;version&gt;</strong></p>
+<p>包含数据版本的Uint32，当前为1</p>
+</li>
+<li><p><strong>&lt;data&gt;</strong></p>
+<p>将洞数据存储在一个宽度*高度的位域中，数据中的每一行被四舍五入到1字节。如果位设置为1，则表示映射中有一个洞。</p>
+</li>
+</ul>
+<h5 id="4-1-8-5-horizonShadows-section"><a href="#4-1-8-5-horizonShadows-section" class="headerlink" title="4.1.8.5. horizonShadows section"></a><strong>4.1.8.5.</strong> <strong>horizonShadows</strong> <strong>section</strong></h5><p>horizonShadows部分存储了地形块的地平线阴影。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;shadows&gt; ::= &lt;header&gt;&lt;data&gt;</span><br><span class="line">&lt;header&gt; ::= &lt;magic&gt;&lt;width&gt;&lt;height&gt;&lt;bpp&gt;&lt;version&gt;&lt;padding</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>&lt;magic&gt;</strong></p>
+<p>uint32 0x00646873 (string “shd&#x2F;0”)</p>
+</li>
+<li><p><strong>&lt;width&gt;</strong></p>
+<p>包含数据宽度的Uint32</p>
+</li>
+<li><p><strong>&lt;height&gt;</strong></p>
+<p>包含数据高度的Uint32</p>
+</li>
+<li><p><strong>&lt;bpp&gt;</strong></p>
+<p>(未使用)数据中每个条目的位数</p>
+</li>
+<li><p><strong>&lt;version&gt;</strong></p>
+<p>包含数据版本的Uint32，当前为1</p>
+</li>
+<li><p><strong>&lt;padding&gt;</strong></p>
+<p>12个字节的填充使头部16字节对齐</p>
+</li>
+<li><p><strong>&lt;data&gt;</strong></p>
+<p>阴影数据，(uint16,uint16) 宽度,高度，水平阴影数据存储两个角度,它们之间没有任何地形或物体遮挡。</p>
+</li>
+</ul>
+<h5 id="4-1-8-6-lodTexture-dds-section"><a href="#4-1-8-6-lodTexture-dds-section" class="headerlink" title="4.1.8.6. lodTexture.dds section"></a><strong>4.1.8.6.</strong> <strong>lodTexture.dds</strong> <strong>section</strong></h5><p>lodTexture.dds部分存储地形块的LOD纹理。LOD纹理是所有纹理层混合在一起的低分辨率快照。纹理以DXT5格式存储。关于dds纹理格式的更多信息请参考DirectX文档。</p>
+<h5 id="4-1-8-7-dominantTextures-section"><a href="#4-1-8-7-dominantTextures-section" class="headerlink" title="4.1.8.7. dominantTextures section"></a><strong>4.1.8.7.</strong> <strong>dominantTextures</strong> <strong>section</strong></h5><p>dominantTextures部分存储了主要的纹理图。 dominant texture地图存储地形块中每个x&#x2F;z位置的最高混合纹理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;dominant&gt; ::=&lt;header&gt;&lt;texNames&gt;&lt;data&gt;</span><br><span class="line">&lt;header&gt; ::= &lt;magic&gt;&lt;version&gt;&lt;numTextures&gt;&lt;texNameSize&gt;&lt;width&gt;&lt;height&gt;&lt;padding&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>&lt;magic&gt;</strong></p>
+<p>uint32 0x0074616d (string “mat&#x2F;0”)</p>
+</li>
+<li><p><strong>&lt;version&gt;</strong></p>
+<p>包含数据版本的Uint32，当前为1</p>
+</li>
+<li><p><strong>&lt;numTextures&gt;</strong></p>
+<p>包含主导纹理映射引用的纹理数量的Uint32</p>
+</li>
+<li><p><strong>&lt;texNameSize&gt;</strong></p>
+<p>包含纹理条目大小的Uint32</p>
+</li>
+<li><p><strong>&lt;width&gt;</strong></p>
+<p>包含数据宽度的Uint32</p>
+</li>
+<li><p><strong>&lt;height&gt;</strong></p>
+<p>包含数据高度的Uint32</p>
+</li>
+<li><p><strong>&lt;padding&gt;</strong></p>
+<p>8个字节的填充使头部16字节对齐</p>
+</li>
+<li><p><strong>&lt;texNames&gt;</strong></p>
+<p>texNameSize大小的numTextures条目包含在这个地图中引用的主要纹理的名称。比texNameSize短的纹理名称用0填充</p>
+</li>
+<li><p><strong>&lt;data&gt;</strong></p>
+<p>存储为一个压缩的bin节。宽度*高度的字节数组，每个条目都是纹理名称的索引，该索引索引了条目x&#x2F;z位置的主要纹理</p>
+</li>
+</ul>
+<h5 id="4-1-9-terrain-section-in-space-settings"><a href="#4-1-9-terrain-section-in-space-settings" class="headerlink" title="4.1.9. terrain section in space.settings"></a><strong>4.1.9.</strong> <strong>terrain</strong> <strong>section in</strong> <strong>space.settings</strong></h5><p>空间中的 space.settings 文件包含地形的配置选项。lodInfo和server部分中的值可以修改，但是根级别的值只能由World Editor修改。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span> 200 (int) <span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">heightMapSize</span>&gt;</span> uint <span class="tag">&lt;/<span class="name">heightMapSize</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">normalMapSize</span>&gt;</span> uint <span class="tag">&lt;/<span class="name">normalMapSize</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">holeMapSize</span>&gt;</span> uint <span class="tag">&lt;/<span class="name">holeMapSize</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">shadowMapSize</span>&gt;</span> uint <span class="tag">&lt;/<span class="name">shadowMapSize</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">blendMapSize</span>&gt;</span> uint <span class="tag">&lt;/<span class="name">blendMapSize</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">lodInfo</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">startBias</span>&gt;</span> float <span class="tag">&lt;/<span class="name">startBias</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">endBias</span>&gt;</span> float <span class="tag">&lt;/<span class="name">endBias</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">lodTextureStart</span>&gt;</span> float <span class="tag">&lt;/<span class="name">lodTextureStart</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">lodTextureDistance</span>&gt;</span> float <span class="tag">&lt;/<span class="name">lodTextureDistance</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">blendPreloadDistance</span>&gt;</span> float <span class="tag">&lt;/<span class="name">blendPreloadDistance</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">lodNormalStart</span>&gt;</span> float <span class="tag">&lt;/<span class="name">lodNormalStart</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">lodNormalDistance</span>&gt;</span> float <span class="tag">&lt;/<span class="name">lodNormalDistance</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">normalPreloadDistance</span>&gt;</span> float <span class="tag">&lt;/<span class="name">normalPreloadDistance</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">defaultHeightMapLod</span>&gt;</span> uint <span class="tag">&lt;/<span class="name">defaultHeightMapLod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">detailHeightMapDistance</span>&gt;</span> float <span class="tag">&lt;/<span class="name">detailHeightMapDistance</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">lodDistances</span>&gt;</span></span><br><span class="line">        +&lt;distance?&gt; float &lt;/distance?&gt;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">lodDistances</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">heightMapLod</span>&gt;</span> uint <span class="tag">&lt;/<span class="name">heightMapLod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">lodInfo</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>&lt;version&gt;</strong></p>
+<p>地形的版本，对于高级地形，这个值是200</p>
+</li>
+<li><p><strong>&lt;heightMapSize&gt;</strong></p>
+<p>每个地形块的高度图的大小，这个值是4到256之间2的幂</p>
+</li>
+<li><p><strong>&lt;normalMapSize&gt;</strong></p>
+<p>每个地形块的法线贴图的大小，这个值是32到256之间2的幂</p>
+</li>
+<li><p><strong>&lt;holeMapSize&gt;</strong></p>
+<p>每个地形块的洞图的大小，可以是256以内的任何值</p>
+</li>
+<li><p><strong>&lt;shadowMapSize&gt;</strong></p>
+<p>每个地形块的阴影贴图的大小，这个值是32到256之间2的幂</p>
+</li>
+<li><p><strong>&lt;blendMapSize&gt;</strong></p>
+<p>每个地形块的混合贴图的大小，该值是32到256之间2的幂</p>
+</li>
+<li><p><strong>&lt;lodInfo&gt;</strong></p>
+<p>本节包含地形LOD系统的配置</p>
+</li>
+<li><p><strong>&lt;startBias&gt;</strong></p>
+<p>这个值是geo-morphing开始的偏差值，这个值定义一个LOD级别从哪里开始淡出到下一个级别。这个值是两个lodDistance之间差异的一个因素。</p>
+</li>
+<li><p><strong>&lt;endBias&gt;</strong></p>
+<p>这个值是geo-morphing结束时的偏差值，这个值定义一个LOD级别在哪里完全淡出到下一个级别。这个值是两个lodDistance之间差异的一个因素。</p>
+</li>
+<li><p><strong>&lt;lodTextureStart&gt;</strong></p>
+<p>这是混合LOD纹理的起始距离，在此距离之前，混合层用于渲染地形。</p>
+</li>
+<li><p><strong>&lt;lodTextureDistance&gt;</strong></p>
+</li>
+</ul>
+<p>  这是lodtexture混合的距离，这个值是相对于lodTextureStart。</p>
+<ul>
+<li><p><strong>&lt;blendPreloadDistance&gt;</strong></p>
+<p>这是预加载混合的距离，这个值相对于lodTextureDistance和lodTextureStart</p>
+</li>
+<li><p><strong>&lt;lodNormalStart&gt;</strong></p>
+<p>这是混合LOD法线的起始距离</p>
+</li>
+<li><p><strong>&lt;lodNormalDistance&gt;</strong></p>
+<p>这是完整法线贴图混合的距离，这个值相对于lodNormalStart。</p>
+</li>
+<li><p><strong>&lt;normalPreloadDistance&gt;</strong></p>
+<p>这是预加载完整法线贴图的距离。该值是相对于lodNormalStart和lodNormalDistance的</p>
+</li>
+<li><p><strong>&lt;defaultHeightMapLod&gt;</strong></p>
+<p>这是要加载的高度贴图的默认LOD级别，0 &#x3D;完整的高度贴图，1 &#x3D;半分辨率，2 &#x3D;四分之一分辨率等等。</p>
+</li>
+<li><p><strong>&lt;detailHeightMapDistance&gt;</strong></p>
+<p>这是加载全高度地图的距离</p>
+</li>
+<li><p><strong>&lt;lodDistances&gt;</strong></p>
+<p>本部分包含几何LOD距离。</p>
+</li>
+<li><p><strong>&lt;distance&gt;</strong></p>
+<p>距离部分定义了每个几何LOD级别调和出来的距离。distance0表示第一个LOD等级，distance1表示第二个LOD等级，以此类推。LOD级别之间的距离必须至少是地形块对角线距离的一半(~71)，这是因为我们只支持相邻块之间1 LOD级别的差异。</p>
+</li>
+<li><p><strong>&lt;server&gt;</strong></p>
+<p>这部分包含服务器所使用的信息</p>
+</li>
+<li><p><strong>&lt;heightMapLod&gt;</strong></p>
+<p>这定义了在服务器上加载哪个LOD级别，这个值用于加速服务器上的加载。</p>
+</li>
+</ul>
+<h3 id="4-2-Simple-Terrain"><a href="#4-2-Simple-Terrain" class="headerlink" title="4.2. Simple Terrain"></a><strong>4.2. Simple Terrain</strong></h3><h4 id="4-2-1-Key-features"><a href="#4-2-1-Key-features" class="headerlink" title="4.2.1. Key features"></a><strong>4.2.1. Key features</strong></h4><ul>
+<li>与 chunking system一起工作。</li>
+<li>单个网格可从磁盘和内存寻址。</li>
+<li>基于4x4米的网格(tiles)，匹配门户(portal)的尺寸。</li>
+<li>低内存占用。</li>
+<li>低磁盘占用。</li>
+<li>快速绘制。</li>
+<li>自动混合。</li>
+<li>简单的工具集成。</li>
+<li>分层地形与平铺纹理为了简单的条带创建。</li>
+<li>使用纹理投影来应用纹理坐标以节省顶点内存。</li>
+</ul>
+<h4 id="4-2-2-Overview"><a href="#4-2-2-Overview" class="headerlink" title="4.2.2. Overview"></a><strong>4.2.2. Overview</strong></h4><p>地形是一个巨大的高度地图，由规则的高度杆网格定义，每4 × 4米。地形被组织成100x100米的地形块。每个这些块可以有多达4个纹理，它们是在每个顶点(即每个极点)的基础上混合的。地形也是自遮蔽的，允许在上面挖洞，比如洞穴开口。地形还包含详细信息，以便详细对象可以匹配地形类型。</p>
+<h4 id="4-2-3-Chunking"><a href="#4-2-3-Chunking" class="headerlink" title="4.2.3. Chunking"></a><strong>4.2.3. Chunking</strong></h4><p>地形与块体恰当地结合在一起:每个地形块是100x100米，这是外部块体的大小。地形块存储在单独的文件中，这样就可以根据需要打开它们。</p>
+<h4 id="4-2-4-Disk-footprint"><a href="#4-2-4-Disk-footprint" class="headerlink" title="4.2.4. Disk footprint"></a><strong>4.2.4. Disk footprint</strong></h4><p>每个地形块包含一个块，每个块的尺寸为100x100米。它包含28x28的高度、混合、阴影和细节值(有两个额外的行和一个列允许边界插值)。每个地形块也存储25x25洞的值，每个4x4m瓷砖一个洞。</p>
+<p>下表显示了每个区块的地形成本：</p>
+<table>
+<thead>
+<tr>
+<th><strong>Component</strong></th>
+<th><strong>Size calculation</strong></th>
+<th><strong>Size</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Headers</td>
+<td>256 (header) + 128 x 4 (texture names)</td>
+<td>768</td>
+</tr>
+<tr>
+<td>Height</td>
+<td>28 x 28 x sizeof( float )</td>
+<td>3136</td>
+</tr>
+<tr>
+<td>Blend</td>
+<td>28 x 28 x sizeof( dword )</td>
+<td>3136</td>
+</tr>
+<tr>
+<td>Shadow</td>
+<td>28 x 28 x sizeof( word )</td>
+<td>1568</td>
+</tr>
+<tr>
+<td>Detail</td>
+<td>28 x 28 x sizeof( byte )</td>
+<td>784</td>
+</tr>
+<tr>
+<td>Hole</td>
+<td>25 x 25 x sizeof( bool )</td>
+<td>625</td>
+</tr>
+<tr>
+<td>Total</td>
+<td></td>
+<td>10017</td>
+</tr>
+</tbody></table>
+<p><em>每个区块的地形成本</em></p>
+<p>例如，对于一个15 × 15千米的世界，地形的总磁盘大小为:10017 × 150 × 150(Bytes)  约215MB。</p>
+<h4 id="4-2-5-Memory-footprint"><a href="#4-2-5-Memory-footprint" class="headerlink" title="4.2.5. Memory footprint"></a><strong>4.2.5. Memory footprint</strong></h4><p>在视野为500m的情况下，每个地形块覆盖100x100米，一个典型的场景在任何时候都需要内存中大约160个地形块。</p>
+<p>这么多地形的内存使用大约是2MB，加上数据管理开销。</p>
+<h4 id="4-2-6-Texture-spacing"><a href="#4-2-6-Texture-spacing" class="headerlink" title="4.2.6. Texture spacing"></a><strong>4.2.6. Texture spacing</strong></h4><p>terraintexturespace标签包含在文件&lt;res&gt;&#x2F;resources.xml的环境部分(具体查看1.4.1 resources.xml副本中条目的优先级)决定了纹理地图在应用于地形时将被拉伸&#x2F;收缩的大小(以米为单位)。</p>
+<p>这个值决定了纹理贴图的长度和高度。</p>
+<h3 id="4-3-Terrain-specular-lighting"><a href="#4-3-Terrain-specular-lighting" class="headerlink" title="4.3. Terrain specular lighting"></a><strong>4.3. Terrain specular lighting</strong></h3><p>镜面照明方程为:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SpeClr = TerSpeAmt * ( (SpeDfsAmt * TerDfsClr) + SunClr) * SpeRfl</span><br></pre></td></tr></table></figure>
+
+<p>下面的列表描述了每个变量:</p>
+<ul>
+<li><p><strong>SpeClr</strong> <strong>(高光颜色)</strong></p>
+<p>最终的颜色反射。</p>
+</li>
+<li><p><strong>TerSpeAmt</strong> <strong>(镜面)</strong></p>
+<p>数值由4个地形纹理的alpha通道的加权混合给出。</p>
+</li>
+<li><p><strong>SpeDfsAmt</strong> <strong>(镜面散射量)</strong></p>
+<p>初始值存储在效果文件bigworld&#x2F;res&#x2F;shaders&#x2F;terrain&#x2F;terrain.fx中的变量specularDiffuseAmount中。</p>
+<p>它的值可以在运行时通过render&#x2F;terrain&#x2F;specularDiffuseAmount进行调整。</p>
+<p>一旦获得了所需的结果，就可以将新值存储在效果文件中。</p>
+</li>
+<li><p><strong>TerDfsClr</strong> <strong>(地形的漫反射r)</strong></p>
+<p>数值由4个地形纹理的RGB通道的加权混合给出。</p>
+</li>
+<li><p><strong>SunClr</strong> <strong>(阳光颜色)</strong></p>
+<p>阳光照射下的颜色。</p>
+</li>
+<li><p><strong>SpeFlr (镜面反射)</strong></p>
+<p>镜面反射值在给定像素，由镜面功率系数调整。</p>
+</li>
+</ul>
+<p>作为公式的结果，少量的地形漫反射颜色(TerDfsClr)被添加到阳光颜色(SunClr)，以提供高光颜色(SpeClr)。</p>
+<p>高光照明功率的初始值存储在效果文件bigworld&#x2F;res&#x2F;shaders&#x2F;terrain&#x2F;terrain.fx中的变量specularPower中。它的值可以在运行时通过render&#x2F;terrain&#x2F;specularPower进行调整。一旦获得了所需的结果，就可以将新值存储在效果文件中。</p>
+<p>请注意，镜面功率只能在着色器硬件版本2.0及以后进行调整。着色器硬件的早期版本被限制在4的高光功率值(这是着色器硬件版本2.0和更高版本的默认值)。</p>
+<p><em><strong>最终应用于地形的高光照明的数量受文件bigworld&#x2F;res&#x2F;shaders&#x2F;terrain&#x2F;terrain.fx中的可变specMultiplier的影响。设置为1以外的任何东西来重新缩放高光照明，或0来完全禁用它。</strong></em></p>
+<p><em><strong>地形高光照明可以通过TERRAIN_SPECULAR图形设置来关闭。</strong></em></p>
+<h2 id="5-Cloud-shadows"><a href="#5-Cloud-shadows" class="headerlink" title="5. Cloud shadows"></a><strong>5. Cloud shadows</strong></h2><p>在BigWorld客户端引擎中绘制的所有对象都受到云阴影的影响。这个效果是按每个像素应用的，并使用作为投影在世界上的引擎中的纹理源来执行。</p>
+<p>这个光照贴图通过在文件bigworld&#x2F;res&#x2F;shaders&#x2F; std_effects&#x2F;stdinclude.fxh中定义的宏公开给效果系统。</p>
+<p>默认情况下，纹理源被命名为skyLightMap，因此可以通过以下命令被Python访问：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BigWorld.getTextureFeed( <span class="string">&quot;skyLightMap&quot;</span> )</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-Requirements"><a href="#5-1-Requirements" class="headerlink" title="5.1. Requirements"></a><strong>5.1. Requirements</strong></h3><p>云阴影需要每个材质有一个额外的纹理层。虽然固定函数管道对大多数材质支持这一点，但在凹凸映射和镜面对象上的云阴影需要四组以上的纹理坐标，这意味着对于凹凸映射对象，它将只在像素着色器2和更高版本上工作。</p>
+<h3 id="5-2-Implementation"><a href="#5-2-Implementation" class="headerlink" title="5.2. Implementation"></a><strong>5.2. Implementation</strong></h3><p>天空灯光图由C++文件src&#x2F;lib&#x2F;romp&#x2F;sky_light_map.cpp中的代码计算，并在绘制过程中由天空模块更新。</p>
+<p>它通过自动效果常数暴露于效果引擎中。只有当创建新云或当前云集下风向移动超过25%时，光照图才会更新。</p>
+<p>在更新之间，投影纹理坐标会随着风速滑动，这样云的阴影看起来就会随着云移动。所有的效果文件都包含了云的阴影效果，包括地形和植物。</p>
+<h3 id="5-3-Effect-File-Implementation"><a href="#5-3-Effect-File-Implementation" class="headerlink" title="5.3. Effect File Implementation"></a><strong>5.3. Effect File Implementation</strong></h3><p>有两个效果常量公开在效果文件中，以帮助天空光映射:</p>
+<ul>
+<li><strong>SkyLightMapTransform</strong></li>
+</ul>
+<p>  设置“World to SkyLightMap”纹理投影。使用这个常量将x,z世界顶点位置转换为u,v纹理坐标。</p>
+<ul>
+<li><p><strong>SkyLightMap</strong></p>
+<p>显示天空光贴图纹理以创建效果文件。</p>
+</li>
+</ul>
+<p>文件bigworld&#x2F;res&#x2F;shaders&#x2F;std_effects&#x2F;stdinclude.fxh中有几个宏可以帮助将云阴影集成到效果文件中。</p>
+<p>在下面的列表中描述了这些宏：</p>
+<ul>
+<li><strong>BW_SKY_LIGHT_MAP_OBJECT_SPACE , BW_SKY_LIGHT_MAP_WORLD_SPACE</strong></li>
+</ul>
+<p>  这些宏声明了纹理投影所需的变量和常量，包括：</p>
+<ul>
+<li>世界空间摄影机位置</li>
+<li>天空光贴图变换。</li>
+<li>天空之光映射本身。</li>
+</ul>
+<p>  当使用在对象空间中执行照明的效果文件时(例如，如果您也在使用宏DIFFUSE_LIGHTING_OBJECT_SPACE)，请使用变体BW_SKY_LIGHT_MAP_OBJECT_SPACE，那么它将声明世界矩阵。</p>
+<ul>
+<li><p><strong>BW_SKY_LIGHT_MAP_SAMPLER</strong></p>
+<p>此宏声明了在像素着色器中实现云阴影时使用的采样器对象。</p>
+</li>
+<li><p><strong>BW_SKY_MAP_COORDS_OBJECT_SPACE,BW_SKY_MAP_COORDS_WORLD_SPACE</strong></p>
+<p>这些宏在给定的顶点位置上执行纹理投影，并将纹理坐标设置到给定的寄存器中。</p>
+<p>请确保根据您所使用的宏集，在适当的参照系中传递这些位置。</p>
+</li>
+<li><p><strong>BW_TEXTURESTAGE_CLOUDMAP</strong></p>
+<p>此宏定义了一个纹理阶段，它将前一个阶段的结果乘以适当的云阴影值。</p>
+<p>它应在任何漫射照明计算之后使用，以及在任何反射或镜面照明之前使用。</p>
+</li>
+<li><p><strong>SAMPLE_SKY_MAP</strong></p>
+</li>
+</ul>
+<p>  此宏对像素着色器中的天空光贴图进行采样，并返回一个一维浮点值，该值表示应该乘以漫反射照明值的量。</p>
+<h3 id="5-4-Tweaking"><a href="#5-4-Tweaking" class="headerlink" title="5.4. Tweaking"></a><strong>5.4. Tweaking</strong></h3><p>在根据当前云计算光照图之后，它被固定到一个最大值。这意味着云地图永远不会太暗，也不会对世界产生太大的影响。</p>
+<p>例如，即使太阳在白天完全被云遮住，仍然会有足够的环境照明和来自云层本身的照明，这样太阳光仍然会起作用。</p>
+<p>BigWorld观察客户端  Settings&#x2F;Clouds&#x2F;max  灯光贴图黑暗设置天空灯光贴图的最大值。值为1意味着天空光贴图能够完全模糊太阳（完全阴影）。默认值0.65表示BigWorld艺术家对云阴影的最佳值的最佳猜测。值为0将意味着云影对世界没有任何影响。</p>
+<p>此值也将从灯光映射设置中的文件sky.xml中读取。它由最大的黑暗标签表示。有关天空光地图设置文件的详细信息，请参见<strong>22.1.4.1.2. Sky light map</strong>。</p>
+<h2 id="6-Chunks"><a href="#6-Chunks" class="headerlink" title="6. Chunks"></a><strong>6. Chunks</strong></h2><p>由BigWorld客户端绘制的场景图是由空间的小凸块构建的。这样做有很多好处，包括易于流媒体、减少加载时间、并发世界编辑以及简化服务器场景更新和物理检查。</p>
+<p>下面几节将描述分块系统的概念和实现。</p>
+<h4 id="6-1-Definitions"><a href="#6-1-Definitions" class="headerlink" title="6.1. Definitions"></a><strong>6.1. Definitions</strong></h4><p>以下术语与BigWorld的分块系统有关：</p>
+<p>空间是一个连续的三维笛卡尔介质。每个空间被分段分割成块，这些块占据整个空间，但不重叠。空间中的每个点都恰好在一个块中。空间按水平尺寸分为100x100米的柱，总垂直范围。独立空间的例子包括行星、平行空间、空间站和“独立的”公寓&#x2F;地牢级别。</p>
+<p>块是一种凸三维体。它包含了位于其中的场景对象的描述。场景对象包括模型、灯光、实体、地形块等，称为块项目。它还定义了构成其边界的一组平面。</p>
+<p><em>列的外部块不受此限制，它只需要定义相邻列的四个平面。其他块的边界平面与网格方形重叠，用来构建内部空间划分的完整图像。</em></p>
+<p>有些平面在它们上定义了protal，这表明通过它们可以看到相邻的块。</p>
+<p>protal是一个多边形加上对通过该多边形可见的块的引用。它包含一个标志，用于指示是否允许对象通过它。有些protal的命名方式可能是脚本可以对它们进行地址定位，并更改它们的权限。</p>
+<h4 id="6-2-Implementation-files"><a href="#6-2-Implementation-files" class="headerlink" title="6.2. Implementation files"></a><strong>6.2. Implementation files</strong></h4><p>分块系统使用以下文件：</p>
+<ul>
+<li><strong>对于宇宙中的每个空间的一个 space.setting 文件(XML格式)</strong></li>
+</ul>
+<p>  有关此文件语法的详细信息，请参见文档文件语法指南的<em>space.settings</em>。</p>
+<ul>
+<li><p><strong>&lt;res&gt;&#x2F;spaces&#x2F;&lt;space&gt;&#x2F;space.settings</strong><br>* 环境设置<br>* 网格正方形的边界矩形</p>
+</li>
+<li><p><strong>每个空间的多个.chunk文件(XML格式)</strong></p>
+<p>有关此文件语法的详细信息，请参见文档文件语法指南的 <em>.chunk</em>。</p>
+<ul>
+<li><strong>&lt;res&gt;&#x2F;spaces&#x2F;&lt;space&gt;&#x2F;XXXXZZZZo.chunk</strong> <strong>(o &#x3D; outside)</strong></li>
+<li><strong>&lt;res&gt;&#x2F;spaces&#x2F;&lt;space&gt;&#x2F;CCCCCCCCi.chunk</strong> <strong>(i &#x3D; inside)</strong><ul>
+<li>场景对象列表</li>
+<li>使用的纹理集</li>
+<li>边界平面和入口（包括对可见数据块的引用）</li>
+<li>碰撞场景</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>每个空间的多个.cdata文件（二进制格式）</strong></p>
+<ul>
+<li><p><strong>&lt;res&gt;&#x2F;spaces&#x2F;&lt;space&gt;&#x2F;XXXXZZZZ.cdata</strong></p>
+<ul>
+<li><p>地形数据，如：</p>
+<ul>
+<li>高度图数据</li>
+<li>覆盖数据</li>
+<li>使用的纹理</li>
+</ul>
+<p> – or–</p>
+</li>
+<li><p>块中每个对象的照明数据的多个实例</p>
+<ul>
+<li>静态照明数据</li>
+<li>模型中每个顶点的颜色值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-3-Details-and-notes"><a href="#6-3-Details-and-notes" class="headerlink" title="6.3. Details and notes"></a><strong>6.3. Details and notes</strong></h3><h4 id="6-3-1-Includes"><a href="#6-3-1-Includes" class="headerlink" title="6.3.1. Includes"></a><strong>6.3.1. Includes</strong></h4><p>Includes在加载后是透明的(对客户端、服务器和脚本)。标签冲突可以通过向标签添加’_n’来处理，其中n是已经具有该标签的对象的数量。</p>
+<p>Includes在遇到的地方内联展开，不需要有客户端或服务器的边界框。</p>
+<p>世界编辑器不生成Includes。</p>
+<h4 id="6-3-2-Models"><a href="#6-3-2-Models" class="headerlink" title="6.3.2. Models"></a><strong>6.3.2. Models</strong></h4><p>材质覆盖和动画声明仍然是模型文件的域。</p>
+<h4 id="6-3-3-Entities"><a href="#6-3-3-Entities" class="headerlink" title="6.3.3. Entities"></a><strong>6.3.3. Entities</strong></h4><p>只有已隐式实例化的实体才需要填写其ID字段。如果它为零或缺失，则从客户端池（如果是客户端实例化的实体）或创建单元格池（如果是服务器实例化的实体）为该实体分配唯一ID。</p>
+<p>如果一个实体需要一个标签，则它必须在其正式类型定义中包含该标签作为一个属性。</p>
+<h4 id="6-3-4-Boundaries-and-portals"><a href="#6-3-4-Boundaries-and-portals" class="headerlink" title="6.3.4. Boundaries and portals"></a><strong>6.3.4. Boundaries and portals</strong></h4><p>如果只有天空(渐变、云、太阳、月亮、星星等)要绘制在那里，就可以使用特殊块标识符heaven。如果要画地形的话，地球也一样。因此，外块有六面，上面是天块，下面是地块。</p>
+<p>门户中没有块引用意味着它没有连接，并且不会在那里绘制任何东西。</p>
+<p>如果一个块包含在另一个块中，那么它的边界平面将被忽略——只使用像它所包含的、模型、灯光和声音这样的东西。</p>
+<p>内部门户意味着指定的边界不是实际的边界，而是它连接到的块（以及该块连接到的所有块）所占据的空间应该从逻辑上从该块拥有的空间中减去，由该块的非内部边界定义。这最初只用于“外部”块连接到“内部”块，但它可能很容易适用于“内部入口”，即“边界门户”的补充。</p>
+<p>在门户定义中，二维多边形点的虚轴是由法线与u轴的交叉乘积找到的。</p>
+<p>在边界定义中，法线应指向内。</p>
+<h4 id="6-3-5-Transforms"><a href="#6-3-5-Transforms" class="headerlink" title="6.3.5. Transforms"></a><strong>6.3.5. Transforms</strong></h4><p>除边界框外，块中的所有内容都将在块的局部空间中进行解释（如在顶级变换部分中所指定的）。</p>
+<h4 id="6-3-6-Other-items"><a href="#6-3-6-Other-items" class="headerlink" title="6.3.6. Other items"></a><strong>6.3.6. Other items</strong></h4><p>以下项目也可以以块存在：</p>
+<ul>
+<li><p>聚光灯</p>
+</li>
+<li><p>环境光</p>
+</li>
+<li><p>平行光</p>
+</li>
+<li><p>水(水体)</p>
+</li>
+<li><p>光晕(镜头光晕)</p>
+</li>
+<li><p>粒子系统</p>
+</li>
+</ul>
+<h4 id="6-4-Loading-and-ejecting"><a href="#6-4-Loading-and-ejecting" class="headerlink" title="6.4. Loading and ejecting"></a><strong>6.4. Loading and ejecting</strong></h4><p>在每一帧中，块管理器都会对它已经加载的所有块执行一个简单的图形遍历，以寻找要加载的新块。它沿着块之间的入口，跟踪它在扫描中“移动”的距离。它的扫描被限制在最大的可见距离内，即比较远的平面距离稍远一点。</p>
+<p>它在这个遍历中找到的最近的卸载块是下一个加载的块。加载是在一个单独的线程中完成的，因此它不会干扰游戏的运行。类似地，任何超出扫描范围的数据块都可以被驱逐（卸载）。</p>
+<h3 id="6-5-Focus-grid"><a href="#6-5-Focus-grid" class="headerlink" title="6.5. Focus grid"></a><strong>6.5. Focus grid</strong></h3><p>焦点网格是围绕相机位置的一组柱子。每根柱子长100x100米，并与地形方格和外部块体对齐。焦点网格的大小刚好超过远平面。</p>
+<p>例如，对于500米的远平面，焦点网格沿每个方向移动700米，使总共有14x14&#x3D;196列。</p>
+<p>聚焦网格中的列集取决于相机的位置。随着相机的移动，焦点网格处理不再在网格下的列，并“聚焦”于那些刚刚足够接近的列。</p>
+<p>每一列包含一个船体树（hull tree）和一个四轴树(quad tree)。</p>
+<h4 id="6-5-1-Hull-tree"><a href="#6-5-1-Hull-tree" class="headerlink" title="6.5.1. Hull tree"></a><strong>6.5.1. Hull tree</strong></h4><p>船体树(hull tree)是针对凸船体(convex hunns)的一种二元空间(binary-space)划分树。它可以处理重叠的船体。它可以进行点测试和适当的线遍历。</p>
+<p>船体树是由重叠于列的所有块的边界形成的。从这棵树中，可以快速地确定任何给定点所在的块。（例如，照相机的位置）</p>
+<h4 id="6-5-2-Quad-tree"><a href="#6-5-2-Quad-tree" class="headerlink" title="6.5.2. Quad tree"></a><strong>6.5.2. Quad tree</strong></h4><p>四叉树(quad tree)由重叠列的所有障碍的边界框（或者，可能是任何其他边界凸包）组成。此树用于碰撞场景测试。大块项目负责添加和实施障碍。目前只有模型和地形块项目添加了任何障碍。</p>
+<p>如果一个块或障碍在多个列中，则将其添加到两个列的树中。</p>
+<h3 id="6-6-Collisions"><a href="#6-6-Collisions" class="headerlink" title="6.6. Collisions"></a><strong>6.6. Collisions</strong></h3><p>使用障碍四叉树(quad tree)的焦点网格(focus grid)，块空间类可以在其空间中扫描任何三维形状，并向回调对象报告所有的三角形碰撞。目前支持的3D形状是点和三角形，但任何其他形状都可以轻松添加。</p>
+<p>最底层的碰撞检查由一个通用的障碍物界面处理，所以任何可能的障碍都可以添加到这个碰撞场景中，只要它可以快速确定另一个形状何时与它碰撞（在它自己的局部坐标中）。</p>
+<p>有关更多详细信息，请参见文件bigworld&#x2F;src&#x2F;client&#x2F;physics.cpp。</p>
+<h3 id="6-7-Sway-items"><a href="#6-7-Sway-items" class="headerlink" title="6.7. Sway items"></a><strong>6.7. Sway items</strong></h3><p>摇摆项(sway item)是指受其他块项目的通过而影响的块项目。每当一个动态块项移动时，该块中的任何摇摆项都会得到调用它们的摇摆方法，从而指定移动的来源和命运。</p>
+<p>目前唯一的用户是ChunkWater。它利用流过它表面的运动在水中产生涟漪。这就是为什么涟漪适用于任何类型的动态道具——从动态障碍&#x2F;移动平台到玩家模型再到小子弹。</p>
+<ul>
+<li><p>在mf&#x2F;src&#x2F;lib&#x2F;chunk&#x2F;chunk_water.cpp中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Constructor</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">ChunkWater::<span class="built_in">ChunkWater</span>() :</span><br><span class="line"><span class="built_in">ChunkItem</span>( <span class="number">5</span> ), </span><br><span class="line">    <span class="built_in">pWater_</span>( <span class="literal">NULL</span> )</span><br><span class="line">&#123;&#125;</span><br><span class="line">...</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Apply a disturbance to this body of water</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ChunkWater::sway</span><span class="params">( <span class="type">const</span> Vector3 &amp; src, <span class="type">const</span> Vector3 &amp; dst )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (pWater_ != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        pWater_-&gt;<span class="built_in">addMovement</span>( src, dst );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在mf&#x2F;src&#x2F;lib&#x2F;chunk&#x2F;chunk_item.hpp中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ChunkItem</span> : <span class="keyword">public</span> SpecialChunkItem</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"> <span class="built_in">ChunkItem</span>( <span class="type">int</span> wantFlags = <span class="number">0</span> ) : <span class="built_in">SpecialChunkItem</span>( wantFlags ) &#123; &#125;</span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">typedef</span> ClientChunkItem SpecialChunkItem;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ClientChunkItem</span> : <span class="keyword">public</span> ChunkItemBase</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"> <span class="built_in">ClientChunkItem</span>( <span class="type">int</span> wantFlags = <span class="number">0</span> ) : <span class="built_in">ChunkItemBase</span>( wantFlags ) &#123; &#125;</span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line"><span class="built_in">ChunkItemBase</span>( <span class="type">int</span> wantFlags = <span class="number">0</span> );</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">wantsDraw</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> !!(wantFlags_ &amp; <span class="number">1</span>); &#125;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">wantsTick</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> !!(wantFlags_ &amp; <span class="number">2</span>); &#125;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">wantsSway</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> !!(wantFlags_ &amp; <span class="number">4</span>); &#125;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">wantsNest</span><span class="params">()</span> <span class="type">const</span> </span>&#123; <span class="keyword">return</span> !!(wantFlags_ &amp; <span class="number">8</span>); &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="7-Entities"><a href="#7-Entities" class="headerlink" title="7. Entities"></a><strong>7. Entities</strong></h2><p>实体是BigWorld关键的概念，它本身就涉及到一个大型系统。它们是客户端和服务器之间的链接，也是客户端和服务器之间的链接，也是BigWorld Technology最特别的功能。</p>
+<p>本节仅处理客户端上的实体的管理方面。</p>
+<p>根据实体类型，它可以存在于BigWorld的不同部分，如下所示：</p>
+<ul>
+<li><p><strong>Client-only</strong></p>
+<p>例如，一个安全摄像头道具，或一个信息图标。通过将“世界编辑器的属性”面板“仅客户端”属性设置为true来创建仅客户端实体。</p>
+</li>
+<li><p><strong>Client and server</strong></p>
+<p>实体将在两个部分中处于同一位置。例如：player Avatar, NPCs，自动售货机。</p>
+</li>
+<li><p><strong>Server-only</strong></p>
+<p>该实体将只在服务器上进行实例化。例如，一个NPC衍生点或远程传送目的地点。仅限服务器的实体在客户端上没有任何脚本。</p>
+</li>
+</ul>
+<h3 id="7-1-Entity-Manager"><a href="#7-1-Entity-Manager" class="headerlink" title="7.1. Entity Manager"></a><strong>7.1. Entity Manager</strong></h3><p>实体管理器存储两个实体列表：</p>
+<ul>
+<li><p>Active List</p>
+<p>包含当前世界中的实体，由服务器中转或由块文件指示。</p>
+</li>
+<li><p>Cached List</p>
+<p>包含最近在世界上，但现在只是在客户的500米半径区域(AoI)之外的实体。</p>
+</li>
+</ul>
+<p>实体被缓存，以便如果它们在离开后不久返回客户端的AoI，服务器不必重新发送与该实体相关的所有数据；只需要更改的字段。</p>
+<p>由于可能从服务器无序地收到消息，因此实体管理器对其订单不敏感。例如，如果一个实体进入了玩家的AOI，然后迅速离开它，BigWorld客户端的行为也会正确，即使它在其“输入AOI”消息之前收到了该实体的“离开AoI”消息。</p>
+<p>实体管理器总是可以确定它应该从包的序列号接收到消息的相对时间，因为包是定期发送的。</p>
+<h3 id="7-2-Entity-scripts"><a href="#7-2-Entity-scripts" class="headerlink" title="7.2. Entity scripts"></a><strong>7.2. Entity scripts</strong></h3><p>客户端上的实体脚本是来自BigWorld的Python类。实体类。这个基类公开了许多方法和属性，允许脚本控制实体的行为(例如，位置、方向和实体模型都通过BigWorld.Entity接口）。</p>
+<p>除了公开方法和属性之外，当某些事件通过命名的事件处理程序发生时，客户端引擎还将通知实体脚本。</p>
+<h3 id="7-3-Entity-resources"><a href="#7-3-Entity-resources" class="headerlink" title="7.3. Entity resources"></a><strong>7.3. Entity resources</strong></h3><p>通常，每个实体类型都需要一些资源来操作，例如模型、纹理、着色器、声音或粒子系统。BigWorld客户端提供了几种方法来确保这些资源在实体进入世界时可用，从而避免使主线程停止。</p>
+<h4 id="7-3-1-Preloads"><a href="#7-3-1-Preloads" class="headerlink" title="7.3.1. Preloads"></a><strong>7.3.1. Preloads</strong></h4><p>当客户端启动时，它将为每个实体Python模块查询一个名为perload的函数。此函数返回的资源名称将在客户端启动时加载，并在客户端的整个生命周期中保存在内存中（即它可以随时使用）。这对于常用的资产很有用，以避免以后可能出现的加载和重新加载。然而，这样做的代价是，客户端将需要更长的时间来启动，并使用更多的内存（如果资源在某个时候实际上没有被使用）。</p>
+<p>若要使用预加载机制，请在相关的实体模块中创建一个名为preload的全局函数。它必须使用一个参数，该参数是一个包含要预加载的资源的Python列表。就地修改此列表（例如，使用list.append或列表连接），插入由客户端要预加载的每个资源的字符串名称。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Door.py</span></span><br><span class="line"><span class="keyword">import</span> BigWorld</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Door</span>( BigWorld.Entity ):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params"> self </span>):</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">preload</span>(<span class="params"> <span class="built_in">list</span> </span>):</span><br><span class="line">            <span class="built_in">list</span>.append( <span class="string">&quot;doors/models/generic_door.model&quot;</span> )</span><br><span class="line">            <span class="built_in">list</span>.append( <span class="string">&quot;doors/maps/door_highlight.tga&quot;</span> )</span><br><span class="line">            ...</span><br></pre></td></tr></table></figure>
+
+<p>可以预加载的资源的类型是：</p>
+<ul>
+<li>Fonts</li>
+<li>Textures</li>
+<li>Shaders</li>
+<li>Models</li>
+</ul>
+<h4 id="7-3-2-Prerequisites"><a href="#7-3-2-Prerequisites" class="headerlink" title="7.3.2. Prerequisites"></a><strong>7.3.2. Prerequisites</strong></h4><p>当一个实体即将出现在客户端上的世界中时，引擎将对名为prerequisites的实体脚本执行一个回调。这允许实体脚本返回在实体进入世界之前必须加载的资源列表。这些资源由加载线程加载，以便不会中断渲染管道。</p>
+<p>建议一个实体将其所需的资源作为先决条件进行公开，并在onEnterWorld的方法中加载它们。与使用预加载不同，先决条件不会泄漏引用，因此当实体离开该世界时，它将释放其资源。</p>
+<p>实体管理器在允许实体进入世界之前调用Entity::checkPrerequisites 。此方法检查是否满足此实体进入世界的先决条件。如果他们满足，那么它就会开始满足他们的过程（如果还没有开始）。</p>
+<p>请注意，当在实体上调用先决条件方法时，其脚本已经被初始化，并且已经设置了其属性。因此，该实体可以根据该实体的具体实例来专门化其先决条件列表。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">Door</span>(<span class="params"> BigWorld.Entity </span>):</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">prerequisites</span>(<span class="params"> self </span>):</span><br><span class="line">        <span class="keyword">return</span> [ DoorResources[ self.modelType ].modelName ]</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="8-User-Data-Objects"><a href="#8-User-Data-Objects" class="headerlink" title="8. User Data Objects"></a><strong>8. User Data Objects</strong></h2><p>用户数据对象(User Data Objects)是将用户定义的数据嵌入到块文件中的一种方法。每个用户数据对象类型都被实现为Python脚本的集合，以及一个基于xml的定义文件，它将这些脚本绑定在一起。这些脚本位于文件夹脚本下的资源树中。</p>
+<p>用户数据对象与实体的不同之处在于它们是不可变的（即它们的属性不会改变），并且它们不会传播到其他单元格或客户端。这使得它们比实体要轻得多。</p>
+<p>用户数据对象的一个关键特性是它们的可链接性。实体能够链接到用户数据对象，而用户数据对象能够链接到其他用户数据对象。这是通过在希望链接到另一个用户数据对象的用户数据对象或实体的定义文件中包含一个UDO_REF属性来实现的。</p>
+<h3 id="8-1-User-Data-Objects-are-Python-script-objects"><a href="#8-1-User-Data-Objects-are-Python-script-objects" class="headerlink" title="8.1. User Data Objects are Python script objects"></a><strong>8.1. User Data Objects are Python script objects</strong></h3><p>每个用户数据对象都是一个Python脚本对象(PyObject)。根据用户数据对象的类型，它可以存在于BigWorld的不同部分，如下所示：</p>
+<ul>
+<li><p><strong>Client only</strong></p>
+<p>仅限客户端的用户数据对象是通过使用其定义文件中的域标记中的客户端域来创建的。仅限客户端的用户数据对象不应该有cell或base脚本。</p>
+<p>对于一个仅客户端用户数据对象的例子，请参考CameraNode用户数据对象，实现在&lt;res&gt;&#x2F;scripts&#x2F;client&#x2F;CameraNode.py和&lt;res&gt;&#x2F;scripts&#x2F;user_data_object_defs&#x2F;CameraNode.def文件中。</p>
+</li>
+<li><p><strong>Server only</strong> </p>
+<p>仅在服务器上的用户数据对象仅在服务器上实例化，如果其域标记为CELL，则将在cell中实例化，如果域标记设置为BASE，则将在base实例化。</p>
+<p>服务器用户数据对象的例子，请参考PatrolNode用户数据对象，实现在&lt;res&gt;&#x2F;scripts&#x2F;cell&#x2F;PatrolNode.py和&lt;res&gt;&#x2F;scripts&#x2F;user_data_object_defs&#x2F;PatrolNode.def文件中。</p>
+</li>
+</ul>
+<h3 id="8-1-Accessing-from-the-Client"><a href="#8-1-Accessing-from-the-Client" class="headerlink" title="8.1. Accessing from the Client"></a><strong>8.1. Accessing from the Client</strong></h3><p>客户端可以使用以下命令访问所有仅限客户端使用的用户数据对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; BigWorld.userDataObjects </span><br><span class="line">&lt;WeakValueDictionary at 3075900908&gt;</span><br></pre></td></tr></table></figure>
+
+<p>返回一个Python字典，使用用户数据对象的唯一标识符作为键，并将其PyObject表示作为其值。用户数据对象的属性和脚本方法可以使用标准的点语法来访问：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; patrolNode.patrolLinks</span><br><span class="line">[UserDataObject at 2358353012, UserDataObject at 2358383771]</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="9-Scripting"><a href="#9-Scripting" class="headerlink" title="9. Scripting"></a><strong>9. Scripting</strong></h2><p>提供给脚本的工具极其重要，因为它们决定了客户端的通用性和可扩展性。对于脚本程序员来说，这个环境是客户端；就像对普通用户一样，窗口系统就是计算机。</p>
+<p>脚本环境提供了尝试编写整个程序的很大的诱惑。这可能会很快导致程序缓慢而难以理解(特别是如果相同的编程规则不像C++一样应用于脚本语言时)。因此，我们建议只有在不需要在每帧调用时才能用脚本编写功能。此外，如果它是全局的，那么它应该在人格脚本中实现。因此，例如，一个全局聊天控制台将在人格脚本中实现，而一个目标系统，它需要检查每一帧的碰撞场景，最好在C++中实现。</p>
+<p>重要的是，整个BigWorld技术的广泛集成允许游戏代码的快速开发和巨大的灵活性。</p>
+<p><em>在BigWorld的Python集成中，垃圾收集被禁用了，因为垃圾收集是一种昂贵的操作，可以在任何时候发生，例如阻塞主线程并导致帧率峰值。</em></p>
+<h3 id="9-1-Functional-components"><a href="#9-1-Functional-components" class="headerlink" title="9.1. Functional components"></a><strong>9.1. Functional components</strong></h3><p>本节从使用这些工具的脚本的角度，描述了（一般）C++实体的内容和服务。以下章节中描述的实体的功能组件如下：</p>
+<ul>
+<li><p>Entity Skeleton（实体框架）</p>
+</li>
+<li><p>Python Script Object（python脚本对象）</p>
+</li>
+<li><p>Model Management（模型管理）</p>
+</li>
+<li><p>Filters（过滤器）</p>
+</li>
+<li><p>Action Queue（操作队列）</p>
+</li>
+<li><p>Action Matcher（行动匹配器）</p>
+</li>
+<li><p>Trackers (IK)（跟踪器-反向）</p>
+</li>
+<li><p>Timers and Traps（计时器和陷阱）</p>
+</li>
+</ul>
+<h4 id="9-1-1-Entity-Skeleton（实体框架）"><a href="#9-1-1-Entity-Skeleton（实体框架）" class="headerlink" title="9.1.1 Entity Skeleton（实体框架）"></a><strong>9.1.1 Entity Skeleton（实体框架）</strong></h4><p>实体类(entity.cpp)是C++容器，它将为特定实体使用的任何组件集合在一起。它从Python对象派生出来，并拦截某些访问，并将其不理解的访问传递给用户脚本。这允许脚本使用“自我”引用，透明地在它们自己（和其他实体）上调用C++函数。在服务器的单元格和基本组件中也使用了相同的集成技术。</p>
+<p>这个类处理组件类所需的任何内务管理或粘合——就其他c++模块而言，它是实体的公共面。</p>
+<p>该类的数据成员包括id、类型和位置。</p>
+<h4 id="9-1-2-Python-script-object"><a href="#9-1-2-Python-script-object" class="headerlink" title="9.1.2. Python script object"></a><strong>9.1.2. Python script object</strong></h4><p>这是用户提供的脚本类的实例。该实体的类型将选择该类。它存储在实体类型的XML描述中定义的特定于类型的数据，以及脚本希望存储的任何其他内部使用的数据。</p>
+<p>当从服务器发送字段数据时，此类将自动更新其字段（并通知其更改）。当从服务器（或客户端上的其他脚本）接收到消息时，将自动调用消息处理程序。实体类执行这种自动化——从脚本的角度来看，它似乎是自动的。</p>
+<h4 id="9-1-3-Model-management"><a href="#9-1-3-Model-management" class="headerlink" title="9.1.3. Model management"></a><strong>9.1.3. Model management</strong></h4><p>模型是BigWorld对网格的术语，再加上它上面使用的动画和动作。</p>
+<p>模型管理组件允许实体管理在其位置绘制和动画的模型。模型可以在定义良好的连接点（硬点）上相互连接，或者它们可以独立存在。模型在加载时不会自动添加到场景中——它必须显式地放在场景中。</p>
+<p>实体可以使用任意数量的独立（断开的）模型，但大多数将使用0或1。那些使用更多的，需要特殊的过滤器来合理地表现。</p>
+<p>理解模型的最佳方法是熟悉它们的Python接口，<strong>Main</strong> → <strong>Client</strong> → <strong>BigWorld</strong> → <strong>Classes</strong> → <strong>PyModel</strong></p>
+<h4 id="9-1-4-Filters"><a href="#9-1-4-Filters" class="headerlink" title="9.1.4. Filters"></a><strong>9.1.4. Filters</strong></h4><p>过滤器采用带有时间戳的位置更新，并对它们进行插值，以在任意时间生成实体的位置。</p>
+<p>BigWorld只提供过滤器基类。游戏开发者将从中获得特定于游戏的过滤器。然后，每个实体可以从可用的变量中为自己选择一种过滤器。如果它需要，它可以动态地更改其过滤器。</p>
+<p>每当一个移动更新来自服务器时，它就会被移交给选定的过滤器，以及为该事件计算的（现有的）游戏时间重建逻辑的时间。</p>
+<p>过滤器还可以提供时间间隔和转换，例如，“在游戏时间x，向前移动y米，旋转z弧度，持续t秒”。这个过滤器(如果它足够聪明的话)可以将此整合到它的插值中。</p>
+<p>过滤器还可以在流中的给定时间执行脚本回调。</p>
+<p>过滤器完全可以从Python中访问。</p>
+<h4 id="9-1-5-Navigation"><a href="#9-1-5-Navigation" class="headerlink" title="9.1.5. Navigation"></a><strong>9.1.5. Navigation</strong></h4><p>BigWorld通过客户端脚本提供了对一些导航方法的访问。BigWorld.navigatePathPoints()将返回给定源点和目标点之间路径的点列表，BigWorld.findRandomNeighbourPoint()和相关BigWorld.findRandomNeighbourPointWithRange()将返回连接的导航网格中返回一个随机点，该点将从给定点导航。</p>
+<p>为客户端提供这些方法是为了允许使一些处理远离服务器，并允许移动更有响应性，从而消除了等待服务器提供路径的需要。</p>
+<h5 id="9-1-5-1-Configuring-a-Space-to-Use-Navigation"><a href="#9-1-5-1-Configuring-a-Space-to-Use-Navigation" class="headerlink" title="9.1.5.1. Configuring a Space to Use Navigation"></a><strong>9.1.5.1. Configuring a Space to Use Navigation</strong></h5><p>如果没有使用客户端导航方法，加载导航网格将会导致不必要的额外内存使用(通常是10-50mb)。因此，默认情况下将不会加载导航网格。每个将使用导航的空间都必须配置为这样做。将以下部分添加到将使用客户端导航的任何space.settings文件中：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">clientNavigation</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">enable</span>&gt;</span> true <span class="tag">&lt;/<span class="name">enable</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">clientNavigation</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这将确保客户端将加载与块数据一起存储的任何导航网格。</p>
+<h5 id="9-1-5-2-Distributing-Navigation-Meshes-with-the-Client"><a href="#9-1-5-2-Distributing-Navigation-Meshes-with-the-Client" class="headerlink" title="9.1.5.2. Distributing Navigation Meshes with the Client"></a><strong>9.1.5.2. Distributing Navigation Meshes with the Client</strong></h5><p>如果没有为一个空间启用客户端导航，那么ResPacker将从客户端包的cdata文件中剥离导航网格。这是为了保持块资源文件尽可能小，以便于分发。</p>
+<h5 id="9-1-5-3-BigWorld-navigatePathPoints"><a href="#9-1-5-3-BigWorld-navigatePathPoints" class="headerlink" title="9.1.5.3. BigWorld.navigatePathPoints()"></a><strong>9.1.5.3.</strong> <strong>BigWorld.navigatePathPoints()</strong></h5><p>BigWorld.navigatePathPoints()将获取源点和目的地点，并返回它们之间的点的路径，这样，依次移动到每个点将导致一个实体成功地导航到目的地。</p>
+<p>该方法具有以下语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">navigatePathPoints( src, dst, maxSearchDistance, girth )</span><br></pre></td></tr></table></figure>
+
+<p>这些参数如下：</p>
+<ul>
+<li><p>src</p>
+<p>Vertor3,其中包含当前空间中的源点。</p>
+</li>
+<li><p>dest</p>
+<p>Vertor3,在当前空间中包含目标点。</p>
+</li>
+<li><p>maxSearchDistance</p>
+<p>浮点数，包含从源点开始搜索路径的最大距离。(This deafaults to 500.)</p>
+</li>
+<li><p>girth</p>
+<p>包含要使用的导航周网格的浮动。如果没有提供，则默认为0.5,并用于确保大型实体无法通过对它们来说太窄的区域。这个值必须对应girths文件中的一个girth条目，默认位于bigworld&#x2F;res&#x2F;helpers&#x2F;girths.xml。</p>
+</li>
+</ul>
+<p>BigWorld.navigatePathPoints()返回一个包含该路径的向量3个点的列表。如果找不到一条路径，则它将引发一个异常。</p>
+<p>例如，如果存在，以下调用将返回（100,10,200）和（150,20,50）之间路径上的点列表。所有点的路径宽度必须至少为4米，且总计必须小于300米：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BigWorld.navigatePathPoints( (<span class="number">100</span>, <span class="number">10</span>, <span class="number">200</span>), (<span class="number">150</span>, <span class="number">20</span>, <span class="number">50</span>), <span class="number">300</span>, <span class="number">4</span> )</span><br></pre></td></tr></table></figure>
+
+<p>该路径将作为一个列表返回：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(100,10,200), (121,3,148), (133,9,87), (144,8,61), (150,20,50)]</span><br></pre></td></tr></table></figure>
+
+<h5 id="9-1-5-4-BigWorld-findRandomNeighbourPoint"><a href="#9-1-5-4-BigWorld-findRandomNeighbourPoint" class="headerlink" title="9.1.5.4. BigWorld.findRandomNeighbourPoint()"></a><strong>9.1.5.4.</strong> <strong>BigWorld.findRandomNeighbourPoint()</strong></h5><p>BigWorld.findRandomNeighbourPoint()将获取一个源点，并在一个已连接的导航网格中返回一个随机点。保证得到的点与源相连:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">findRandomNeighbourPoint( position, radius, girth )</span><br></pre></td></tr></table></figure>
+
+<p>这些参数如下：</p>
+<ul>
+<li><p>position</p>
+<p>Vector3,其中包含当前空间中的源点。</p>
+</li>
+<li><p>radius</p>
+<p>浮点数，包含从源点开始搜索路径的最大距离。</p>
+</li>
+<li><p>girth</p>
+<p>包含要使用的导航周网格的浮动。如果没有提供，则默认为0.5。</p>
+</li>
+</ul>
+<p>BigWorld.findRandomNeighbourPoint()返回一个包含该随机点的向量3。如果找不到适当的点，它将引发一个异常。</p>
+<p>例如，下面的调用将在点（100,10,200）的300m范围内返回一个随机点。到此点的路径在所有点至少0.5米宽。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BigWorld.findRandomNeighbourPoint( (<span class="number">100</span>, <span class="number">10</span>, <span class="number">200</span>), <span class="number">300</span>, <span class="number">0.5</span> )</span><br></pre></td></tr></table></figure>
+
+<h5 id="9-1-5-5-BigWorld-findRandomNeighbourPointWithRange"><a href="#9-1-5-5-BigWorld-findRandomNeighbourPointWithRange" class="headerlink" title="9.1.5.5. BigWorld.findRandomNeighbourPointWithRange()"></a><strong>9.1.5.5.</strong> <strong>BigWorld.findRandomNeighbourPointWithRange()</strong></h5><p>此方法执行与BigWorld.findRandomNeighbourPoint()相同的功能，但使用一个指定最小半径的附加参数。这允许调用者指定到随机点的距离指定特定范围:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">findRandomNeighbourPointWithRange( position, minRadius, maxRadius, girth )</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>positon</p>
+<p>源点</p>
+</li>
+<li><p>minRadius</p>
+<p>浮点数，包含从源点搜索路径的最小距离。</p>
+</li>
+<li><p>maxRadius</p>
+<p>浮点数，包含从源点搜索路径的最大距离。</p>
+</li>
+<li><p>girth</p>
+<p>包含要使用的导航周网格的浮动。如果没有提供，则默认为0.5。</p>
+</li>
+</ul>
+<p>BigWorld.findRandomNeighbourPoint()返回一个包含该随机点的向量3。如果找不到适当的点，它将引发一个异常。</p>
+<p>例如，下面的调用将返回一个超过200米的随机点，但在点（150,20,50）的400米以内。到这一点的路径必须在所有点上至少有4米宽。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BigWorld.findRandomNeighbourPointWithRange( (<span class="number">150</span>, <span class="number">20</span>, <span class="number">50</span>), <span class="number">200</span>, <span class="number">400</span>, <span class="number">4</span> )</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-1-6-Action-Queue"><a href="#9-1-6-Action-Queue" class="headerlink" title="9.1.6. Action Queue"></a><strong>9.1.6. Action Queue</strong></h4><p>操作队列是BigWorld技术框架中的结构，它控制在模型上有效的动作队列（动作由操作队列中包含的动作队列对象包裹）。</p>
+<p>动作队列处理层的组合，也应用适当的混合和混合时间。</p>
+<p>ActionQueue还处理与动作播放相关的任何脚本回调函数，例如在动作的特定帧中调用声音播放回调。</p>
+<p>操作在XML中描述，如下所示 example .model 文件（位于资源树下各种子文件夹中）：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">action</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span> ACTION_NAME <span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    ?<span class="tag">&lt;<span class="name">animation</span>&gt;</span> ANIMATION_NAME <span class="tag">&lt;/<span class="name">animation</span>&gt;</span></span><br><span class="line">    ?<span class="tag">&lt;<span class="name">blendInTime</span>&gt;</span> float <span class="tag">&lt;/<span class="name">blendInTime</span>&gt;</span></span><br><span class="line">    ?<span class="tag">&lt;<span class="name">blendOutTime</span>&gt;</span> float <span class="tag">&lt;/<span class="name">blendOutTime</span>&gt;</span></span><br><span class="line">    ?<span class="tag">&lt;<span class="name">filler</span>&gt;</span> [true|false] <span class="tag">&lt;/<span class="name">filler</span>&gt;</span></span><br><span class="line">    ?<span class="tag">&lt;<span class="name">track</span>&gt;</span> int <span class="tag">&lt;/<span class="name">track</span>&gt;</span></span><br><span class="line">    ?<span class="tag">&lt;<span class="name">isMovement</span>&gt;</span> [true|false] <span class="tag">&lt;/<span class="name">isMovement</span>&gt;</span></span><br><span class="line">    ?<span class="tag">&lt;<span class="name">isCoordinated</span>&gt;</span> [true|false] <span class="tag">&lt;/<span class="name">isCoordinated</span>&gt;</span></span><br><span class="line">    ?<span class="tag">&lt;<span class="name">isImpacting</span>&gt;</span> [true|false] <span class="tag">&lt;/<span class="name">isImpacting</span>&gt;</span></span><br><span class="line">    ?<span class="tag">&lt;<span class="name">match</span>&gt;</span></span><br><span class="line">        ?<span class="tag">&lt;<span class="name">trigger</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">minEntitySpeed</span>&gt;</span> float <span class="tag">&lt;/<span class="name">minEntitySpeed</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">maxEntitySpeed</span>&gt;</span> float <span class="tag">&lt;/<span class="name">maxEntitySpeed</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">minEntityAux1</span>&gt;</span> float <span class="tag">&lt;/<span class="name">minEntityAux1</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">maxEntityAux1</span>&gt;</span> float <span class="tag">&lt;/<span class="name">maxEntityAux1</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">minModelYaw</span>&gt;</span> float <span class="tag">&lt;/<span class="name">minModelYaw</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">maxModelYaw</span>&gt;</span> float <span class="tag">&lt;/<span class="name">maxModelYaw</span>&gt;</span>Coor</span><br><span class="line">            ?<span class="tag">&lt;<span class="name">capsOn</span>&gt;</span> capabilities <span class="tag">&lt;/<span class="name">capsOn</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">capsOff</span>&gt;</span> capabilities <span class="tag">&lt;/<span class="name">capsOff</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">trigger</span>&gt;</span></span><br><span class="line">        ?<span class="tag">&lt;<span class="name">cancel</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">minEntitySpeed</span>&gt;</span> float <span class="tag">&lt;/<span class="name">minEntitySpeed</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">maxEntitySpeed</span>&gt;</span> float <span class="tag">&lt;/<span class="name">maxEntitySpeed</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">minEntityAux1</span>&gt;</span> float <span class="tag">&lt;/<span class="name">minEntityAux1</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">maxEntityAux1</span>&gt;</span> float <span class="tag">&lt;/<span class="name">maxEntityAux1</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">minModelYaw</span>&gt;</span> float <span class="tag">&lt;/<span class="name">minModelYaw</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">maxModelYaw</span>&gt;</span> float <span class="tag">&lt;/<span class="name">maxModelYaw</span>&gt;</span>Coor</span><br><span class="line">            ?<span class="tag">&lt;<span class="name">capsOn</span>&gt;</span> capabilities <span class="tag">&lt;/<span class="name">capsOn</span>&gt;</span></span><br><span class="line">            ?<span class="tag">&lt;<span class="name">capsOff</span>&gt;</span> capabilities <span class="tag">&lt;/<span class="name">capsOff</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">cancel</span>&gt;</span></span><br><span class="line">        ?<span class="tag">&lt;<span class="name">scalePlaybackSpeed</span>&gt;</span> [true|false] <span class="tag">&lt;/<span class="name">scalePlaybackSpeed</span>&gt;</span></span><br><span class="line">        ?<span class="tag">&lt;<span class="name">feetFollowDirection</span>&gt;</span> [true|false] <span class="tag">&lt;/<span class="name">feetFollowDirection</span>&gt;</span></span><br><span class="line">        ?<span class="tag">&lt;<span class="name">oneShot</span>&gt;</span> [true|false] <span class="tag">&lt;/<span class="name">oneShot</span>&gt;</span>En</span><br><span class="line">        ?<span class="tag">&lt;<span class="name">promoteMotion</span>&gt;</span> [true|false] <span class="tag">&lt;/<span class="name">promoteMotion</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">match</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">action</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>name</strong></p>
+<p>由脚本所使用的该操作的名称。这些都可以作为模型管理器返回的模型对象中的命名“常量”使用</p>
+</li>
+<li><p><strong>animation</strong></p>
+<p>从中生成帧数据的基本动画。</p>
+</li>
+<li><p><strong>blendInTime</strong></p>
+<p>动作完全融入的时间以秒为单位。</p>
+</li>
+<li><p><strong>blendOutTime</strong></p>
+<p>以秒为单位的时间，动作需要完全混合。</p>
+</li>
+<li><p><strong>filler</strong></p>
+<p>指定操作是否只是填充，如果队列中出现其他内容，则可以中断。</p>
+</li>
+<li><p><strong>track</strong></p>
+<p>应该播放动作的曲目号。如果动作有一个轨迹，那么动画将被混合在任何其他动画之上——也就是说，它将绕过队列。</p>
+</li>
+<li><p><strong>isMovement</strong></p>
+<p>指定动作使用简单的移动动画，如走、跑、侧走等。平移必须是线性的，并且在播放时从动作中减去(所以从原点移动的运行动画现在会显示在现场运行)。此设置需要设置PromoteMotion标志，这样做意味着此转换然后相应地移动模型。如果模型属于客户控制的实体，那么服务器端实体的位置将相应地更新。这个设置允许使用scalePlaybackSpeed。此设置不能与isCoordinated一起使用。</p>
+</li>
+<li><p><strong>isCoordinated</strong></p>
+<p>指定动作的动画从偏移位置开始。用于需要与非玩家角色(NPC)协调的行动，为了匹配接触点(例如握手)，非玩家角色需要相对于玩家角色的位置。这个设置不能和isMovement和isimpacting一起使用。</p>
+</li>
+<li><p><strong>isImpacting</strong></p>
+<p>指定动作是一个复杂(非线性)的运动动画。如果实体是客户端控制的，那么它在服务器上的位置也会被更新。使用isimpact的动画包括跳跃、战斗和击倒、与实体互动等。此设置需要promotemmotion，不能与isMovement和isCoordinated一起使用。</p>
+</li>
+<li><p><strong>match</strong></p>
+<p>如果这个部分存在，这意味着Action Matcher可以自动选择动作(参见下面)。</p>
+</li>
+<li><p><strong>trigger (section match)</strong></p>
+<p>定义了用于确定何时启动操作的标准。</p>
+</li>
+<li><p><strong>minEntitySpeed</strong> <strong>(section</strong> <strong>trigger)</strong></p>
+<p>确定要启动操作的实体的最小速度。</p>
+</li>
+<li><p><strong>maxEntitySpeed</strong> <strong>(section</strong> <strong>trigger)</strong></p>
+<p>确定要启动操作的实体的最大速度。</p>
+</li>
+<li><p><strong>minEntityAux1</strong> <strong>(section</strong> <strong>trigger)</strong></p>
+<p>确定要开始操作的实体的最小俯仰（pitch）。</p>
+</li>
+<li><p><strong>maxEntityAux1</strong> <strong>(section</strong> <strong>trigger)</strong></p>
+</li>
+<li><p>确定要开始操作的实体的最大俯仰(pithc)。</p>
+</li>
+<li><p><strong>minModelYaw</strong> <strong>(section</strong> <strong>trigger)</strong></p>
+<p>确定开始动作时模型的最小偏航(yaw)。</p>
+</li>
+<li><p><strong>maxEntityYaw</strong> <strong>(section</strong> <strong>trigger)</strong></p>
+<p>确定开始动作时模型的最大偏航(yaw)。</p>
+</li>
+<li><p><strong>capsOn</strong> <strong>(section</strong> <strong>trigger)</strong></p>
+<p>确定启动操作需要打开哪些特殊情况字符状态。</p>
+</li>
+<li><p><strong>capsOff</strong> <strong>(section</strong> <strong>trigger)</strong></p>
+<p>确定启动操作需要关闭哪些特殊情况字符状态。</p>
+</li>
+<li><p><strong>cancel</strong> <strong>(section</strong> <strong>match)</strong></p>
+<p>本节定义了用于确定何时停止操作的标准。</p>
+</li>
+<li><p><strong>minEntitySpeed</strong> <strong>(section</strong> <strong>cancel)</strong></p>
+<p>确定动作停止的实体的最小速度。</p>
+</li>
+<li><p><strong>maxEntitySpeed</strong> <strong>(section</strong> <strong>cancel)</strong></p>
+<p>确定动作停止的实体的最大速度。</p>
+</li>
+<li><p><strong>minEntityAux1</strong> <strong>(section</strong> <strong>cancel)</strong></p>
+<p>确定要停止动作的实体的最小俯仰（pitch）</p>
+</li>
+<li><p><strong>maxEntityAux1</strong> <strong>(section</strong> <strong>cancel)</strong></p>
+<p>确定要停止动作的实体的最大俯仰（pitch）</p>
+</li>
+<li><p><strong>minModelYaw</strong> <strong>(section</strong> <strong>cancel)</strong></p>
+<p>确定使动作停止的模型的最小偏航。</p>
+</li>
+<li><p><strong>maxEntityYaw</strong> <strong>(section</strong> <strong>cancel)</strong></p>
+<p>确定使动作停止的模型的最大偏航。</p>
+</li>
+<li><p><strong>capsOn</strong> <strong>(section</strong> <strong>cancel)</strong></p>
+<p>确定需要打开哪些特殊情况字符状态才能停止操作。</p>
+</li>
+<li><p><strong>capsOff</strong> <strong>(section</strong> <strong>cancel)</strong></p>
+<p>确定需要关闭哪些特殊情况字符状态才能停止操作。</p>
+</li>
+<li><p><strong>scalePlaybackSpeed</strong> <strong>(section</strong> <strong>match)</strong></p>
+<p>指定动画播放速度应按实体速度的函数缩放。这个设置需要isMovement。</p>
+</li>
+<li><p><strong>feetFollowDirection</strong> <strong>(section</strong> <strong>match)</strong></p>
+<p>指定模型应该转向跟踪实体。在实践中，这意味着当这个动作匹配时，模型在现场旋转，而不是执行旋转动作。</p>
+</li>
+<li><p><strong>oneShot</strong> <strong>(section</strong> <strong>match)</strong></p>
+<p>指定动作匹配器只会在一行中选择播放一次。注意this和filler之间的区别，其中filler与动作匹配器无关。</p>
+</li>
+<li><p><strong>promoteMotion</strong> <strong>(section</strong> <strong>match)</strong></p>
+<p>指定动画中根节点的运动应该影响模型的位置(以及所有者实体的位置，如果实体是客户端控制的)。isImpacting或isMovement动作必须启用该设置才能正常工作。此设置不能与filler一起使用。</p>
+</li>
+</ul>
+<p>模型操作队列的Python接口允许在该模型上直接播放操作，或者将一组操作排队并按顺序播放。回调函数可以在操作完成时定义和播放。</p>
+<p>在Python中，可以很容易地创建一个模型，并在其上播放一个动作，如下面的例子所示:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Jogger</span>( BigWorld.Entity ):</span><br><span class="line">    ....</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params"> self </span>):</span><br><span class="line">        self.model = BigWorld.Model( <span class="string">&quot;jogger.model&quot;</span> )</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">warmUp</span>(<span class="params"> self </span>):</span><br><span class="line">            self.model.action( <span class="string">&quot;StretchLegs&quot;</span> )()</span><br><span class="line">            ...</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="9-1-6-1-Debugging-animations"><a href="#9-1-6-1-Debugging-animations" class="headerlink" title="9.1.6.1. Debugging animations"></a><strong>9.1.6.1. Debugging animations</strong></h5><p>如果模型没有按照预期的那样设置动画，那么在Python控制台中显示动作队列图就会很有用。</p>
+<p>这可以通过调用BigWorld.debugAQ()方法来完成，它可以接收两种参数:</p>
+<ul>
+<li><p><strong>PyModel</strong></p>
+<p>显示指定模型的图形，以及每个操作的混合权重。每个动作都以任意选择的不同颜色表示。</p>
+</li>
+<li><p><strong>None</strong></p>
+</li>
+</ul>
+<p>  关闭图形显示器。</p>
+<p><img src="/image%5Cbigworld%5C05_05.png" alt="05_05"></p>
+<p><em>Python控制台显示动作队列的调试图</em></p>
+<p>上图中的图表显示了转左动画（绿色）和空闲动画（红色）上的执行情况。我们可以确定在图中的每个标记点中播放的动画：</p>
+<ul>
+<li><p><strong>A</strong> — Idle动画100%被播放</p>
+</li>
+<li><p><strong>Between A and B</strong> — Idle 动画正在与TurnLeft动画混合。</p>
+</li>
+<li><p><strong>B</strong> — Idle动画的50%正在播放，TurnLeft动画的50%正在播放。</p>
+</li>
+<li><p><strong>C</strong> — 100%的TurnLeft动画正在播放。</p>
+</li>
+</ul>
+<p>有关更多细节，请参见Client Python API。</p>
+<h4 id="9-1-7-Action-Matcher"><a href="#9-1-7-Action-Matcher" class="headerlink" title="9.1.7. Action Matcher"></a><strong>9.1.7. Action Matcher</strong></h4><p>给定一个模型、一个动作队列和一组动作，一个游戏对象&#x2F;角色的所有行为都可以通过在动作队列上的事件驱动调用来指定。这最终会带来沉重的开销，因为许多对象状态的改变需要直接调用对象并解决应该播放哪个动画。</p>
+<p>这个问题的解决方案是将角色的大部分行为内部化到一个称为Action Matcher的系统中，它会根据对象的状态自动更新对象的运动。它是一个简单的模式匹配器，根据模型的属性(如速度、方向等)来选择动画。</p>
+<p>诸如速度、旋转或功率等状态参数被公开给Action Matcher，然后它选择最适合映射到这些参数的动作。这将使游戏从处理动画的许多方面中解放出来，允许它只需要更新状态参数，如位置</p>
+<p>当模型(在玩家的AoI中)的动作队列中没有(未混合的)动作时，动作匹配器将接管并执行一个“空闲”动作。它触发这些“空闲”的动画，赋予游戏世界更多生命，因为真实的有生命的东西不是静止的。它也可以用来自动化低级的动画任务。</p>
+<p>脚本约束是针对capsOn和capsOff能力位字段进行测试的。模型的Action Matcher有一组能力位，它的值是由脚本控制的。只有在动作匹切集合中所有的capsOn位都是开启的，而所有的capsOff位都是关闭的，动作才会被匹配。</p>
+<p>然后它会查看姿态的变化(位置和方向-由过滤器设置)，并选择与变化发生时间相匹配的第一个动作。触发器约束用于测试大多数操作。如果遇到与上一帧匹配的动作，则使用取消约束。这个特性主要是为了减少动作滞后。</p>
+<p>动作匹配对象的更新函数取该对象之前更新的位置，从其匹配的动作列表中选择最佳匹配的动作，然后以正确的速度播放动画，使动作与速度平滑连接。当游戏角色开始快速移动时，动作匹配器可能会选择更快的运行周期来回放，并提高播放速度以精确匹配速度，因此不会看到脚滑动。</p>
+<p>这种方法允许AI系统根据一些变量(如方向、速度和瞄准方向)定义行为，Action Matcher将把这些更新的参数转换成一个平滑移动的角色。</p>
+<p>在客户端&#x2F;服务器架构中，位置和方向是通过网络更新的，Action Matcher</p>
+<p>(结合过滤器)可以通过让角色更快地跑到最新更新的位置来自动补偿由网络延迟引起的位置跳跃。</p>
+<p>当加载一个操作时，它的数据会随着执行该操作将对根节点产生的姿态影响而增强。此信息用于上面描述的匹配。</p>
+<p>现在已经选择了一个操作，它将被传递到操作队列。如果提供的动作与前一个动作相同，它将继续以正常方式播放(例如，frame +&#x3D; fps*deltaTime)。否则，它将被混合在几帧中，而另一帧则被混合出去。</p>
+<h5 id="9-1-7-1-Using-the-Action-Matcher"><a href="#9-1-7-1-Using-the-Action-Matcher" class="headerlink" title="9.1.7.1. Using the Action Matcher"></a><strong>9.1.7.1. Using the Action Matcher</strong></h5><p>设计用于匹配的每个动作都必须定义一个&lt;match&gt;节。这些是使用Actions窗口通过Model Editor添加的。匹配参数分为两部分:</p>
+<ul>
+<li><p><strong>Trigger parameters</strong> </p>
+<p>定义何时可以启动一个操作</p>
+</li>
+<li><p><strong>Cancel section</strong></p>
+<p>定义何时应停止一个操作</p>
+</li>
+</ul>
+<p>每个部分中的minEntitySpeed和minEntitySpeed标签定义了动作可以或不可以被触发或取消的速度。</p>
+<p>辅助参数可用于定义用于匹配动作的俯仰范围。minModelYaw和maxModelYaw标签定义了一个偏航范围。主要匹配参数定义了动作应用的速度和方向范围，以及一组用户定义的匹配标志，用于特殊情况字符状态。这些标志可以用来设置游戏角色是否没有使用基本动作集，如受伤或生气。</p>
+<p>BigWorld引擎使用matchCaps参数来存储操作的按位标志集。在任何给定的时间，模型本身都会有一个开&#x2F;关标志设置来表示这些状态的状态，这将在每帧的每个动作的matchCaps中进行测试。</p>
+<p>应该定义一组用户定义的操作状态(作为文本文件或模型文件中的注释部分创建)。下面是一个简单的例子:</p>
+<ul>
+<li><strong>Capability flag: 1</strong> — State: Angry</li>
+<li><strong>Capability flag: 2</strong> — State: Happy</li>
+<li><strong>Capability flag: 3</strong> — State: Sad</li>
+</ul>
+<p>现在，只要在当前的matchCaps中添加愤怒标志，就可以使用动作匹配器访问愤怒动画的集合。在Python代码中，一个字符现在应该以愤怒的方式移动和行为的简单示例如下所示:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AngryMan</span>( BigWorld.Entity ):</span><br><span class="line">    ....</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">onEnterWorld</span>(<span class="params"> self, prereqs </span>):</span><br><span class="line">        self.am = BigWorld.ActionMatcher( self )</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">enterAngryMode</span>(<span class="params"> self </span>):</span><br><span class="line">            self.am.matchCaps = self.am.matchCaps + [<span class="number">1</span>]</span><br><span class="line">            ...</span><br></pre></td></tr></table></figure>
+
+<p><em>愤怒模式下字符的Python实现</em></p>
+<p>通过以这种方式使用Action Matcher，角色的自然运动可以被充实，而不需要显式地调用任何函数来播放动画。特定的基于事件的操作仍然可以通过Action Queue结构直接调用，但角色的背景行为可以使用Model Editor工具完全定义，并在代码库中适当地设置匹配标志。</p>
+<h4 id="9-1-8-Trackers"><a href="#9-1-8-Trackers" class="headerlink" title="9.1.8. Trackers"></a><strong>9.1.8. Trackers</strong></h4><p>跟踪器对实体模型中的节点应用逆运动学，使它们看起来指向给定的“目标”实体定义的位置。一个实体可以有任意数量的跟踪器。</p>
+<p>要将跟踪器添加到实体，请使用这样的脚本调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tracker = BigWorld.Tracker()</span><br><span class="line">tracker.dirProvider = DiffDirProvider( </span><br><span class="line">    self.focalMatrix, target.focalMatrix )</span><br><span class="line">tracker.nodeInfo = BigWorld.TrackerNodeInfo(</span><br><span class="line">    model,</span><br><span class="line">    primaryNode, </span><br><span class="line">    secondaryNodeList, </span><br><span class="line">    pointingNodeName,</span><br><span class="line">    minPitch, maxPitch,</span><br><span class="line">    minYaw, maxYaw,</span><br><span class="line">    angularVelocity )</span><br><span class="line">self.model.tracker = tracker</span><br></pre></td></tr></table></figure>
+
+<p><em>在Python中添加tracker</em></p>
+<p>这个BigWorld.TrackerNodeInfo方法描述如下：</p>
+<ul>
+<li><p><strong>model</strong></p>
+<p>拥有跟踪器将影响的节点的PyModel</p>
+</li>
+<li><p><strong>primaryNode</strong></p>
+<p>主节点引用。</p>
+<p>节点引用从实体的独立模型(如果有多个，则为第一个模型)构建，遵循附加点路径，以节点名称结束。这允许跟踪器透明地通过附加的模型工作(即，他们被当作是焊接在模型的骨架上)。</p>
+</li>
+<li><p><strong>secondaryNodeList</strong></p>
+<p>次要节点列表，包含形式为(节点，权重)的元组。</p>
+<p>它们与主节点上执行的转换相同，与权重大小成比例。实际上，所有权值(包括主节点，其权值为1.0)都是求和的，每个节点都将得到应用于它们的权值占总权值的比例。</p>
+</li>
+<li><p><strong>pointingNodeName</strong></p>
+<p>提供用于跟踪器操作的参考框架的节点名称。</p>
+<p>如果指定的节点不存在，则使用模型的场景根节点。</p>
+</li>
+<li><p><strong>minPitch,maxPitch,minYaw,maxYaw</strong></p>
+<p>追踪器允许使用的转弯限制，以度为单位。</p>
+</li>
+<li><p><strong>angularVelocity</strong></p>
+<p>跟踪器将其影响的PyModelNode实例旋转的速度，以每秒度为单位。</p>
+</li>
+</ul>
+<h4 id="9-1-9-Timers-and-Traps"><a href="#9-1-9-Timers-and-Traps" class="headerlink" title="9.1.9. Timers and Traps"></a><strong>9.1.9. Timers and Traps</strong></h4><p>这些都是提供给实体脚本的通用助手服务。</p>
+<p>脚本可以设置计时器，使其在特定时间被回调，如下面的例子所示:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BigWorld.callback( afterTime, fn )</span><br></pre></td></tr></table></figure>
+
+<p>陷阱（Traps）使用一个稍微不同的接口:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trapRef = self.addTrap( radius, function )</span><br></pre></td></tr></table></figure>
+
+<p>如果任何实体在创建它的实体的给定半径内徘徊，则会触发陷阱，并且可以使用self.delTrap方法取消该陷阱。</p>
+<p>还有另外两种类型的陷阱，根据它们的特定需要进行了优化，如下所述。</p>
+<h5 id="9-1-9-1-Pot"><a href="#9-1-9-1-Pot" class="headerlink" title="9.1.9.1. Pot"></a><strong>9.1.9.1. Pot</strong></h5><p>Pot是一个“只针对玩家的陷阱”，并且只会被玩家实体所触发。因此，它比一般的陷阱要便宜得多。</p>
+<p>给定矩阵提供程序、半径和用于触发的脚本回调，就会添加一个Pot</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">potHandle = BigWorld.addPot( trapMatrix, radius, callback )</span><br></pre></td></tr></table></figure>
+
+<h5 id="9-1-9-2-Mat"><a href="#9-1-9-2-Mat" class="headerlink" title="9.1.9.2. Mat"></a><strong>9.1.9.2. Mat</strong></h5><p>Mat是一个“矩阵陷阱”，当一个区域被另一个区域触发时就会被触发。这之所以有意义，是因为矩阵提供程序是动态的。这些区域被定义为:</p>
+<ul>
+<li>源矩阵转换和由矩阵中x、y和z轴的比例给出的边界区域。</li>
+<li>目标矩阵的目标矩阵转换(作为一个点处理)。</li>
+</ul>
+<p>Mat在Python中定义如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">matHandle = BigWorld.addMat( sourceMatrix, callback, destMatrix )</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-2-Personality-script"><a href="#9-2-Personality-script" class="headerlink" title="9.2. Personality script"></a><strong>9.2. Personality script</strong></h3><p>个性脚本是一个Python脚本，用于处理来自BigWorld引擎的几个回调，用于初始化、清理、输入处理和环境更改。它还可以实现不属于游戏中任何特定实体的客户端功能，如游戏开始屏幕。</p>
+<p>它的名称在resources.xml的engineConfigXML标记指定的文件中定义。</p>
+<p>个性脚本通常声明一个类来包含脚本中函数共享的所有数据，并使用该类的构造函数声明一个全局变量。例如，个性脚本可能包括以下代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SharedData</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params"> self </span>):</span><br><span class="line">        self.settings = <span class="string">&quot;&quot;</span></span><br><span class="line">        <span class="comment"># initialise the shared data object for this personality script</span></span><br><span class="line">        sd = SharedData()</span><br><span class="line">        <span class="comment"># This callback is called by BigWorld when initialising</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">init</span>(<span class="params"> configSect </span>):</span><br><span class="line">            <span class="comment"># save the configSect object for later use</span></span><br><span class="line">            sd.configSect = configSect</span><br></pre></td></tr></table></figure>
+
+<p>下面的部分描述了可用的个性回调。</p>
+<h4 id="9-2-1-init"><a href="#9-2-1-init" class="headerlink" title="9.2.1. init"></a><strong>9.2.1.</strong> <strong>init</strong></h4><p>回调函数的语法如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">init(scriptsConfig, engineConfig, preferences, loadingScreenGUI = <span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>当引擎初始化时，脚本被调用一次，并接收以下参数:</p>
+<ul>
+<li><p><strong>scriptsConfig</strong>,<strong>engineConfig</strong>,<strong>preferences</strong></p>
+<p>PyDataSection对象，包含来自resources.xml的scriptsConfigXML标签中定义的XML文件的数据</p>
+</li>
+<li><p><strong>loadingScreenGUI</strong></p>
+<p>可选参数表示加载屏幕GUI，如果在resources.xml中定义了一个GUI(有关详细信息，请参阅“File &lt;preferences&gt;.xml .xml”)</p>
+</li>
+</ul>
+<p>下面列出了可用的读取函数:</p>
+<ul>
+<li><p><strong>readBool</strong></p>
+</li>
+<li><p><strong>readFloat</strong></p>
+</li>
+<li><p><strong>readFloats</strong></p>
+</li>
+<li><p><strong>readInt</strong></p>
+</li>
+<li><p><strong>readInts</strong></p>
+</li>
+<li><p><strong>readMatrix34</strong></p>
+</li>
+<li><p><strong>readString</strong></p>
+</li>
+<li><p><strong>readStrings</strong></p>
+</li>
+<li><p><strong>readVector2</strong></p>
+</li>
+<li><p><strong>readVector2s</strong></p>
+</li>
+<li><p><strong>readVector3</strong></p>
+</li>
+<li><p><strong>readVector3s</strong></p>
+</li>
+<li><p><strong>readVector4</strong></p>
+</li>
+<li><p><strong>readVector4s</strong></p>
+</li>
+<li><p><strong>readWideString</strong></p>
+</li>
+<li><p><strong>readWideStrings</strong></p>
+</li>
+</ul>
+<p>要从PyDataSection读取数据，调用与数据类型相关的read函数，将节名作为第一个参数传入，将默认值作为第二个参数传入。复数read函数(以’s’结尾)读取指定节中所有匹配子节的内容，并将结果作为值的元组返回。您可以使用正斜杠来引用子部分。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username = userPreferences.readString(<span class="string">&quot;login/username&quot;</span>, <span class="string">&quot;guest&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>还可以通过调用带下划线前缀的节名来引用PyDataSection的子节:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username = userPreferences._login._username.asString</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-2-2-fini"><a href="#9-2-2-fini" class="headerlink" title="9.2.2. fini"></a><strong>9.2.2.</strong> <strong>fini</strong></h4><p>回调函数的语法如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fini()</span><br></pre></td></tr></table></figure>
+
+<p>这个脚本在客户机引擎关闭时被调用。它用于在客户端退出之前执行任何必需的清理。这是对玩家执行注销过程的好地方。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># note: you must set up a logOff method as a base method in the</span></span><br><span class="line"><span class="comment"># def file of the class that the player is using.</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fini</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        BigWorld.player().base.logOff()</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="9-2-3-handleKeyEvent"><a href="#9-2-3-handleKeyEvent" class="headerlink" title="9.2.3. handleKeyEvent"></a><strong>9.2.3.</strong> <strong>handleKeyEvent</strong></h4><p>回调函数的语法如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handleKeyEvent( event )</span><br></pre></td></tr></table></figure>
+
+<p>event参数是一个PyKeyEvent，它包含关于键事件的信息。</p>
+<p>通常，几个系统都可以处理键盘输入，因此参数依次传递给每个系统上的handleKeyEvent方法，直到有一个返回布尔值True，表明它已经处理了键事件。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleKeyEvent</span>(<span class="params"> event </span>):</span><br><span class="line">    <span class="keyword">global</span> rds</span><br><span class="line">    <span class="comment"># give the chat console a go first</span></span><br><span class="line">    <span class="keyword">if</span> rds.chat.editing:</span><br><span class="line">        <span class="keyword">if</span> rds.chat.handleKeyEvent( event ):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="comment"># try the gui</span></span><br><span class="line">        <span class="keyword">if</span> GUI.handleKeyEvent( event ):</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="comment"># now do our custom keys</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> event.isKeyDown(): <span class="keyword">return</span> <span class="literal">False</span> <span class="comment"># we are not interested in key releases</span></span><br><span class="line">        <span class="keyword">if</span> event.key == KEY_RETURN <span class="keyword">and</span> event.modifiers == <span class="number">0</span>:</span><br><span class="line">            rds.chat.edit( <span class="literal">True</span> ) <span class="comment"># bring up the chat console</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="comment"># return False because the key event has not been handled</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>注意，引擎也会在玩家控制的实体上调用handleKeyEvent方法。所有与玩家控制相关的键都在那里处理。</p>
+<h4 id="9-2-4-handleMouseEvent"><a href="#9-2-4-handleMouseEvent" class="headerlink" title="9.2.4. handleMouseEvent"></a><strong>9.2.4.</strong> <strong>handleMouseEvent</strong></h4><p>该回调函的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handleMouseEvent( event )</span><br></pre></td></tr></table></figure>
+
+<p>每当鼠标移动时，将调用此脚本，并给出一个PyMouseEvent的实例。它的操作方式类似于处理按键事件。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleMouseEvent</span>(<span class="params"> event </span>):</span><br><span class="line">    <span class="comment"># try the gui</span></span><br><span class="line">    <span class="keyword">if</span> GUI.handleMouseEvent( event ):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="comment"># return False because the mouse event has not been handled</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="9-2-5-handleAxisEvent"><a href="#9-2-5-handleAxisEvent" class="headerlink" title="9.2.5. handleAxisEvent"></a><strong>9.2.5.</strong> <strong>handleAxisEvent</strong></h4><p>该回调函的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handleAxisEvent( event )</span><br></pre></td></tr></table></figure>
+
+<p>这个脚本在操纵杆轴事件发生时被调用，并被给出PyAxisEvent的一个实例。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleAxisEvent</span>(<span class="params"> event </span>):</span><br><span class="line">    <span class="comment"># try the GUI</span></span><br><span class="line">    <span class="keyword">if</span> GUI.handleAxisEvent( event ):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="comment"># return False because the axis event has not been handled</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="9-2-6-handleIMEEvent"><a href="#9-2-6-handleIMEEvent" class="headerlink" title="9.2.6. handleIMEEvent"></a><strong>9.2.6.</strong> <strong>handleIMEEvent</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handleIMEEvent( event )</span><br></pre></td></tr></table></figure>
+
+<p>当Input Method Editor (IME)相关事件发生时调用它，并分别用于更新GUI，并给出一个PyIMEEvent对象作为它的第一个参数。</p>
+<h4 id="9-2-7-handleLangChangeEvent"><a href="#9-2-7-handleLangChangeEvent" class="headerlink" title="9.2.7. handleLangChangeEvent"></a><strong>9.2.7.</strong> <strong>handleLangChangeEvent</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handleLangChangeEvent()</span><br></pre></td></tr></table></figure>
+
+<p>每当用户更改当前输入语言时，就会发生此事件。它对于在GUI编辑字段上更新语言指示器之类的任务非常有用。</p>
+<h4 id="9-2-8-onChangeEnvironments"><a href="#9-2-8-onChangeEnvironments" class="headerlink" title="9.2.8. onChangeEnvironments"></a><strong>9.2.8.</strong> <strong>onChangeEnvironments</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onChangeEnvironments( inside )</span><br></pre></td></tr></table></figure>
+
+<p>这个脚本是一个回调，确认玩家当前所处的环境类型。</p>
+<p>目前只有内部和外部环境类型。参数是一个布尔值，指示玩家是否在内部。这对于修改第三人称模式下的摄像机行为可能是有用的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">onChangeEnvironments</span>(<span class="params"> inside </span>):</span><br><span class="line">    <span class="keyword">global</span> sd</span><br><span class="line">    sd.inside = inside</span><br><span class="line">    sd.updatePivotDist()</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-2-9-onGeometryMapped"><a href="#9-2-9-onGeometryMapped" class="headerlink" title="9.2.9. onGeometryMapped"></a><strong>9.2.9.</strong> <strong>onGeometryMapped</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onGeometryMapped(spaceID, spacePath)</span><br></pre></td></tr></table></figure>
+
+<p>这个回调方法告诉玩家实体关于空间几何的变化。当几何图形映射到客户机上任何当前存在的空间时，调用它。空间ID和空间几何图形的名称作为参数传递。</p>
+<p>第一个参数是几何图形要映射到的空间的ID。第二个参数是描述空间几何形状的名称。</p>
+<h4 id="9-2-10-onRecreateDevice"><a href="#9-2-10-onRecreateDevice" class="headerlink" title="9.2.10. onRecreateDevice"></a><strong>9.2.10.</strong> <strong>onRecreateDevice</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onRecreateDevice ()</span><br></pre></td></tr></table></figure>
+
+<p>这个脚本是一个回调，提醒脚本Direct3D设备已经重新创建。当屏幕分辨率改变时，经常会发生这种情况。</p>
+<p>引入这个回调主要是为了让脚本可以重新布局它们的GUI组件脚本，但它对于重新创建任何静态PyModelRenderer纹理也很有用(因为这些纹理不会自动更新，除非它们是动态的)。</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">onRecreateDevice</span>():</span><br><span class="line">    (width,height) = GUI.screenResolution()</span><br><span class="line">    myGuiController.doLayout( width, height )</span><br><span class="line">    myRenderers.recreateTextures()</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-2-11-onTimeOfDayLocalChange"><a href="#9-2-11-onTimeOfDayLocalChange" class="headerlink" title="9.2.11. onTimeOfDayLocalChange"></a><strong>9.2.11.</strong> <strong>onTimeOfDayLocalChange</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onTimeOfDayLocalChange( gameTime, secondsPerGameHour )</span><br></pre></td></tr></table></figure>
+
+<p>这个脚本是一个回调，允许脚本被通知游戏时间的变化。</p>
+<p>它传递两个浮点数作为参数:第一个是以秒为单位的游戏时间，第二个是每个游戏小时的实时秒数。</p>
+<h4 id="9-2-12-start"><a href="#9-2-12-start" class="headerlink" title="9.2.12. start"></a><strong>9.2.12.</strong> <strong>start</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start()</span><br></pre></td></tr></table></figure>
+
+<p>这个脚本在引擎初始化后被调用，并用于启动游戏。它可以用来打开开始菜单或登录屏幕。</p>
+<h2 id="10-Models"><a href="#10-Models" class="headerlink" title="10. Models"></a><strong>10. Models</strong></h2><p>对于BigWorld客户端来说，模型是一个独立的几何单元，可以在世界空间变换矩阵的位置将自己绘制到3D场景中。此外，所有模型都可能具有随时间改变其外观的动画——一些模型显式支持其节点的动画(蒙皮)，而其他模型则通过显示替代几何图形进行动画。</p>
+<p>Moo是BigWorld 3D引擎，目前可以导出三种对象作为模型:</p>
+<ul>
+<li>Meshes with skeletons（网格骨架）</li>
+<li>Meshes without skeletons（没有骨骼的网格）</li>
+<li>Billboards (广告牌，一种特殊的简单几何形式)</li>
+</ul>
+<p>然而，BigWorld客户机中的模型概念封装了符合上述定义的任何东西，并且很容易扩展实现以合并新类型的对象。</p>
+<p>Moo命名其网格视觉效果(视觉效果实际上包含的不仅仅是一个简单的多边形网格。它们还可以有一组网格、骨骼、信封、材料和层次骨架)，并且可以使用BigWorld输出器从3dsMax模型轻松地创建。</p>
+<p>模型文件还可以指定在远处绘制时使用的更简单的父文件。由此形成的父模型文件链被称为详细级别(LOD)链。</p>
+<h3 id="10-1-Performance"><a href="#10-1-Performance" class="headerlink" title="10.1. Performance"></a><strong>10.1. Performance</strong></h3><p>为了提高呈现性能，可以在model Editor中将模型标记为批处理呈现，这将导致在生成的模型文件中创建批处理标记。</p>
+<p>批处理渲染通过在遍历时缓存每个实例的数据(主要是光照条件和转换)来工作，一旦场景遍历，同时渲染所有实例，只更新每次渲染所需的数据。这节省了引擎设置顶点，索引和纹理多次批处理模型。它确实使用了更多的内存，但提供了相当大的性能提升。</p>
+<p>在场景中有很多实例的模型上使用批处理标志是明智的。在FantasyDemo中，批处理标记被用于树、守卫、战斗、鸡和守卫的枪上。请注意，该标志不会影响使用着色的模型。</p>
+<h3 id="10-2-Hard-Points"><a href="#10-2-Hard-Points" class="headerlink" title="10.2. Hard Points"></a><strong>10.2. Hard Points</strong></h3><p>硬点，或附加点，可以被认为是符合逻辑的魔术贴补丁，让我们可以把枪放在手里，把背包挂在肩膀上，或在炮塔上放置安全摄像头。美术人员必须使用虚拟节点将硬点嵌入到their.visual文件中。</p>
+<p>硬点使用定义良好的名称，前面加上’HP_’前缀，以便实体可以扫描硬点节点。重要信息为:</p>
+<ul>
+<li>Name</li>
+<li>Position</li>
+<li>Orientaiton</li>
+</ul>
+<p>这一信息允许开发者在游戏逻辑的约束下将任何对象附加到其他对象上。</p>
+<p>例如：</p>
+<ul>
+<li>HP_LeftHand</li>
+<li>HP_RightHand</li>
+<li>HP_Shoulder</li>
+<li>HP_Belt1</li>
+</ul>
+<p><strong>10.2.1. Naming scheme</strong></p>
+<p>为了避免中间步骤的需要，角色硬点和道具硬点之间需要明确的配对。每件物品都需要一个硬点来固定它。</p>
+<p>以下便是关于人类角色和枪支的hard points。</p>
+<ul>
+<li><p><strong>In</strong> <strong>human.model:</strong></p>
+<p>• HP_Left_Hand</p>
+<p>• HP_Right_Hand</p>
+<p>• HP_Belt_1</p>
+<p>• HP_Belt_2</p>
+<p>• HP_Belt_3</p>
+<p>• HP_Belt_4</p>
+<p>• HP_Shoulder</p>
+<p>• HP_Blade_Lower</p>
+<p>• HP_Blade_Upper</p>
+</li>
+<li><p><strong>In</strong> <strong>gun.model:</strong></p>
+<p>• HP_Left_Hand</p>
+<p>• HP_Right_Hand</p>
+<p>• HP_Belt_2</p>
+<p>• HP_Shoulder</p>
+</li>
+</ul>
+<h4 id="10-2-2-How-it-works"><a href="#10-2-2-How-it-works" class="headerlink" title="10.2.2. How it works"></a><strong>10.2.2. How it works</strong></h4><p>(客户端)Entity类提供了硬点列表，但只有专门化类询问时才会这样做。例如，当加载一个模型时，它将找到所有以(例如)为前缀的节点。“HP_”。然后将它们存储在模型拥有的hardPoint列表中。</p>
+<p>当装备物品时，实体&#x2F;游戏仲裁者将被要求为物品匹配正确的硬点。例如，如果玩家按下了“下一个武器”按钮，那么库存中的下一个武器就可以附着在右手的硬点上。</p>
+<h4 id="10-2-3-Syntax"><a href="#10-2-3-Syntax" class="headerlink" title="10.2.3. Syntax"></a><strong>10.2.3. Syntax</strong></h4><p>使用来自Python的硬点的语法是优雅而强大的。要将模型枪连接到硬点手上的模型头像，请使用以下语法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">avatar.hand = gun</span><br></pre></td></tr></table></figure>
+
+<p>当模型被附加时，要检查它，以确保它没有附加到其他地方。要检索连接到角色手上的模型，只需使用:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = avatar.hand</span><br></pre></td></tr></table></figure>
+
+<p>如果没有附加模型，则返回None</p>
+<p>模型是通过引用附加的，而不是通过复制，因此可以对原始模型引用执行的任何操作都可以对从硬点检索到的引用执行。</p>
+<p>例如，gun.Shoot()和avatar.hand.Shoot()具有相同的效果。</p>
+<h4 id="10-2-4-Data"><a href="#10-2-4-Data" class="headerlink" title="10.2.4. Data"></a><strong>10.2.4. Data</strong></h4><p>模型定义是一个XML文件，指定:</p>
+<ul>
+<li><p>基本模型定义引用(可选)</p>
+</li>
+<li><p>网格的可视化定义</p>
+</li>
+<li><p>网格可以使用的动画</p>
+</li>
+<li><p>模型可以执行的操作</p>
+</li>
+</ul>
+<p>模型编辑器(Model Editor)工具用于创建一个.model文件，该文件将对象的几何图形链接到它的动画，并定义了可能在该对象上播放的动画&#x2F;动作集。</p>
+<p>与BigWorld框架中的所有资源文件一样，.model文件是XML格式的。它们是分层的，并从它们的父亲继承数据，这样，应用于大量字符的基本动画就可以从更多特定字符的动画中分离出来，而无需重复。</p>
+<p>下面的例子定义了一个非常简单的模型:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">jogger.model</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">nodefullVisual</span>&gt;</span> jogger <span class="tag">&lt;/<span class="name">nodefullVisual</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span> biped <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">animation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span> jog <span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">frameRate</span>&gt;</span> 30.0 <span class="tag">&lt;/<span class="name">frameRate</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">nodes</span>&gt;</span> jogAnim <span class="tag">&lt;/<span class="name">nodes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">alpha</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Torso</span>&gt;</span> 0.0 <span class="tag">&lt;/<span class="name">Torso</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Pelvis</span>&gt;</span> 1.0 <span class="tag">&lt;/<span class="name">Pelvis</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">alpha</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">animation</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">action</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span> BIPED_JOG <span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">animation</span>&gt;</span> jog <span class="tag">&lt;/<span class="name">animation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">blendInTime</span>&gt;</span> 0.300000 <span class="tag">&lt;/<span class="name">blendInTime</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">blendOutTime</span>&gt;</span> 0.300000 <span class="tag">&lt;/<span class="name">blendOutTime</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filler</span>&gt;</span> false <span class="tag">&lt;/<span class="name">filler</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">blended</span>&gt;</span> false <span class="tag">&lt;/<span class="name">blended</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">isMovement</span>&gt;</span> true <span class="tag">&lt;/<span class="name">isMovement</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">isCoordinated</span>&gt;</span> false <span class="tag">&lt;/<span class="name">isCoordinated</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">isImpacting</span>&gt;</span> true <span class="tag">&lt;/<span class="name">isImpacting</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">match</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">trigger</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">minEntitySpeed</span>&gt;</span> 1.0 <span class="tag">&lt;/<span class="name">minEntitySpeed</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">maxEntitySpeed</span>&gt;</span> 3.0 <span class="tag">&lt;/<span class="name">maxEntitySpeed</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">capsOn</span>&gt;</span> 16 <span class="tag">&lt;/<span class="name">capsOn</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">trigger</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">match</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">action</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">jogger.model</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个文件描述了一个角色(慢跑者)，它具有由视觉文件慢跑者定义的几何形状，并通过&lt;parent&gt;标记拥有一组标准的两足动作，其中可能包括行走、奔跑和跳跃动画，但也指定慢跑动画。</p>
+<p>动画部分包括:</p>
+<ul>
+<li><p>动画名称</p>
+</li>
+<li><p>动画正常播放时的帧率.</p>
+</li>
+<li><p>标记&lt;nodes&gt;，它引用包含原始关键帧数据的动画文件的名称.</p>
+</li>
+</ul>
+<p>&lt;action&gt;部分描述了用于从Python代码中播放此操作的操作名称。</p>
+<h3 id="10-3-SuperModel"><a href="#10-3-SuperModel" class="headerlink" title="10.3. SuperModel"></a><strong>10.3. SuperModel</strong></h3><p>SuperModel是需要作为一个功能的模型的集合。SuperModel类是一个实用程序类，它为希望使用模型的模块形成了一个灵活的基础。它用于在块中指定的静态模型，以及实体可以操作的动态模型。</p>
+<p>SuperModel提供了概念模型的有效表示(在内存和CPU中)。超模由可选择的部分组成，这些部分有一个继承树，用于指定动画、动作、材质覆盖，最重要的是，较低层次的细节(LOD)部分可以在适当的距离替换。</p>
+<p>SuperModel将所有这些部件和它们的装饰组合到一个概念模型中，自动处理多部件和LODing特性产生的复杂性。</p>
+<p>最基本的SuperModel的一个例子是一个单一的网格，它是使用BigWorld导出器从3ds Max导出的;变成3D引擎Moo理解的格式。</p>
+<p>SuperModels并不存在于场景图或块中，也不提供给脚本系统接口。这些问题留给更高级的类去解决，他们被鼓励使用SuperModel来满足他们所有的模特需求。</p>
+<h4 id="10-3-1-Design"><a href="#10-3-1-Design" class="headerlink" title="10.3.1. Design"></a><strong>10.3.1. Design</strong></h4><p>有模型文件，扩展名为.model，但没有显式的SuperModel文件。</p>
+<p>有一个SuperModel类，它连接在一起并控制许多模型的动画和渲染。SuperModel是基于块和模型文件中的信息创建的(这些是类实例——没有任何东西可以与PyModelInfo类似)。</p>
+<p>使用LOD比率，SuperModel类可以管理角色之间的转换，例如，使用三个独立的模型在高LOD渲染的化身，到仅使用一个模型在低LOD渲染之间的转换。</p>
+<p>动画将在同一继承层次结构上累积，并使用最适合当前LOD级别的动画。所有LOD级别的所有动画都是从一个平面名称空间中解释和选择的。尝试播放不存在(或在当前LOD级别上不存在)的动画时，会选择模型初始姿态的无限长动画。必须注意确保多模型SuperModels不会浪费时间制作不必要的动画（例如，当所有的小部分都有一个动画覆盖了整个部分的动画时，应用整个部分的动画将是浪费时间）。</p>
+<p>网格文件本身指定了一个部件如何连接到多部件supermodels的其他部件。</p>
+<h4 id="10-3-2-SuperModel-classes"><a href="#10-3-2-SuperModel-classes" class="headerlink" title="10.3.2. SuperModel classes"></a><strong>10.3.2. SuperModel classes</strong></h4><p>SuperModel类使用Moo提供的对象实现了BigWorld模型定义的基本功能。它将许多由模型编辑器(但通常只有一个)创建的. Model文件组合成一个概念模型，管理任何动画和细节级别链。</p>
+<p>目前有两个类在BigWorld客户端中为两个不同的对象使用SuperModels:</p>
+<ul>
+<li>ChunkModel</li>
+<li>PyModel</li>
+</ul>
+<p>下面的小节将对两者进行描述。</p>
+<h5 id="10-3-2-1-ChunkModel"><a href="#10-3-2-1-ChunkModel" class="headerlink" title="10.3.2.1. ChunkModel"></a><strong>10.3.2.1. ChunkModel</strong></h5><p>ChunkModel是一个位于静态场景基础上的模型(例如，岩石，树木)。它与地形一起构成了客户端的世界，形成了大部分有趣的风景。</p>
+<p>所有ChunkModels都会被添加到碰撞场景中，除非被标记。他们可以选择播放一个动画，在指定的速度倍增器-否则他们是静态的。</p>
+<p>它们严重依赖SuperModel的服务，只提供在区块中生存所需的接口，以及播放单一动画的简单指令。</p>
+<h5 id="10-3-2-2-PyModel"><a href="#10-3-2-2-PyModel" class="headerlink" title="10.3.2.2. PyModel"></a><strong>10.3.2.2. PyModel</strong></h5><p>这个类实现了在脚本环境中显示的模型。</p>
+<p>它允许脚本执行以下操作:</p>
+<ul>
+<li>获取来自模型定义的绑定操作。</li>
+<li>参考硬点（详见Hard Point）。</li>
+<li>指定位置、旋转和缩放。</li>
+<li>添加电机在场景中移动（如动作匹配器）。</li>
+<li>添加了用于反向运动学的跟踪器。</li>
+<li>添加绑定到任何节点的粒子系统。</li>
+<li>控制脚步和灰尘颗粒的产生。</li>
+<li>控制能见度和阴影。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BigWorld/" rel="tag"># BigWorld</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/11/08/0_BW/bigworld_04/" rel="prev" title="BIGWORLD 服务端概述">
+                  <i class="fa fa-chevron-left"></i> BIGWORLD 服务端概述
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/11/08/0_BW/bigworld_05_02/" rel="next" title="BIGWORLD 客户端编程指南02">
+                  BIGWORLD 客户端编程指南02 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">138k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">7:40</span>
+  </span>
+</div>
+  <div class="powered-by">
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

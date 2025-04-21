@@ -127,18 +127,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -184,7 +184,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/BW/bigworld_05_03/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/FName_FString_FText%E4%BA%92%E8%BD%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Avatar.png">
@@ -202,7 +202,929 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/08/BW/bigworld_05_03/" class="post-title-link" itemprop="url">BIGWORLD 客户端编程指南03</a>
+          <a href="/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/FName_FString_FText%E4%BA%92%E8%BD%AC/" class="post-title-link" itemprop="url">FString ,FName,FText转换</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-20 15:21:55" itemprop="dateCreated datePublished" datetime="2025-04-20T15:21:55+08:00">2025-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:07:29" itemprop="dateModified" datetime="2025-04-21T11:07:29+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/UE/" itemprop="url" rel="index"><span itemprop="name">UE</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>356</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="FString-FName-FText转换"><a href="#FString-FName-FText转换" class="headerlink" title="FString ,FName,FText转换"></a>FString ,FName,FText转换</h1><p>FString ,FName,FText转换</p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>to</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FName</td>
+<td>FString</td>
+<td>TestHUDString &#x3D; TestHUDName.ToString();</td>
+</tr>
+<tr>
+<td>FName</td>
+<td>FText</td>
+<td>TestHUDText &#x3D; FText::FromName(TestHUDName);<br />FName -&gt; FText 在一些情况下有效，但需注意 — FNames 内容不会从 FText 的”自动本地化”中受益。</td>
+</tr>
+<tr>
+<td>FString</td>
+<td>FName</td>
+<td>TestHUDName &#x3D; FName(*TestHUDString);<br /><strong>FString -&gt; FName 不可靠</strong>。因为 FName 不区分大小写，所以转换存在损耗。</td>
+</tr>
+<tr>
+<td>FString</td>
+<td>FText</td>
+<td>TestHUDText &#x3D; FText::FromString(TestHUDString);<br />FString -&gt; FText 在一些情况下有效，但需注意 — FString 内容不会从 FText 的”自动本地化”中受益。</td>
+</tr>
+<tr>
+<td>FText</td>
+<td>FString</td>
+<td>TestHUDString &#x3D; TestHUDText.ToString();<br /><strong>FText -&gt; FString 不可靠。它在一些语言的转换中存在潜在损耗</strong></td>
+</tr>
+<tr>
+<td>FText</td>
+<td>FName</td>
+<td><strong>FText 到 FName 的转换不存在</strong>。但可先转换到 FString，再转换到 FName。<br />FText -&gt; FString -&gt; FName 不可靠。因为 FName 不区分大小写，所以转换存在损耗。</td>
+</tr>
+<tr>
+<td>FString</td>
+<td>int32</td>
+<td>int32 TestInt &#x3D; FCString::Atoi(*MyFString);</td>
+</tr>
+<tr>
+<td>FString</td>
+<td>float</td>
+<td>float TestFloat &#x3D; FCString::Atof(*MyFString);</td>
+</tr>
+<tr>
+<td>int32</td>
+<td>FString</td>
+<td>FString TestString &#x3D; FString::FromInt(MyInt);</td>
+</tr>
+<tr>
+<td>float</td>
+<td>FString</td>
+<td>FString TestString &#x3D; FString::SanitizeFloat(MyFloat);</td>
+</tr>
+</tbody></table>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FName name = <span class="built_in">FName</span>(<span class="string">&quot;this is a name&quot;</span>);</span><br><span class="line">FText::<span class="built_in">FromName</span>(name);</span><br><span class="line">name.<span class="built_in">ToString</span>();</span><br><span class="line"></span><br><span class="line">FString str = <span class="built_in">FString</span>(<span class="string">&quot;this is a string&quot;</span>);</span><br><span class="line">FName name2 = <span class="built_in">FName</span>(*str);</span><br><span class="line">FText::<span class="built_in">FromString</span>(str);</span><br><span class="line"></span><br><span class="line">FText text = FText::<span class="built_in">FromString</span>(<span class="string">&quot;this is a text&quot;</span>);</span><br><span class="line">text.<span class="built_in">ToString</span>();</span><br><span class="line"><span class="built_in">FName</span>(*text.<span class="built_in">ToString</span>());</span><br></pre></td></tr></table></figure>
+
+<p>总体而言，设置字符串变量文字时应使用 <strong>TEXT()</strong> 宏。如未指定 TEXT() 宏，将使用 ANSI 对文字进行编码，会导致支持字符高度受限。 传入 FString 的 ANSI 文字需要完成到 TCHAR 的转换（本地万国码编码），以便更高效地使用 TEXT()。</p>
+<p><a target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/zh-cn/unreal-engine/string-handling-in-unreal-engine?application_version=5.4">虚幻引擎中的字符串处理 | 虚幻引擎 5.4 文档 | Epic Developer Community</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E8%BE%93%E5%87%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E8%BE%93%E5%87%BA/" class="post-title-link" itemprop="url">UE的几种输出方式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-20 15:21:10" itemprop="dateCreated datePublished" datetime="2025-04-20T15:21:10+08:00">2025-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:05:08" itemprop="dateModified" datetime="2025-04-21T11:05:08+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/UE/" itemprop="url" rel="index"><span itemprop="name">UE</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>153</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="UE的几种输出方式"><a href="#UE的几种输出方式" class="headerlink" title="UE的几种输出方式"></a>UE的几种输出方式</h1><h4 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UE_LOG</span>(LogTemp, Log, <span class="built_in">TEXT</span>(<span class="string">&quot;This is a log message.&quot;</span>));</span><br><span class="line"><span class="built_in">UE_LOG</span>(LogTemp, Warning, <span class="built_in">TEXT</span>(<span class="string">&quot;This is a warning message.&quot;</span>));</span><br><span class="line"><span class="built_in">UE_LOG</span>(LogTemp, Error, <span class="built_in">TEXT</span>(<span class="string">&quot;This is an error message.&quot;</span>));</span><br><span class="line"></span><br><span class="line">FString MyString = <span class="built_in">TEXT</span>(<span class="string">&quot;Hello, World!&quot;</span>);</span><br><span class="line"><span class="built_in">UE_LOG</span>(LogTemp, Log, <span class="built_in">TEXT</span>(<span class="string">&quot;MyString: %s&quot;</span>), *MyString);</span><br></pre></td></tr></table></figure>
+
+<h4 id="Debug-Draw"><a href="#Debug-Draw" class="headerlink" title="Debug Draw"></a>Debug Draw</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DrawDebugSphere</span><span class="params">(UWorld* World, FVector Center, <span class="type">float</span> Radius, int32 Segments, FColor Color, <span class="type">float</span> LifeTime = <span class="number">0.0f</span>, uint8 DepthPriority = <span class="number">0</span>, <span class="type">bool</span> bPersistentLines = <span class="literal">false</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">DrawDebugSphere</span>(World, Center, Radius, Segments, Color, bPersistentLines, LifeTime, DepthPriority);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DrawDebugLine</span><span class="params">(UWorld* World, FVector LineStart, FVector LineEnd, FColor Color, <span class="type">bool</span> bPersistentLines = <span class="literal">false</span>, <span class="type">float</span> LifeTime = <span class="number">0.0f</span>, uint8 DepthPriority = <span class="number">0</span>, <span class="type">float</span> Thickness = <span class="number">0.0f</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">DrawDebugLine</span>(World, LineStart, LineEnd, Color, bPersistentLines, LifeTime, DepthPriority, Thickness);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DrawDebugPoint</span><span class="params">(UWorld* World, FVector Position, <span class="type">float</span> Size, FColor Color, <span class="type">bool</span> bPersistentLines = <span class="literal">false</span>, <span class="type">float</span> LifeTime = <span class="number">0.0f</span>, uint8 DepthPriority = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">DrawDebugPoint</span>(World, Position, Size, Color, bPersistentLines, LifeTime, DepthPriority);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出到屏幕上"><a href="#输出到屏幕上" class="headerlink" title="输出到屏幕上"></a>输出到屏幕上</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GEngine-&gt;<span class="built_in">AddOnScreenDebugMessage</span>(<span class="number">-1</span>, DisplayTime, Color, *Message);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E5%8D%95%E6%92%AD%E5%A4%9A%E6%92%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/04/20/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E5%8D%95%E6%92%AD%E5%A4%9A%E6%92%AD/" class="post-title-link" itemprop="url">委托-单播多播</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-20 15:20:48" itemprop="dateCreated datePublished" datetime="2025-04-20T15:20:48+08:00">2025-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:04:58" itemprop="dateModified" datetime="2025-04-21T11:04:58+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/UE/" itemprop="url" rel="index"><span itemprop="name">UE</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="委托-单播多播"><a href="#委托-单播多播" class="headerlink" title="委托-单播多播"></a>委托-单播多播</h1>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/15/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E5%B8%A7%E5%90%8C%E6%AD%A5%E5%92%8C%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/04/15/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E5%B8%A7%E5%90%8C%E6%AD%A5%E5%92%8C%E7%BD%91%E7%BB%9C%E5%90%8C%E6%AD%A5/" class="post-title-link" itemprop="url">帧同步和网络同步</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-15 19:53:55" itemprop="dateCreated datePublished" datetime="2025-04-15T19:53:55+08:00">2025-04-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:36:06" itemprop="dateModified" datetime="2025-04-21T11:36:06+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%8C%E6%AD%A5/" itemprop="url" rel="index"><span itemprop="name">同步</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>589</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="帧同步和网络同步"><a href="#帧同步和网络同步" class="headerlink" title="帧同步和网络同步"></a>帧同步和网络同步</h1><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<li><strong>帧同步</strong>：通过同步每一帧的操作指令，确保所有客户端在每一帧上执行相同的操作，从而保持游戏画面和逻辑的一致性。</li>
+<li><strong>状态同步</strong>：通过服务器周期性地将游戏或系统的状态信息发送给所有客户端，以确保每个客户端上的游戏或系统状态保持一致。</li>
+</ul>
+<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><ul>
+<li><strong>帧同步</strong>：<ol>
+<li>客户端在每一帧收集玩家操作并发送给服务器。</li>
+<li>服务器汇总所有客户端的操作并广播给所有客户端。</li>
+<li>客户端在同一帧上执行相同的输入操作。</li>
+</ol>
+</li>
+<li><strong>状态同步</strong>：<ol>
+<li>客户端将操作发送到服务器。</li>
+<li>服务器计算游戏行为的结果，并将结果广播给所有客户端。</li>
+<li>客户端根据服务器发送的状态信息更新本地状态。</li>
+</ol>
+</li>
+</ul>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li><strong>帧同步</strong>：<ul>
+<li><strong>优点</strong>：延迟低，适合对实时性要求高的游戏；数据传输量小，服务器压力小；容易实现回放和观战功能。</li>
+<li><strong>缺点</strong>：实现复杂，对网络延迟敏感；任何客户端的延迟或掉线都会影响整个游戏的同步。</li>
+</ul>
+</li>
+<li><strong>状态同步</strong>：<ul>
+<li><strong>优点</strong>：安全性高，反外挂能力强；对网络延迟的适应性较高；适合复杂逻辑和物理交互的游戏。</li>
+<li><strong>缺点</strong>：数据传输量大，可能导致带宽消耗高；延迟较大，响应速度慢。</li>
+</ul>
+</li>
+</ul>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ol>
+<li><strong>核心逻辑位置</strong>：<ul>
+<li>帧同步的战斗逻辑在客户端，状态同步的战斗逻辑在服务器。</li>
+</ul>
+</li>
+<li><strong>数据传输量</strong>：<ul>
+<li>帧同步传输的是操作指令，数据量小；状态同步传输的是游戏状态，数据量大。</li>
+</ul>
+</li>
+<li><strong>延迟适应性</strong>：<ul>
+<li>帧同步要求低延迟，状态同步对延迟的适应性更强。</li>
+</ul>
+</li>
+<li><strong>安全性</strong>：<ul>
+<li>状态同步的安全性更高，因为所有逻辑都在服务器处理，帧同步更容易被篡改。</li>
+</ul>
+</li>
+<li><strong>适用场景</strong>：<ul>
+<li>帧同步适用于动作快速、精确度要求高的游戏（如格斗游戏、MOBA游戏）；状态同步适用于对复杂逻辑和物理交互要求高的游戏（如RPG、回合制游戏）</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/10/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%9C%B0%E5%BD%A2%E9%81%AE%E6%8C%A1%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/04/10/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E5%9C%B0%E5%BD%A2%E9%81%AE%E6%8C%A1%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">移动端地形遮挡问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-10 22:23:59" itemprop="dateCreated datePublished" datetime="2025-04-10T22:23:59+08:00">2025-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:37:00" itemprop="dateModified" datetime="2025-04-21T11:37:00+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%9C%B0%E5%BD%A2/" itemprop="url" rel="index"><span itemprop="name">地形</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="移动端地形遮挡问题"><a href="#移动端地形遮挡问题" class="headerlink" title="移动端地形遮挡问题"></a>移动端地形遮挡问题</h1>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/10/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E5%8A%A8%E5%90%88%E6%89%B9%E4%B8%8D%E7%94%9F%E6%95%88%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/04/10/4_%E5%B0%8F%E7%AC%94%E8%AE%B0/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E5%8A%A8%E5%90%88%E6%89%B9%E4%B8%8D%E7%94%9F%E6%95%88%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">移动端自动合批不生效问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-10 22:23:58" itemprop="dateCreated datePublished" datetime="2025-04-10T22:23:58+08:00">2025-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:37:23" itemprop="dateModified" datetime="2025-04-21T11:37:23+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%90%88%E6%89%B9/" itemprop="url" rel="index"><span itemprop="name">合批</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="移动端自动合批不生效问题"><a href="#移动端自动合批不生效问题" class="headerlink" title="移动端自动合批不生效问题"></a>移动端自动合批不生效问题</h1>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/2_%E6%9D%82%E7%AF%87/Hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/04/20/2_%E6%9D%82%E7%AF%87/Hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">hexo+github个人博客搭建</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-20 15:03:11" itemprop="dateCreated datePublished" datetime="2025-04-20T15:03:11+08:00">2025-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:33:00" itemprop="dateModified" datetime="2025-04-21T11:33:00+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="hexo-github个人博客搭建"><a href="#hexo-github个人博客搭建" class="headerlink" title="hexo+github个人博客搭建"></a>hexo+github个人博客搭建</h1>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/1_%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/104_%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E6%B7%B1%E5%BA%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/04/20/1_%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/104_%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E6%B7%B1%E5%BA%A6/" class="post-title-link" itemprop="url">104_二叉树的最大深度</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-04-20 20:28:05" itemprop="dateCreated datePublished" datetime="2025-04-20T20:28:05+08:00">2025-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-04-21 11:29:30" itemprop="dateModified" datetime="2025-04-21T11:29:30+08:00">2025-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>218</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>题目：</p>
+<p>给定一个二叉树 <code>root</code> ，返回其最大深度。</p>
+<p>二叉树的 <strong>最大深度</strong> 是指从根节点到最远叶子节点的最长路径上的节点数。</p>
+<img src="G:\ABlogs\source\_posts\刷题笔记\image\104_二叉树的最大深度.png" alt="image" style="zoom:67%;" />
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">//方法一：递归，返回子节点的最大深度+1</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxDepth</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!root)&#123;return0;&#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(<span class="built_in">maxDepth</span>(root-&gt;left),<span class="built_in">maxDepth</span>(root-&gt;right))+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方法一：递归，维护一个全局变量，递归到子节点+1，返回最大值</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxDepth</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">        function&lt;<span class="type">void</span>(TreeNode* ,<span class="type">int</span> )&gt; def = [&amp;result,&amp;def](TreeNode* root,<span class="type">int</span> count)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!root)&#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            count +=<span class="number">1</span>;</span><br><span class="line">            result = <span class="built_in">max</span>(result,count);</span><br><span class="line">            <span class="built_in">def</span>(root-&gt;left,count);</span><br><span class="line">            <span class="built_in">def</span>(root-&gt;right,count);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="built_in">def</span>(root,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/0_BW/bigworld_05_03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/Avatar.png">
+      <meta itemprop="name" content="华">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H's Blogs">
+      <meta itemprop="description" content="个人博客记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | H's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/11/08/0_BW/bigworld_05_03/" class="post-title-link" itemprop="url">BIGWORLD 客户端编程指南03</a>
         </h2>
 
         <div class="post-meta-container">
@@ -220,7 +1142,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-11-06 15:19:09" itemprop="dateModified" datetime="2024-11-06T15:19:09+08:00">2024-11-06</time>
+      <time title="修改时间：2025-04-21 11:26:17" itemprop="dateModified" datetime="2025-04-21T11:26:17+08:00">2025-04-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -265,7 +1187,7 @@
 <p>需要注意的是，在可能的情况下，Moo使用底层的Direct3DX结构，如D3DXMatrix,D3DXVector和D3DXQuaternion。DirectX团队不断改进这些数学类的实现，它们的功能经常利用处理器特定的指令，如MMX, SIMD和3DNow!利用这些工程师的努力是谨慎的。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/11/08/BW/bigworld_05_03/#more" rel="contents">
+              <a class="btn" href="/2024/11/08/0_BW/bigworld_05_03/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -296,7 +1218,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/BW/bigworld_05_02/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/0_BW/bigworld_05_02/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/Avatar.png">
@@ -314,7 +1236,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/08/BW/bigworld_05_02/" class="post-title-link" itemprop="url">BIGWORLD 客户端编程指南02</a>
+          <a href="/2024/11/08/0_BW/bigworld_05_02/" class="post-title-link" itemprop="url">BIGWORLD 客户端编程指南02</a>
         </h2>
 
         <div class="post-meta-container">
@@ -332,7 +1254,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-11-06 15:19:01" itemprop="dateModified" datetime="2024-11-06T15:19:01+08:00">2024-11-06</time>
+      <time title="修改时间：2025-04-21 11:26:12" itemprop="dateModified" datetime="2025-04-21T11:26:12+08:00">2025-04-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -374,826 +1296,12 @@
 <p>模型编辑器工具可以用来查看这些模型并回放动画。然后使用它从这些动画创建一个操作列表，这些动画是游戏引擎中python可访问的界面。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/11/08/BW/bigworld_05_02/#more" rel="contents">
+              <a class="btn" href="/2024/11/08/0_BW/bigworld_05_02/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/BW/bigworld_05_01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Avatar.png">
-      <meta itemprop="name" content="华">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="H's Blogs">
-      <meta itemprop="description" content="个人博客记录">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | H's Blogs">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/08/BW/bigworld_05_01/" class="post-title-link" itemprop="url">BIG WORLD 客户端编程指南01</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-11-08 17:24:52" itemprop="dateCreated datePublished" datetime="2024-11-08T17:24:52+08:00">2024-11-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-11-06 15:18:41" itemprop="dateModified" datetime="2024-11-06T15:18:41+08:00">2024-11-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/BigWorld/" itemprop="url" rel="index"><span itemprop="name">BigWorld</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>23k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1:18</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="BIGWORLD-05-Client-Programming-Guide-01"><a href="#BIGWORLD-05-Client-Programming-Guide-01" class="headerlink" title="BIGWORLD_05_Client Programming Guide_01"></a>BIGWORLD_05_Client Programming Guide_01</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a><strong>1. 概述</strong></h2><p>本文档是3d引擎技术的客户端引擎的技术设计概述。它是描述整个系统的一组更大的文档的一部分。为了提供上下文，它只包含对BigWorld服务器的引用。只对BigWorld客户端工作感兴趣的读者可能会忽略服务器信息。</p>
-<p>有关API的信息，请参阅在线文档。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/08/BW/bigworld_05_01/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/BW/bigworld_04/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Avatar.png">
-      <meta itemprop="name" content="华">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="H's Blogs">
-      <meta itemprop="description" content="个人博客记录">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | H's Blogs">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/08/BW/bigworld_04/" class="post-title-link" itemprop="url">BIGWORLD 服务端概述</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-11-08 17:24:52" itemprop="dateCreated datePublished" datetime="2024-11-08T17:24:52+08:00">2024-11-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-11-06 15:18:51" itemprop="dateModified" datetime="2024-11-06T15:18:51+08:00">2024-11-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/BigWorld/" itemprop="url" rel="index"><span itemprop="name">BigWorld</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>13k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>42 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="BIGWORLD-04-Server-Overview"><a href="#BIGWORLD-04-Server-Overview" class="headerlink" title="BIGWORLD_04_Server Overview"></a>BIGWORLD_04_Server Overview</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a><strong>1. 概述</strong></h2><p>BigWorld Technology是BigWorld实现大型多人在线游戏的中间件。本文概述了BigWorld技术的当前实现。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/08/BW/bigworld_04/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/BW/bigworld_03/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Avatar.png">
-      <meta itemprop="name" content="华">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="H's Blogs">
-      <meta itemprop="description" content="个人博客记录">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | H's Blogs">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/08/BW/bigworld_03/" class="post-title-link" itemprop="url">BIGWORLD 客户端Tutorial</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-11-08 17:24:52" itemprop="dateCreated datePublished" datetime="2024-11-08T17:24:52+08:00">2024-11-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-11-06 15:15:25" itemprop="dateModified" datetime="2024-11-06T15:15:25+08:00">2024-11-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/BigWorld/" itemprop="url" rel="index"><span itemprop="name">BigWorld</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="BIGWORLD-03–Tutorial"><a href="#BIGWORLD-03–Tutorial" class="headerlink" title="BIGWORLD_03–Tutorial"></a>BIGWORLD_03–Tutorial</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>本教程简要概述了从头开始制作一款基本游戏所需的最低步骤。第一次与BigWorld合作的游戏开发者和技术美工应该通过本教程了解如何将各种文件和目录组合在一起，从而制作出一款有效的游戏。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/08/BW/bigworld_03/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/BW/bigworld_02/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Avatar.png">
-      <meta itemprop="name" content="华">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="H's Blogs">
-      <meta itemprop="description" content="个人博客记录">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | H's Blogs">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/08/BW/bigworld_02/" class="post-title-link" itemprop="url">BIGWORLD File Grammar Guide</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-11-08 17:24:52" itemprop="dateCreated datePublished" datetime="2024-11-08T17:24:52+08:00">2024-11-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-11-06 15:15:57" itemprop="dateModified" datetime="2024-11-06T15:15:57+08:00">2024-11-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/BigWorld/" itemprop="url" rel="index"><span itemprop="name">BigWorld</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="BIGWORLD-File-Grammar-Guide"><a href="#BIGWORLD-File-Grammar-Guide" class="headerlink" title="BIGWORLD File Grammar Guide"></a>BIGWORLD File Grammar Guide</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><p>本文档详细介绍了BigWorld技术在客户端和服务器端使用的文件的语法。</p>
-<p>除了文件的语法之外，每个部分都描述了文件的用途，以及在适用的情况下对进一步信息的引用。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/08/BW/bigworld_02/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/BW/bigworld_01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Avatar.png">
-      <meta itemprop="name" content="华">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="H's Blogs">
-      <meta itemprop="description" content="个人博客记录">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | H's Blogs">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/11/08/BW/bigworld_01/" class="post-title-link" itemprop="url">BIG WORLD 术语表</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-11-08 17:24:52" itemprop="dateCreated datePublished" datetime="2024-11-08T17:24:52+08:00">2024-11-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-11-06 15:13:46" itemprop="dateModified" datetime="2024-11-06T15:13:46+08:00">2024-11-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/BigWorld/" itemprop="url" rel="index"><span itemprop="name">BigWorld</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="BIG-WORLD-术语表"><a href="#BIG-WORLD-术语表" class="headerlink" title="BIG WORLD 术语表"></a>BIG WORLD 术语表</h1><p>下面的列表描述了在BigWorld文档中使用的一些术语</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/11/08/BW/bigworld_01/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/Hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Avatar.png">
-      <meta itemprop="name" content="华">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="H's Blogs">
-      <meta itemprop="description" content="个人博客记录">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | H's Blogs">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/04/20/Hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-04-20 15:03:11" itemprop="dateCreated datePublished" datetime="2025-04-20T15:03:11+08:00">2025-04-20</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/20/Lua/20_slua%E5%85%A5%E9%97%A81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Avatar.png">
-      <meta itemprop="name" content="华">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="H's Blogs">
-      <meta itemprop="description" content="个人博客记录">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | H's Blogs">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/04/20/Lua/20_slua%E5%85%A5%E9%97%A81/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-04-20 14:18:34" itemprop="dateCreated datePublished" datetime="2025-04-20T14:18:34+08:00">2025-04-20</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/04/11/UE4/%E9%9A%8F%E7%AC%94/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/Avatar.png">
-      <meta itemprop="name" content="华">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="H's Blogs">
-      <meta itemprop="description" content="个人博客记录">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | H's Blogs">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/04/11/UE4/%E9%9A%8F%E7%AC%94/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-04-11 12:48:19" itemprop="dateCreated datePublished" datetime="2025-04-11T12:48:19+08:00">2025-04-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-04-20 11:12:00" itemprop="dateModified" datetime="2025-04-20T11:12:00+08:00">2025-04-20</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>157</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>UE的几种输出方式</p>
-<p>Log</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UE_LOG</span>(LogTemp, Log, <span class="built_in">TEXT</span>(<span class="string">&quot;This is a log message.&quot;</span>));</span><br><span class="line"><span class="built_in">UE_LOG</span>(LogTemp, Warning, <span class="built_in">TEXT</span>(<span class="string">&quot;This is a warning message.&quot;</span>));</span><br><span class="line"><span class="built_in">UE_LOG</span>(LogTemp, Error, <span class="built_in">TEXT</span>(<span class="string">&quot;This is an error message.&quot;</span>));</span><br></pre></td></tr></table></figure>
-
-<p>Debug Draw</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DrawDebugSphere</span><span class="params">(UWorld* World, FVector Center, <span class="type">float</span> Radius, int32 Segments, FColor Color, <span class="type">float</span> LifeTime = <span class="number">0.0f</span>, uint8 DepthPriority = <span class="number">0</span>, <span class="type">bool</span> bPersistentLines = <span class="literal">false</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">DrawDebugSphere</span>(World, Center, Radius, Segments, Color, bPersistentLines, LifeTime, DepthPriority);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DrawDebugLine</span><span class="params">(UWorld* World, FVector LineStart, FVector LineEnd, FColor Color, <span class="type">bool</span> bPersistentLines = <span class="literal">false</span>, <span class="type">float</span> LifeTime = <span class="number">0.0f</span>, uint8 DepthPriority = <span class="number">0</span>, <span class="type">float</span> Thickness = <span class="number">0.0f</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">DrawDebugLine</span>(World, LineStart, LineEnd, Color, bPersistentLines, LifeTime, DepthPriority, Thickness);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DrawDebugPoint</span><span class="params">(UWorld* World, FVector Position, <span class="type">float</span> Size, FColor Color, <span class="type">bool</span> bPersistentLines = <span class="literal">false</span>, <span class="type">float</span> LifeTime = <span class="number">0.0f</span>, uint8 DepthPriority = <span class="number">0</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">DrawDebugPoint</span>(World, Position, Size, Color, bPersistentLines, LifeTime, DepthPriority);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FString MyString = <span class="built_in">TEXT</span>(<span class="string">&quot;Hello, World!&quot;</span>);</span><br><span class="line"><span class="built_in">UE_LOG</span>(LogTemp, Log, <span class="built_in">TEXT</span>(<span class="string">&quot;MyString: %s&quot;</span>), *MyString);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GEngine-&gt;<span class="built_in">AddOnScreenDebugMessage</span>(<span class="number">-1</span>, DisplayTime, Color, *Message);</span><br></pre></td></tr></table></figure>
-
-<p>常见的标识符</p>
-<p>UClass</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>UPROPERTY</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>UFUNCTION</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-
       
     </div>
 
@@ -1236,14 +1344,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">136k</span>
+    <span title="站点总字数">138k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:33</span>
+    <span title="站点阅读时长">7:40</span>
   </span>
 </div>
   <div class="powered-by">
